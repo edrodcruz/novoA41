@@ -128,15 +128,15 @@ obterColunasNotas(): Array<PoTableColumn> {
   return [
     { property: 'idi-sit', label: 'Situação', type: 'label',
     labels: [
-      { value: 1, color: 'color-08', label: 'NFe não autorizada' },
-      { value: 2, color: 'color-08', label: 'Em Processamento' },
-      { value: 3, color: 'color-10', label: 'Autorizada' },
-      { value: 4, color: 'color-07', label: 'Uso denegado' },
-      { value: 5, color: 'color-07', label: 'Docto Rejeitado' },
-      { value: 6, color: 'color-07', label: 'Docto Cancelado' },
-      { value: 7, color: 'color-07', label: 'Docto Inutilizado' },
-      { value: 8, color: 'color-08', label: 'Em processamento no Aplicativo de Transmissão' },
-      { value: 9, color: 'color-08', label: 'Em processamento na SEFAZ' },
+      { value: 1,  color: 'color-08', label: 'NFe não autorizada' },
+      { value: 2,  color: 'color-08', label: 'Em Processamento' },
+      { value: 3,  color: 'color-10', label: 'Autorizada' },
+      { value: 4,  color: 'color-07', label: 'Uso denegado' },
+      { value: 5,  color: 'color-07', label: 'Docto Rejeitado' },
+      { value: 6,  color: 'color-07', label: 'Docto Cancelado' },
+      { value: 7,  color: 'color-07', label: 'Docto Inutilizado' },
+      { value: 8,  color: 'color-08', label: 'Em processamento no Aplicativo de Transmissão' },
+      { value: 9,  color: 'color-08', label: 'Em processamento na SEFAZ' },
       { value: 10, color: 'color-08', label: 'Em processamento no SCAN' },
       { value: 11, color: 'color-10', label: 'NF-e Gerada' },
       { value: 12, color: 'color-08', label: 'NF-e em Processo de Cancelamento' },
@@ -158,11 +158,10 @@ obterColunasNotas(): Array<PoTableColumn> {
   public ObterEstabelecimentos(params?: any){
     return this.http.get<any>(`${this._url}/ObterEstab`, {params: params, headers:headersTotvs})
                  .pipe(
-                        //tap(data => {console.log("Retorno API TOTVS => ", data)}),
-                        map(item => { return item.items.map((item:any) =>  { return { label:item.codEstab + ' ' + item.nome, value: item.codEstab, codFilial: item.codFilial } }) }),
-                        ///tap(data => {console.log("Data Transformada pelo Map =>", data)}),
-                        take(1)
-                      );
+                  //tap(data => {console.log("Retorno API TOTVS => ", data)}),
+                  map(item => { return item.items.map((item:any) =>  { return { label:item.codEstab + ' ' + item.nome, value: item.codEstab, codFilial: item.codFilial } }) }),
+                  ///tap(data => {console.log("Data Transformada pelo Map =>", data)}),
+                  take(1));
   }
 
   //---------------------- COMBOBOX TECNICOS
@@ -193,7 +192,6 @@ obterColunasNotas(): Array<PoTableColumn> {
                   map(item => { return {
                                   nrProcesso: item.nrProcesso,
                                   listaEntrega: item.listaEntrega.map((x:any) =>  { return {
-
                                          label: x.codEntrega,
                                          value: x.codEntrega,
                                          cidade: x.nomeAbrev
