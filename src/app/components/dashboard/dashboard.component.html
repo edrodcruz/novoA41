@@ -1,0 +1,57 @@
+<po-tabs>
+  <po-tab [p-active]="true" p-label="Nota Fiscal Entrada">
+     <po-widget>
+     <po-table
+          [p-items]="listaNFS"
+          [p-striped]="true"
+          [p-sort]="true"
+          [p-columns]="colunasNFS"
+          [p-hide-table-search]="false"
+          [p-hide-columns-manager]="true"/>
+
+     </po-widget>
+  </po-tab>
+  <po-tab  p-label="Nota Fiscal Saída"></po-tab>
+</po-tabs>
+
+<po-modal #loginModal  p-title="Login" p-size="auto" >
+  <div class="po-row">
+    <po-input
+      p-icon="po-icon po-icon-pin"
+      class="po-md-12"
+      [ngModel]="codEstabel" (ngModelChange)="codEstabel = $event"
+      p-clean
+
+      p-label="Estabelecimento">
+    </po-input>
+  </div>
+  <div class="po-row">
+    <po-input
+      p-icon="po-icon po-icon-user"
+      class="po-md-12"
+      [ngModel]="codUsuario" (ngModelChange)="codUsuario = $event"
+      p-clean
+
+      p-label="Técnico">
+    </po-input>
+  </div>
+
+  <div class="po-row">
+    <po-password
+      class="po-md-12"
+      [ngModel]="senha" (ngModelChange)="senha = $event"
+      p-clean
+      p-label="Senha">
+    </po-password>
+  </div>
+  <hr>
+
+  <div class="po-row">
+    <po-button
+      class="po-md-12"
+     p-kind="primary"
+     p-label="Login"
+     [p-loading]="loadLogin" (p-click)="onLogarUsuario()"></po-button>
+     </div>
+</po-modal>
+
