@@ -212,6 +212,13 @@ obterColunasNotas(): Array<PoTableColumn> {
                    .pipe(take(1));
   }
 
+    //---------------------- Resumo
+    public ProcessarEntradas(params?: any){
+      return this.http.post(`${this._url}/ProcessarEntradas`, params, {headers:headersTotvs})
+                     .pipe(take(1));
+    }
+  
+
   //---------------------- Login
   public LoginAlmoxarifado(params?: any){
     return this.http.post(`${this._url}/LoginAlmoxa`, params, {headers:headersTotvs})

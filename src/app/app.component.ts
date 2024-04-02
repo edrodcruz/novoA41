@@ -19,7 +19,8 @@ private srvTotvs = inject(TotvsService)
  readonly menus: Array<PoMenuItem> = [
   // { label: 'Tela Principal', icon:'po-icon-home', link:'/'},
   { label: 'Cálculo Auto Atendimento', icon: 'po-icon-calculator', link:'/'},
-  { label: 'Dashboard Notas Fiscais', icon: 'po-icon-device-desktop', link:'/dashboard'}
+  { label: 'Dashboard Notas Fiscais', icon: 'po-icon-device-desktop', link:'/dashboard'},
+  { label: 'Finalizar Processo', icon: 'po-icon-edit', link:'/reparos'}
 ];
 
 //------ Label de menu principal
@@ -27,6 +28,7 @@ tecnicoInfo!: string
 estabInfo!: string
 processoInfo!: string
 tituloTela!:string
+dashboard:boolean=false
 
 private sub!: Subscription
 
@@ -42,6 +44,7 @@ ngOnInit(): void {
       this.tecnicoInfo = response.tecInfo ?? this.tecnicoInfo
       this.processoInfo = response.processoInfo ?? this.processoInfo
       this.tituloTela = response.tituloTela ?? this.tituloTela
+      this.dashboard = response.dashboard ?? this.dashboard
       this.cdRef.detectChanges()
     }})
 }

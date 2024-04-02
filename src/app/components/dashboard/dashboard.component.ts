@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { PoModalComponent, PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 import { TotvsServiceMock } from 'src/app/services/totvs-service-mock.service';
 import { TotvsService } from 'src/app/services/totvs-service.service';
 
@@ -22,6 +22,7 @@ export class DashboardComponent {
   codEstabel:string=''
   codUsuario:string=''
   nrProcess:number=0
+  statusProcess:number=0
   senha:string=''
   loadLogin:boolean=false
 
@@ -30,20 +31,24 @@ export class DashboardComponent {
   colunasNFE!: PoTableColumn[]
   listaNFS!: any[]
   listaNFE!: any[]
+  sub!:Subscription;
 
   ngOnInit(): void {
 
     //--- Informacoes iniciais tela
-     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'DASHBOARD NOTA FISCAL'})
+     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'DASHBOARD NOTA FISCAL', dashboard: true})
 
      //--- Selecionar usuario para mostrar notas no dashboard
-     //this.loginModal?.open()
+     this.loginModal?.open()
 
      //--- Obter colunas grid
      this.colunasNFE = this.srvTotvs.obterColunasNotas();
      this.colunasNFS = this.srvTotvs.obterColunasNotas();
 
+  }
 
+  ngOnDestroy():void{
+    this.sub.unsubscribe()
   }
 
   onRefresh(){
@@ -55,21 +60,16 @@ export class DashboardComponent {
     this.loadLogin=true
     //Parametros usuario e senha
     let paramsLogin: any = { CodEstabel: this.codEstabel, CodUsuario: this.codUsuario, Senha: this.senha}
-    this.srvTotvs.EmitirParametros({estabInfo:this.codEstabel, tecInfo:this.codUsuario, processoInfo:''})
 
     //--- Obter lista de notas de saida
-    let paramsTec:any = {CodEstabel: this.codEstabel, CodTecnico: this.codUsuario}
+    let paramsTec:any = {codEstabel: this.codEstabel, codTecnico: this.codUsuario}
     this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
       next: (response: any) => {
           this.nrProcess = response.nrProcesso
-      },
-      error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
-    })
-
-    let paramsNota:any = {CodEstabel: this.codEstabel, CodTecnico: this.codUsuario, NrProcess: this.nrProcess}
-    this.srvTotvs.ObterNotas(paramsNota).subscribe({
-      next: (response: any) => {
-          this.listaNFS = (response as any[])
+          this.statusProcess = response.statusProcesso
+          this.srvTotvs.EmitirParametros({estabInfo:this.codEstabel, tecInfo:this.codUsuario, processoInfo:this.nrProcess})
+          this.verificarNotas()
+          this.sub = interval(30000).subscribe(execucao=> this.verificarNotas())
       },
       error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
     })
@@ -79,5 +79,35 @@ export class DashboardComponent {
 
   }
 
+  verificarNotas(){
 
+  //TODO: Preciso saber qual status do processo
+  //      Passo 1: Gerar NFE
+  //      Passo 2: Reprocessar Notas no RE1005
+  //      Passo 3: Reparos e Saídas
+  this.statusProcess = 1
+
+  if (this.statusProcess < 3){
+    let paramsNota:any = {CodEstab: this.codEstabel, CodTecnico: this.codUsuario, NrProcess: this.nrProcess}
+    this.srvTotvs.ObterNotas(paramsNota).subscribe({
+      next: (response: any) => {
+          this.listaNFS = response.items
+
+          //Se todas as notas ja foram atualizadas enviar as entradas para atualizar estoque
+          if (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0) {
+            alert("ainda existem notas pendentes")
+          }
+          else{
+            //Processar Notas no re1005 pela segunda vez
+            this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
+                next: (response:any) => {},
+                error: (e) => {}
+
+            })
+          }
+      },
+      error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+    })
+  }
+}
 }

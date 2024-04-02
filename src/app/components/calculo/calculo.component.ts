@@ -125,7 +125,7 @@ readonly acaoLogar: PoModalAction = {
   ngOnInit(): void {
 
     //--- Titulo Tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'PARÂMETROS DE CÁLCULO'})
+    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'PARÂMETROS DE CÁLCULO', dashboard: false})
 
 
 
