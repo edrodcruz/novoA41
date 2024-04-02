@@ -124,7 +124,7 @@ obterColunasSemSaldo(): Array<PoTableColumn> {
   ];
 }
 
-obterColunasNotas(): Array<PoTableColumn> {
+obterColunasEntradas(): Array<PoTableColumn> {
   return [
     { property: 'idi-sit', label: 'Situação', type: 'label',
     labels: [
@@ -143,7 +143,6 @@ obterColunasNotas(): Array<PoTableColumn> {
       { value: 13, color: 'color-08', label: 'NF-e em Processo de Inutilizacao' },
       { value: 14, color: 'color-08', label: 'NF-e Pendente de Retorno' },
       { value: 15, color: 'color-07', label: 'DPEC recebido pelo SCE' },
-
     ]},
     { property: 'cod-estabel', label:"Estab"},
     { property: 'cod-emitente', label:"Emitente"},
@@ -152,6 +151,22 @@ obterColunasNotas(): Array<PoTableColumn> {
     { property: 'nat-operacao', label:"Nat.Oper"}
   ]
 }
+
+obterColunasEntradasEstoque(): Array<PoTableColumn> {
+  return [
+    { property: 'idi-sit', label: 'Estoque', type: 'label',
+    labels: [
+      { value: 0,  color: 'color-07', label: 'Não atualizada' },
+      { value: 1,  color: 'color-10', label: 'Atualizada' },
+    ]},
+    { property: 'cod-estabel', label:"Estab"},
+    { property: 'cod-emitente', label:"Emitente"},
+    { property: 'serie-docto', label:"Serie"},
+    { property: 'nro-docto', label:"Docto"},
+    { property: 'nat-operacao', label:"Nat.Oper"}
+  ]
+}
+
 
   //---------------------- COMBOBOX ESTABELECIMENTOS
   //Retorno transformado no formato {label: xxx, value: yyyy}
@@ -212,12 +227,18 @@ obterColunasNotas(): Array<PoTableColumn> {
                    .pipe(take(1));
   }
 
-    //---------------------- Resumo
+    //---------------------- Processar Entradas
     public ProcessarEntradas(params?: any){
       return this.http.post(`${this._url}/ProcessarEntradas`, params, {headers:headersTotvs})
                      .pipe(take(1));
     }
-  
+
+    //---------------------- Processar Entradas
+    public ProcessarSaidasReparos(params?: any){
+      return this.http.post(`${this._url}/ProcessarSaidasReparos`, params, {headers:headersTotvs})
+                      .pipe(take(1));
+    }
+    
 
   //---------------------- Login
   public LoginAlmoxarifado(params?: any){

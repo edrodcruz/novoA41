@@ -23,6 +23,7 @@ export class DashboardComponent {
   codUsuario:string=''
   nrProcess:number=0
   statusProcess:number=0
+  tempoProcess:number=0
   senha:string=''
   loadLogin:boolean=false
 
@@ -42,8 +43,8 @@ export class DashboardComponent {
      this.loginModal?.open()
 
      //--- Obter colunas grid
-     this.colunasNFE = this.srvTotvs.obterColunasNotas();
-     this.colunasNFS = this.srvTotvs.obterColunasNotas();
+     
+   //  this.colunasNFS = this.srvTotvs.obterColunasNotas();
 
   }
 
@@ -61,15 +62,34 @@ export class DashboardComponent {
     //Parametros usuario e senha
     let paramsLogin: any = { CodEstabel: this.codEstabel, CodUsuario: this.codUsuario, Senha: this.senha}
 
-    //--- Obter lista de notas de saida
+    //Parametros da Nota
     let paramsTec:any = {codEstabel: this.codEstabel, codTecnico: this.codUsuario}
+
+    //Chamar Método 
     this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
       next: (response: any) => {
           this.nrProcess = response.nrProcesso
           this.statusProcess = response.statusProcesso
+          this.tempoProcess = response.tempoProcesso
+
+          //console.log("Processo:", this.nrProcess )
+          //console.log("Status:", this.statusProcess )
+          //console.log("Tempo:", this.tempoProcess )
+
+          //Atualizar Informacoes Tela
           this.srvTotvs.EmitirParametros({estabInfo:this.codEstabel, tecInfo:this.codUsuario, processoInfo:this.nrProcess})
+
+          //Colunas do grid
+          if (this.statusProcess === 1)
+             this.colunasNFE = this.srvTotvs.obterColunasEntradas()
+          else
+             this.colunasNFE = this.srvTotvs.obterColunasEntradasEstoque();  
+
+          //Chamar o programa de verificacao
           this.verificarNotas()
-          this.sub = interval(30000).subscribe(execucao=> this.verificarNotas())
+
+          //Setar o tempo para o relogio 
+          this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
       },
       error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
     })
@@ -94,8 +114,8 @@ export class DashboardComponent {
           this.listaNFS = response.items
 
           //Se todas as notas ja foram atualizadas enviar as entradas para atualizar estoque
-          if (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0) {
-            alert("ainda existem notas pendentes")
+          if ((this.statusProcess === 1) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0)) {
+            
           }
           else{
             //Processar Notas no re1005 pela segunda vez
@@ -104,6 +124,14 @@ export class DashboardComponent {
                 error: (e) => {}
 
             })
+          }
+
+          //Se as notas de entrada estiverem atualizadas no of gerar as saídas e os reparos
+          if ((this.statusProcess === 2) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 1).length > 0)) {
+            
+          } 
+          else {
+            //Processar as notas de saida e reparos
           }
       },
       error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
