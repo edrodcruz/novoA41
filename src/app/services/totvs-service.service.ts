@@ -127,7 +127,7 @@ obterColunasSemSaldo(): Array<PoTableColumn> {
 
 obterColunasEntradas(): Array<PoTableColumn> {
   return [
-    { property: 'idi-sit', label: 'Situação', type: 'label',
+    { property: 'idi-sit', label: 'Sefaz', type: 'label',
     labels: [
       { value: 1,  color: 'color-08', label: 'NFe não autorizada' },
       { value: 2,  color: 'color-08', label: 'Em Processamento' },

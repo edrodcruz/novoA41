@@ -136,7 +136,6 @@ readonly acaoLogar: PoModalAction = {
     this.loadTela = false
     this.tipoCalculo = '1'
     this.colunasKit = this.srvTotvs.obterColunasExtraKit()
-    //this.columnsDetails = this.srvTotvs.obterColunasDetalhe()
 
     //--- Carregar combo de estabelecimentos
     this.placeHolderEstabelecimento = 'Aguarde, carregando lista...'
@@ -190,23 +189,7 @@ readonly acaoLogar: PoModalAction = {
       if (passo.label === "Dados NF") {
 
         this.gerarListaExtrakit()
-        /*
-          //Verificar se existe lista
-          if (this.listaExtraKit.length > 0){
-
-            this.srvDialog.confirm({
-              title: 'LISTA DE EXTRAKIT',
-              message: 'Deseja manter a lista de Extrakit gerada anteriormente?',
-              literals: {"cancel": "Não", "confirm": "Sim"},
-              confirm: () => { return true},
-              cancel:  () => { this.gerarListaExtrakit()}
-            })
-          }
-          else
-          {
-            this.gerarListaExtrakit()
-          }
-          */
+        
       }
 
       //---------------Passo - Resumo
@@ -239,7 +222,7 @@ readonly acaoLogar: PoModalAction = {
       //Geral
       this.labelContadores[0] = this.itemsResumo.length.toString()
       //Pagamento
-      this.labelContadores[1] = this.itemsResumo.filter(o => o.temPagto && !o.soEntrada).length.toString()
+      this.labelContadores[1] = this.itemsResumo.filter(o => o.qtPagar > 0).length.toString()
       //Renovacoes
       this.labelContadores[2] = this.itemsResumo.filter(o => o.qtRenovar > 0).length.toString()
       //Somente Entrada
@@ -471,9 +454,13 @@ readonly acaoLogar: PoModalAction = {
 
   //---------------------------------------------------------------- Eliminar todos os registros extrakit
   public onExcluirTodosExtraKit(){
+    if ((this.gridExtraKit?.getSelectedRows() as any[]).length < 1){
+      this.srvNotification.error("Nenhum registro selecionado !")
+      return
+    }
     this.srvDialog.confirm({
-      title: 'ELIMINAR LISTA EXTRAKIT',
-      message: 'Deseja registros selecionados ?',
+      title: 'ELIMINAR EXTRAKIT',
+      message: 'Deseja eliminar os registros selecionados ? \n Atenção: Registros com quantidade ruim não podem ser eliminados !',
       literals: {"cancel": "Não", "confirm": "Sim"},
       confirm: () => {
 

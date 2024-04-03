@@ -26,6 +26,10 @@ export class DashboardComponent {
   tempoProcess:number=0
   senha:string=''
   loadLogin:boolean=false
+  labelLoadTela:string = ''
+  loadTela: boolean = false
+  usuarioLogado: boolean=false
+
 
   //---Grids de Notas
   colunasNFS!: PoTableColumn[]
@@ -61,81 +65,109 @@ export class DashboardComponent {
     this.loadLogin=true
     //Parametros usuario e senha
     let paramsLogin: any = { CodEstabel: this.codEstabel, CodUsuario: this.codUsuario, Senha: this.senha}
-
-    //Parametros da Nota
-    let paramsTec:any = {codEstabel: this.codEstabel, codTecnico: this.codUsuario}
-
-    //Chamar Método 
-    this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
+    //Chamar servico de login
+    this.srvTotvs.LoginAlmoxarifado(paramsLogin).subscribe({
       next: (response: any) => {
-          this.nrProcess = response.nrProcesso
-          this.statusProcess = response.statusProcesso
-          this.tempoProcess = response.tempoProcesso
 
-          //console.log("Processo:", this.nrProcess )
-          //console.log("Status:", this.statusProcess )
-          //console.log("Tempo:", this.tempoProcess )
+          //if(response.senhaValida){
+          if(true){
 
-          //Atualizar Informacoes Tela
-          this.srvTotvs.EmitirParametros({estabInfo:this.codEstabel, tecInfo:this.codUsuario, processoInfo:this.nrProcess})
+            //Parametros da Nota
+            let paramsTec:any = {codEstabel: this.codEstabel, codTecnico: this.codUsuario}
+          
+            //Fechar a tela de login
+            this.loginModal?.close()
 
-          //Colunas do grid
-          if (this.statusProcess === 1)
-             this.colunasNFE = this.srvTotvs.obterColunasEntradas()
-          else
-             this.colunasNFE = this.srvTotvs.obterColunasEntradasEstoque();  
+            //Setar usuario como logado
+            this.usuarioLogado = true;
 
-          //Chamar o programa de verificacao
-          this.verificarNotas()
+            //Chamar Método 
+            this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
+              next: (response: any) => {
+                  this.nrProcess = response.nrProcesso
+                  this.statusProcess = response.statusProcesso
+                  this.tempoProcess = response.tempoProcesso
 
-          //Setar o tempo para o relogio 
-          this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
-      },
-      error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
-    })
+                  //Atualizar Informacoes Tela
+                  this.srvTotvs.EmitirParametros({estabInfo:this.codEstabel, tecInfo:this.codUsuario, processoInfo:this.nrProcess})
 
-     //Fechar a tela de login
-     this.loginModal?.close()
+                  //Colunas do grid
+                  if (this.statusProcess === 1)
+                    this.colunasNFE = this.srvTotvs.obterColunasEntradas()
+                  else
+                    this.colunasNFE = this.srvTotvs.obterColunasEntradasEstoque();  
 
-  }
+                  //Chamar o programa de verificacao
+                  this.verificarNotas()
 
-  verificarNotas(){
-
-  //TODO: Preciso saber qual status do processo
-  //      Passo 1: Gerar NFE
-  //      Passo 2: Reprocessar Notas no RE1005
-  //      Passo 3: Reparos e Saídas
-  this.statusProcess = 1
-
-  if (this.statusProcess < 3){
-    let paramsNota:any = {CodEstab: this.codEstabel, CodTecnico: this.codUsuario, NrProcess: this.nrProcess}
-    this.srvTotvs.ObterNotas(paramsNota).subscribe({
-      next: (response: any) => {
-          this.listaNFS = response.items
-
-          //Se todas as notas ja foram atualizadas enviar as entradas para atualizar estoque
-          if ((this.statusProcess === 1) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0)) {
-            
-          }
-          else{
-            //Processar Notas no re1005 pela segunda vez
-            this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
-                next: (response:any) => {},
-                error: (e) => {}
-
+                  //Setar o tempo para o relogio 
+                  this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
+              },
+              error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
             })
           }
+          else{
 
-          //Se as notas de entrada estiverem atualizadas no of gerar as saídas e os reparos
-          if ((this.statusProcess === 2) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 1).length > 0)) {
-            
-          } 
-          else {
-            //Processar as notas de saida e reparos
+               this.srvNotification.error("Erro na validação do usuário:"  + response.mensagem)
+               this.loadLogin = false
+               this.loadTela = false
+               this.usuarioLogado=false
           }
+
       },
-      error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+      error: (e) => {
+        this.srvNotification.error("Ocorreu um erro na requisição " )
+        this.loadLogin = false
+        this.loadTela = false
+        this.usuarioLogado=false
+      }
     })
   }
+
+
+verificarNotas(){
+    if (!this.usuarioLogado){
+      this.loginModal?.open()
+    }
+    else{
+      //TODO: Preciso saber qual status do processo
+      //      Passo 1: Gerar NFE
+      //      Passo 2: Reprocessar Notas no RE1005
+      //      Passo 3: Reparos e Saídas
+
+      if (this.statusProcess < 3){
+        
+        this.labelLoadTela = "Verificando notas..."
+        this.loadTela = true
+        let paramsNota:any = {CodEstab: this.codEstabel, CodTecnico: this.codUsuario, NrProcess: this.nrProcess}
+        this.srvTotvs.ObterNotas(paramsNota).subscribe({
+          next: (response: any) => {
+              this.listaNFS = response.items
+
+              //Se todas as notas ja foram atualizadas enviar as entradas para atualizar estoque
+              if ((this.statusProcess === 1) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0)) {
+              }
+              else{
+                //Processar Notas no re1005 pela segunda vez
+                this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
+                    next: (response:any) => {},
+                    error: (e) => {}
+
+                })
+              }
+
+              //Se as notas de entrada estiverem atualizadas no of gerar as saídas e os reparos
+              if ((this.statusProcess === 2) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 1).length > 0)) {
+                
+              } 
+              else {
+                //Processar as notas de saida e reparos
+              }
+              this.loadTela = false
+          },
+          error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+        })
+      }
+    }
 }
 }
