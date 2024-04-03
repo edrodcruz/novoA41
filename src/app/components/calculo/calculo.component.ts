@@ -16,7 +16,7 @@ export class CalculoComponent {
 
 //---------- Acessar a DOM
 @ViewChild('gridDetalhe', { static: true }) gridDetalhe: PoTableComponent | undefined;
-@ViewChild('gridExtraKit', { static: true }) gridExtraKit: PoTableComponent | undefined;
+@ViewChild('gridExtrakit', { static: true }) gridExtraKit: PoTableComponent | undefined;
 @ViewChild('detailsModal', { static: true }) detailsModal: PoModalComponent | undefined;
 @ViewChild('loginModal', { static: true }) loginModal: PoModalComponent | undefined;
 @ViewChild('stepper', { static: true }) stepper: PoStepperComponent | undefined;
@@ -88,7 +88,7 @@ mostrarDetalhe:boolean=false
 
 //--------- Opcoes Page Dinamic (ExtraKit - Resumo)
 readonly opcoesGridExtraKit: PoTableAction[] = [
-  {label: '', icon: 'po-icon po-icon po-icon-delete', action: this.onDeletarRegistroExtraKit.bind(this), disabled: (item:any) => {return item.qtRuim === 0}}
+  {label: '', icon: 'po-icon po-icon po-icon-delete', action: this.onDeletarRegistroExtraKit.bind(this)}
 ];
 
 //--------- Opcoes Page Dinamic (ExtraKit - Resumo)
@@ -400,7 +400,7 @@ readonly acaoLogar: PoModalAction = {
         break;
 
         case 'Pagamentos':
-          this.itemsDetalhe = this.itemsResumo.filter(o => o.temPagto && !o.soEntrada).sort(this.ordenarCampos(['-qtPagar','itCodigo']))
+          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtPagar > 0).sort(this.ordenarCampos(['-qtPagar','itCodigo']))
           this.tituloDetalhe = `Pagamentos: ${this.itemsDetalhe.length} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasPagar()
           //this.mostrarDetalhe = true
@@ -473,13 +473,19 @@ readonly acaoLogar: PoModalAction = {
   public onExcluirTodosExtraKit(){
     this.srvDialog.confirm({
       title: 'ELIMINAR LISTA EXTRAKIT',
-      message: 'Deseja eliminar todos os registros ?',
+      message: 'Deseja registros selecionados ?',
       literals: {"cancel": "Não", "confirm": "Sim"},
       confirm: () => {
-        this.listaExtraKit.filter(item => item.qtRuim === 0).forEach((item, index) => {
-            this.listaExtraKit.splice(index, 1)
+
+        let registrosSelecionados = this.gridExtraKit?.getSelectedRows().filter(item => item.qtRuim === 0)
+        
+        registrosSelecionados?.forEach((item,index) => {
+          this.gridExtraKit?.removeItem(item)
         })
-        this.listaExtraKit = [...this.listaExtraKit];
+        this.gridExtraKit?.unselectRows()
+
+        this.listaExtraKit = this.gridExtraKit?.items as any[]
+
         this.srvNotification.success("Registros eliminados com sucesso !")
       },
       cancel:  () => { }
@@ -503,10 +509,11 @@ readonly acaoLogar: PoModalAction = {
         literals: {"cancel": "Não", "confirm": "Sim"},
         confirm: () => {
           //Encontrar o indice da linha a ser excluida
-          let index = this.itemsDetalhe.findIndex(o => o.cRowId === obj.cRowId)
+          let index = this.itemsDetalhe.findIndex(o => o.id === obj.id) //era o.cRowId
+          let id = this.itemsDetalhe.find(o => o.id === obj.id)
           this.itemsDetalhe.splice(index, 1);
 
-          let index2 = this.itemsResumo.findIndex(o => o.cRowId === obj.cRowId)
+          let index2 = this.itemsResumo.findIndex(o => o.id === obj.id)
           this.itemsResumo.splice(index2, 1)
 
           //Atualizar a lista para refresh de tela
@@ -517,6 +524,11 @@ readonly acaoLogar: PoModalAction = {
 
           //Atualizar contadores tela de resumos
           this.AtualizarLabelsContadores();
+
+          //Apagar na base
+          this.srvTotvs.EliminarPorId(id).subscribe({
+            next: (response: any) => {}
+          })
 
           this.srvNotification.success("Registro eliminados com sucesso !")
         },

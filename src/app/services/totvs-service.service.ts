@@ -49,6 +49,7 @@ obterColunasExtraKit(): Array<PoTableColumn> {
     { property: 'serieDocto', label: "Série" },
     { property: 'itCodigo', label: "Item"},
     { property: 'qtSaldo', label: 'Qtde', type: 'number', color:"color-10"},
+    { property: 'qtRuim', label: 'QtRuim', type: 'number', color:"color-07", visible:true},
     { property: 'descItem', label: "Descrição", width: '300px'}
 
   ];
@@ -214,6 +215,12 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
                   take(1))
   }
 
+  //---------------------- Eliminar por id
+  public EliminarPorId(params?: any){
+    return this.http.post(`${this._url}/EliminarPorId`, params, {headers:headersTotvs})
+                .pipe(take(1));
+  }
+  
 
   //---------------------- GRID EXTRAKIT
   public ObterExtraKit(params?: any){
