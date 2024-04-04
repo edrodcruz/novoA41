@@ -1,6 +1,4 @@
-<div class="sample-container">
-  <po-loading-overlay *ngIf="loadTela===true" [p-text]="labelLoadTela" [p-screen-lock]="true"></po-loading-overlay>
-</div>
+
 <div class="po-md-12">
   <po-button p-label="Atualizar Tela" (p-click)="verificarNotas()" p-icon="po-icon po-icon-refresh" p-kind="primary"></po-button><hr>
 </div>
@@ -10,6 +8,7 @@
      <po-widget>
      <po-table
           [p-items]="listaNFS"
+          [p-loading]="loadTela"
           [p-striped]="true"
           [p-sort]="true"
           [p-columns]="colunasNFE"
@@ -21,44 +20,44 @@
   <po-tab  p-label="Nota Fiscal Saída"></po-tab>
 </po-tabs>
 </div>
-<po-modal #loginModal  p-title="Login" p-size="auto" >
-  <div class="po-row">
-    <po-input
-      p-icon="po-icon po-icon-pin"
-      class="po-md-12"
-      [ngModel]="codEstabel" (ngModelChange)="codEstabel = $event"
-      p-clean
 
-      p-label="Estabelecimento">
-    </po-input>
+<po-modal #loginModal  p-title="Selecione o Técnico" 
+                       p-size="auto" 
+                       p-click-out="false" 
+                       [p-primary-action]="acaoLogin">
+
+  <div class="po-md-12">
+    <po-combo [ngModel]="codEstabel" (ngModelChange)="codEstabel = $event"
+                 (p-change)="onEstabChange($event)"
+                [p-options]="listaEstabelecimentos" p-label="Estabelecimento" p-icon="po-icon-pin"
+                [p-placeholder]="placeHolderEstabelecimento">
+                <ng-template p-combo-option-template let-option>
+                  <div class="po-row">
+                    <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="po-icon-pin"></po-icon>
+                    <div class="po-sm-10 po-md-9 po-lg-11">
+                      <div class="po-font-text-large-bold">{{ option.label }}</div>
+                      <div class="po-font-text-smaller">Filial: {{ option.codFilial }}</div>
+                    </div>
+                  </div>
+                </ng-template>
+              </po-combo>
   </div>
-  <div class="po-row">
-    <po-input
-      p-icon="po-icon po-icon-user"
-      class="po-md-12"
-      [ngModel]="codUsuario" (ngModelChange)="codUsuario = $event"
-      p-clean
-
-      p-label="Técnico">
-    </po-input>
+  <div class="po-md-12">
+    <po-combo p-label="Técnico" [ngModel]="codUsuario" (ngModelChange)="codUsuario = $event"
+                p-icon="po-icon-user"     [p-options]="listaTecnicos"
+                [p-placeholder]="loadTecnico" [p-clean]="true" >
+                <ng-template p-combo-option-template let-option>
+                  <div class="po-row">
+                    <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="po-icon-user"></po-icon>
+                    <div class="po-sm-10 po-md-9 po-lg-11">
+                      <div class="po-font-text-large-bold">{{ option.label }}</div>
+                      <div class="po-font-text-smaller">Técnico: {{ option.value }}</div>
+                    </div>
+                  </div>
+                </ng-template>
+              </po-combo>
   </div>
 
-  <div class="po-row">
-    <po-password
-      class="po-md-12"
-      [ngModel]="senha" (ngModelChange)="senha = $event"
-      p-clean
-      p-label="Senha">
-    </po-password>
-  </div>
-  <hr>
 
-  <div class="po-row">
-    <po-button
-      class="po-md-12"
-     p-kind="primary"
-     p-label="Login"
-     [p-loading]="loadLogin" (p-click)="onLogarUsuario()"></po-button>
-     </div>
 </po-modal>
 

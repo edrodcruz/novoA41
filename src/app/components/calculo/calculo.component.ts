@@ -208,7 +208,7 @@ readonly acaoLogar: PoModalAction = {
        if (event === "1" )
           this.itemsResumo = this.listaResumo
         else if (event === "2")
-           this.itemsResumo = this.listaResumo.filter(o => o.temPagto)
+           this.itemsResumo = this.listaResumo.filter(o => o.temPagto || o.qtExtrakit > 0)
              else
                this.itemsResumo = this.listaResumo.filter(o => o.qtExtrakit > 0)
 

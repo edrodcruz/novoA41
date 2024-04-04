@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { PoModalComponent, PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
-import { Subscription, interval } from 'rxjs';
+import { PoModalAction, PoModalComponent, PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
+import { Subscription, delay, interval } from 'rxjs';
 import { TotvsServiceMock } from 'src/app/services/totvs-service-mock.service';
 import { TotvsService } from 'src/app/services/totvs-service.service';
 
@@ -29,6 +29,14 @@ export class DashboardComponent {
   labelLoadTela:string = ''
   loadTela: boolean = false
   usuarioLogado: boolean=false
+  loadTecnico: string = ''
+  placeHolderEstabelecimento:string=''
+
+
+  //ListasCombo
+  listaEstabelecimentos!: any[]
+  listaTecnicos!: any[]
+
 
 
   //---Grids de Notas
@@ -38,6 +46,13 @@ export class DashboardComponent {
   listaNFE!: any[]
   sub!:Subscription;
 
+  acaoLogin: PoModalAction = {
+    action: () => {
+      this.onLogarUsuario();
+    },
+    label: 'Selecionar'
+  };
+
   ngOnInit(): void {
 
     //--- Informacoes iniciais tela
@@ -45,6 +60,16 @@ export class DashboardComponent {
 
      //--- Selecionar usuario para mostrar notas no dashboard
      this.loginModal?.open()
+
+     //--- Carregar combo de estabelecimentos
+    this.placeHolderEstabelecimento = 'Aguarde, carregando lista...'
+    this.srvTotvs.ObterEstabelecimentos().subscribe({
+      next: (response: any) => {
+          this.listaEstabelecimentos = (response as any[]).sort(this.ordenarCampos(['label']))
+          this.placeHolderEstabelecimento = 'Selecione um estabelecimento'
+      },
+      error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+    })
 
      //--- Obter colunas grid
      
@@ -61,6 +86,11 @@ export class DashboardComponent {
   }
 
   onLogarUsuario(){
+
+    if(this.codEstabel === '' || this.codUsuario === ''){
+      this.srvNotification.error("Seleção inválida, verifique !")
+      return
+    }
 
     this.loadLogin=true
     //Parametros usuario e senha
@@ -143,31 +173,66 @@ verificarNotas(){
         this.srvTotvs.ObterNotas(paramsNota).subscribe({
           next: (response: any) => {
               this.listaNFS = response.items
+              console.log(this.statusProcess)
 
               //Se todas as notas ja foram atualizadas enviar as entradas para atualizar estoque
-              if ((this.statusProcess === 1) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0)) {
-              }
-              else{
-                //Processar Notas no re1005 pela segunda vez
-                this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
-                    next: (response:any) => {},
-                    error: (e) => {}
+              if (this.statusProcess === 1){
+                 if (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0) {
+                 }
+                 else{
+                    //Processar Notas no re1005 pela segunda vez
+                    this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
+                        next: (response:any) => {},
+                        error: (e) => {}
 
-                })
+                    })
+                 }
               }
 
               //Se as notas de entrada estiverem atualizadas no of gerar as saídas e os reparos
-              if ((this.statusProcess === 2) && (this.listaNFS.filter(nota => nota["idi-sit"] !== 1).length > 0)) {
-                
-              } 
-              else {
-                //Processar as notas de saida e reparos
+              if (this.statusProcess === 2){
+                if (this.listaNFS.filter(nota => nota["idi-sit"] !== 1).length > 0) {
+                } 
+                else {
+                  //Processar as notas de saida e reparos
+                }
               }
+
+
               this.loadTela = false
           },
           error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
         })
       }
     }
-}
+  }
+
+  public onEstabChange(obj: string) {
+    if (obj === undefined) return
+
+    //Popular o Combo do Emitente
+    this.listaTecnicos = []
+    this.codUsuario= ''
+    this.loadTecnico = `Populando técnicos do estab ${obj} ...`
+
+    //Chamar servico
+    this.srvTotvs
+      .ObterEmitentesDoEstabelecimento(obj)
+      .subscribe({
+        next: (response:any) => {
+            delay(200)
+            this.listaTecnicos = response
+            this.loadTecnico = 'Selecione o técnico'
+        },
+        error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
+      });
+  }
+
+  //------ funcao para ordenar
+  //Utilize o - (menos) para indicar ordenacao descendente
+  ordenarCampos = (fields: any[]) => (a: { [x: string]: number; }, b: { [x: string]: number; }) => fields.map(o => {
+    let dir = 1;
+    if (o[0] === '-') { dir = -1; o=o.substring(1); }
+    return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
+    }).reduce((p, n) => p ? p : n, 0);
 }
