@@ -79,6 +79,13 @@ itemsResumo!: any[]
 //------ Controle Tela
 mostrarDetalhe:boolean=false
 
+acaoLogin: PoModalAction = {
+  action: () => {
+    this.onLogarUsuario();
+  },
+  label: 'Login'
+};
+
 
 //--------- Opcoes de Menu
  readonly menus: Array<PoMenuItem> = [

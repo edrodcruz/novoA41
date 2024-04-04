@@ -229,7 +229,10 @@
     </po-modal>
 
 
-  <po-modal #loginModal  p-title="Almoxarifado" p-size="auto" >
+  <po-modal #loginModal  p-title="Almoxarifado" 
+                         p-size="auto" 
+                         p-click-out="false" 
+                         [p-primary-action]="acaoLogin" >
     <div class="po-row">
       <po-input
         p-icon="po-icon po-icon-user"
@@ -249,7 +252,7 @@
         p-label="Senha">
       </po-password>
     </div>
-    <hr>
+    <!-- <hr>
 
     <div class="po-row">
       <po-button
@@ -257,7 +260,7 @@
        p-kind="primary"
        p-label="Login"
        [p-loading]="loadLogin" (p-click)="onLogarUsuario()"></po-button>
-       </div>
+       </div> -->
   </po-modal>
 
 
