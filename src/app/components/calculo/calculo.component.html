@@ -56,11 +56,11 @@
             <div class="po-md-5">
               <po-divider p-label="Informações Nota Fiscal"></po-divider>
               <div class="po-md-12">
-                <po-input [ngModel]="serieNota" class="po-lg-9" p-clean p-icon="po-icon-document-filled"
+                <po-input [ngModel]="serieEntra" class="po-lg-9" p-clean p-icon="po-icon-document-filled"
                   p-label="Série Entrada" />
               </div>
               <div class="po-md-12">
-                <po-input [ngModel]="estabNota" class="po-lg-9" p-clean p-icon="po-icon-document-filled"
+                <po-input [ngModel]="serieSaida" class="po-lg-9" p-clean p-icon="po-icon-document-filled"
                   p-label="Série Saída" />
               </div>
             </div>
@@ -125,23 +125,21 @@
           [p-secondary-label]="lblStepExecutar" (p-primary-action)="stepper.previous()"
           (p-secondary-action)="stepper.next()">
 
-          <div class="po-md-12">
-            <po-button p-label="Excluir Seleção" (p-click)="onExcluirTodosExtraKit()" p-icon="po-icon po-icon-delete" p-kind="primary"></po-button><hr>
+          <div class="po-md-6">
+            <po-button p-label="Excluir Seleção" (p-click)="onExcluirSelecaoExtraKit()" p-icon="po-icon po-icon-delete" p-kind="primary"></po-button><hr>
          </div>
-         
 
          <div class="po-row">
           <div class="po-md-12">
-          <po-table #gridExtrakit [p-items]="listaExtraKit"
-                                  [p-columns]="colunasKit"
-                                  p-single-select="true"
-                                  p-hide-columns-manager="true"
-                                  p-striped="true"
-                                  [p-single-select]="false"
-                                  [p-selectable]="true"
-                                 
-
-            ></po-table></div>
+            <po-table #gridExtrakit [p-items]="listaExtraKit"
+                                    [p-columns]="colunasKit"
+                                    p-single-select="true"
+                                    p-hide-columns-manager="true"
+                                    p-striped="true"
+                                    [p-single-select]="false"
+                                    [p-selectable]="true">
+            </po-table>
+          </div>
          </div>
 
         </po-widget>
@@ -152,7 +150,7 @@
           (p-primary-action)="stepper.previous()">
 
           <div class="po-md-12">
-            <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)"
+            <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)" 
                             p-label="Tipo de Cálculo" [p-options]="options" />
           </div>
 
@@ -222,7 +220,7 @@
       [p-actions]="opcoesGridPagto"
       />
       <po-modal-footer [p-disabled-align]="false">
-        <po-button p-label="Exportar para excel" (p-click)="this.onExportarExcel()" p-icon="po-icon po-icon-doc-xls"> </po-button>
+        <po-button p-label="Exportar para excel" (p-click)="this.onExportarExcel()" p-icon="po-icon po-icon-doc-xls" [p-loading]="loadExcel"> </po-button>
         <po-button p-kind="primary" p-label="Fechar" (p-click)="this.detailsModal.close()"> </po-button>
       </po-modal-footer>
 
@@ -252,15 +250,6 @@
         p-label="Senha">
       </po-password>
     </div>
-    <!-- <hr>
-
-    <div class="po-row">
-      <po-button
-        class="po-md-12"
-       p-kind="primary"
-       p-label="Login"
-       [p-loading]="loadLogin" (p-click)="onLogarUsuario()"></po-button>
-       </div> -->
   </po-modal>
 
 

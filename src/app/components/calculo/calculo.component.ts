@@ -44,9 +44,10 @@ codTecnico: string=''
 codTransEnt: string = ''
 codTransSai: string = ''
 codEntrega: string = ''
-estabNota: any='131'
-serieNota: any='12'
+serieSaida: any='131'
+serieEntra: any='12'
 placeHolderEstabelecimento!: string
+paramsEstab: any=[]
 
 //-------- Variaveis RadioGroud
 tipoCalculo: any;
@@ -60,6 +61,7 @@ usuarioTecnico: any;
 //----- Loadings
 loadTela:boolean=false
 loadLogin:boolean=false
+loadExcel:boolean=false
 labelLoadTela:string = ''
 loadTecnico: string = ''
 labelContadores:string[]=['0','0','0','0','0', '0']
@@ -128,6 +130,10 @@ readonly acaoLogar: PoModalAction = {
   private srvNotification = inject (PoNotificationService)
   private srvDialog = inject(PoDialogService)
 
+  onSair(){
+    console.log()
+  }
+
   //----------------------------------------------------------------------------------- Inicializar
   ngOnInit(): void {
 
@@ -151,7 +157,7 @@ readonly acaoLogar: PoModalAction = {
           this.listaEstabelecimentos = (response as any[]).sort(this.ordenarCampos(['label']))
           this.placeHolderEstabelecimento = 'Selecione um estabelecimento'
       },
-      error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+      error: (e) => {return}
     })
 
     //--- Carregar combo transportadoras
@@ -185,10 +191,26 @@ readonly acaoLogar: PoModalAction = {
          let tec = this.listaTecnicos.find(o => o.value === this.codTecnico)
          this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo: this.processoInfo})
 
-         //Setar valores padrao
-         this.codTransEnt = "1"
-         this.codTransSai = "1"
-
+         //Setar Valores Padrao
+         this.srvTotvs
+          .ObterParamsDoEstabelecimento(estab.value)
+          .subscribe({
+            next: (response:any) => {
+              if(response === null) return
+              
+                this.paramsEstab = response !== null ? response.items[0]: null
+                if (this.paramsEstab !== null){
+                  this.codTransEnt = this.paramsEstab.codTranspEntra
+                  this.codTransSai = this.paramsEstab.codTranspSai
+                  this.codEntrega = this.paramsEstab.codEntrega
+                  this.serieSaida = this.paramsEstab.serieSai
+                  this.serieEntra = this.paramsEstab.serieEntra
+                  this.codEntrega = this.paramsEstab.codEntrega
+                
+                }
+            },
+            error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
+          }); 
       }
 
 
@@ -341,11 +363,14 @@ readonly acaoLogar: PoModalAction = {
       .subscribe({
         next: (response:any) => {
             delay(200)
+           
             this.listaTecnicos = response
             this.loadTecnico = 'Selecione o técnico'
         },
         error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
       });
+
+     
   }
 
   //------------------------------------------------------------- Change Tecnicos - Popular Endereco Entrega
@@ -362,7 +387,7 @@ readonly acaoLogar: PoModalAction = {
           this.processoInfo = response.nrProcesso
           this.srvTotvs.EmitirParametros({processoInfo: this.processoInfo})
           this.listaEntrega = (response.listaEntrega as any[]).sort(this.ordenarCampos(['label']));
-          this.codEntrega = "Padrão"
+          //this.codEntrega = "Padrão"
 
         },
         error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
@@ -381,7 +406,7 @@ readonly acaoLogar: PoModalAction = {
   onOpenModal(type: any) {
     switch (type) {
       case 'VisaoGeral':
-          this.itemsDetalhe = this.itemsResumo.sort(this.ordenarCampos(['-qtPagar','itCodigo']))
+          this.itemsDetalhe = this.itemsResumo.sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.tituloDetalhe = `Visão Geral: ${this.itemsDetalhe.length} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasTodos()
           //this.mostrarDetalhe = true
@@ -390,7 +415,7 @@ readonly acaoLogar: PoModalAction = {
         break;
 
         case 'Pagamentos':
-          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtPagar > 0).sort(this.ordenarCampos(['-qtPagar','itCodigo']))
+          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtPagar > 0).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.tituloDetalhe = `Pagamentos: ${this.itemsDetalhe.length} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasPagar()
           //this.mostrarDetalhe = true
@@ -399,7 +424,7 @@ readonly acaoLogar: PoModalAction = {
         break;
 
         case 'Renovacao':
-          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtRenovar > 0).sort(this.ordenarCampos(['-qtRenovar','itCodigo']))
+          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtRenovar > 0).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.tituloDetalhe = `Renovações: ${this.itemsDetalhe.length} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasRenovar();
           //this.mostrarDetalhe=true
@@ -408,7 +433,7 @@ readonly acaoLogar: PoModalAction = {
         break;
 
         case 'SomenteEntrada':
-          this.itemsDetalhe = this.itemsResumo.filter(o => o.soEntrada).sort(this.ordenarCampos(['-qtPagar','itCodigo']))
+          this.itemsDetalhe = this.itemsResumo.filter(o => o.soEntrada).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.tituloDetalhe = `Somente Entrada: ${this.itemsDetalhe.length} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasPagar();
           //this.mostrarDetalhe=true
@@ -417,7 +442,7 @@ readonly acaoLogar: PoModalAction = {
         break;
 
         case 'ExtraKit':
-          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtExtrakit > 0).sort(this.ordenarCampos(['-qtExtrakit','itCodigo']))
+          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtExtrakit > 0).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.tituloDetalhe = `ExtraKit: ${this.itemsDetalhe.length} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasExtrakit();
           //this.mostrarDetalhe=true
@@ -426,7 +451,7 @@ readonly acaoLogar: PoModalAction = {
         break;
 
         case 'SemSaldo':
-          this.itemsDetalhe = this.listaSemSaldo.sort(this.ordenarCampos(['-qtPagar','itCodigo']))
+          this.itemsDetalhe = this.listaSemSaldo.sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.tituloDetalhe = `Sem Saldo: ${this.itemsDetalhe.length} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasSemSaldo()
           //this.mostrarDetalhe=true
@@ -460,7 +485,7 @@ readonly acaoLogar: PoModalAction = {
   }
 
   //---------------------------------------------------------------- Eliminar todos os registros extrakit
-  public onExcluirTodosExtraKit(){
+  public onExcluirSelecaoExtraKit(){
     if ((this.gridExtraKit?.getSelectedRows() as any[]).length < 1){
       this.srvNotification.error("Nenhum registro selecionado !")
       return
@@ -486,7 +511,6 @@ readonly acaoLogar: PoModalAction = {
     })
 
   }
-
     //-------------------------------------------------------------- Eliminar registro grid extrakit
     public onDeletarRegistroPagto(obj:any){
 
@@ -536,8 +560,7 @@ readonly acaoLogar: PoModalAction = {
     public onExportarExcel(){
       let titulo = this.tituloDetalhe.split(':')[0]
       let subTitulo = this.tituloDetalhe.split(':')[1]
-      this.labelLoadTela = 'Gerando Planilha'
-      this.loadTela = true
+      this.loadExcel = true
 
       this.srvExcel.exportarParaExcel('RESUMO DE ' + titulo.toUpperCase(),
                                       subTitulo.toUpperCase(),
@@ -545,6 +568,7 @@ readonly acaoLogar: PoModalAction = {
                                       this.itemsDetalhe,
                                       'Resumo',
                                       'Plan1')
+       this.loadExcel = false;
     }
 
   //------------------------------------------------------------------- Botao Aprovar (Resumo calculo)

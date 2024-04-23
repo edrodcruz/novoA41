@@ -16,7 +16,7 @@ export class ExcelService {
     headersArray: any[]=[],
     json: any[]=[],
     excelFileName: string,
-    sheetName: string
+    sheetName: string,
 ) {
     const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const EXCEL_EXTENSION = '.xlsx';
@@ -86,11 +86,13 @@ export class ExcelService {
     //AutoFill
     this.autoSize(worksheet, 4)
 
+
     /*Salvar Arquivo*/
     workbook.xlsx.writeBuffer().then((data: ArrayBuffer) => {
         const blob = new Blob([data], { type: EXCEL_TYPE });
         fs.saveAs(blob, excelFileName + EXCEL_EXTENSION);
     });
+    
     
 }
 private numToAlpha(num: number) {

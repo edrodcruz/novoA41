@@ -174,7 +174,7 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
   public ObterEstabelecimentos(params?: any){
     return this.http.get<any>(`${this._url}/ObterEstab`, {params: params, headers:headersTotvs})
                  .pipe(
-                  //tap(data => {console.log("Retorno API TOTVS => ", data)}),
+                  ///tap(data => {console.log("Retorno API TOTVS => ", data)}),
                   map(item => { return item.items.map((item:any) =>  { return { label:item.codEstab + ' ' + item.nome, value: item.codEstab, codFilial: item.codFilial } }) }),
                   ///tap(data => {console.log("Data Transformada pelo Map =>", data)}),
                   take(1));
@@ -189,6 +189,13 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
                   ///tap(data => {console.log("Data Transformada pelo Map =>", data)}),
                   take(1));
   }
+
+  //Parametros do Estabelecimento
+  public ObterParamsDoEstabelecimento(id:string){
+    return this.http.get<any>(`${this._url}/ObterParamsEstab?codEstabel=${id}`, {headers:headersTotvs})
+                 .pipe(take(1));
+  }
+
 
   //---------------------- COMBOBOX TRANSPORTES
   /*Retorno transformado no formato {label: xxx, value: yyyy}*/
@@ -208,7 +215,7 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
                   map(item => { return {
                                   nrProcesso: item.nrProcesso,
                                   listaEntrega: item.listaEntrega.map((x:any) =>  { return {
-                                         label: x.codEntrega,
+                                         label: x.codEntrega + ' ' + x.nomeAbrev,
                                          value: x.codEntrega,
                                          cidade: x.nomeAbrev
                                   }})}}),
