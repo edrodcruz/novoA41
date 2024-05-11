@@ -91,18 +91,18 @@ acaoLogin: PoModalAction = {
 
 //--------- Opcoes de Menu
  readonly menus: Array<PoMenuItem> = [
-  { label: 'Cálculo Auto Atendimento', icon: 'po-icon-calculator', link:'/'},
+  { label: 'Cálculo Auto Atendimento', icon: 'bi bi-calculator', link:'/'},
   { label: 'Dashboard Notas Fiscais', icon: 'po-icon-device-desktop', link:'/dashboard'}
 ];
 
 //--------- Opcoes Page Dinamic (ExtraKit - Resumo)
 readonly opcoesGridExtraKit: PoTableAction[] = [
-  {label: '', icon: 'po-icon po-icon po-icon-delete', action: this.onDeletarRegistroExtraKit.bind(this)}
+  {label: '', icon: 'bi bi-trash', action: this.onDeletarRegistroExtraKit.bind(this)}
 ];
 
 //--------- Opcoes Page Dinamic (ExtraKit - Resumo)
 opcoesGridPagto: Array<any> = [
-  {label: '', icon: 'po-icon po-icon po-icon-delete', action: this.onDeletarRegistroPagto.bind(this)}
+  {label: '', icon: 'bi bi-trash', action: this.onDeletarRegistroPagto.bind(this)}
 ];
 
 //--------- Opcoes de Calculo (Resumo)

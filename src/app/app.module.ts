@@ -13,6 +13,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalculoComponent } from './components/calculo/calculo.component';
 import { HomeComponent } from './components/home/home.component';
 import { InformeComponent } from './components/informe/informe.component';
+import { ParamestabComponent } from './components/paramestab/paramestab.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { InformeComponent } from './components/informe/informe.component';
     DashboardComponent,
     CalculoComponent,
     HomeComponent,
-    InformeComponent
+    InformeComponent,
+    ParamestabComponent
   ],
   imports: [
     BrowserModule,

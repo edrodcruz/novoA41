@@ -17,12 +17,13 @@ private srvTotvs = inject(TotvsService)
 
   //--------- Opcoes de Menu
  readonly menus: Array<PoMenuItem> = [
- { label:  'Tela Principal'          , icon: 'bi bi-house'             , link:'/', shortLabel:'Home'},
-  { label: 'Informe Ordem de Serviço', icon: 'bi bi-card-checklist', link:'/informe', shortLabel:'Informe'},
-  { label: 'Cálculo Auto Atendimento', icon: 'bi bi-calculator'    , link:'/calculo', shortLabel:'Cálculo'},
-  { label: 'Entradas e Saídas'       , icon: 'bi bi-archive', link:'/dashboard', shortLabel:'Notas'},
-  { label: 'Finalizar NFS'           , icon: 'bi bi-pencil-square'          , link:'/nfs', shortLabel:'Fim NFS'},
-  { label: 'Finalizar Reparos'       , icon: 'bi bi-tools'          , link:'/reparos', shortLabel:'Fim Rep'}
+ { label:  'Tela Principal'            , icon: 'bi bi-house'         , link:'/'          , shortLabel:'Home'},
+  { label: 'Parâmetros Filiais'        , icon: 'bi bi-gear'          , link:'/paramestab', shortLabel:'ParamEstab'},
+  { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data', link:'/informe'   , shortLabel:'Informe'},
+  { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'    , link:'/calculo'   , shortLabel:'Cálculo'},
+  { label: 'Entradas e Saídas'         , icon: 'bi bi-archive'       , link:'/dashboard' , shortLabel:'Notas'},
+  { label: 'Info Embalagem NF'         , icon: 'bi bi-box2'          , link:'/nfs'       , shortLabel:'Fim NFS'},
+  { label: 'Criar Reparos'             , icon: 'bi bi-tools'         , link:'/reparos'   , shortLabel:'Fim Rep'}
 ];
 
 //------ Label de menu principal

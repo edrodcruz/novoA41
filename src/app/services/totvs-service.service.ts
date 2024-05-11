@@ -41,6 +41,20 @@ export class TotvsService {
   }
 
 
+  //------------ Colunas Grid Saldo Terceiro
+obterColunas(): Array<PoTableColumn> {
+  return [
+    { property: 'nomeEstabel', label: "Estab" },
+    { property: 'serieEntra', label: "Série Ent" },
+    { property: 'serieSai', label: "Série Sai"},
+    { property: 'nomeTranspEnt', label: "Transporte Ent" },
+    { property: 'nomeTranspSai', label: "Transporte Sai" },
+    { property: 'codEntrega', label: "Entrega" },
+    { property: 'rpw', label: "RPW" },
+
+  ];
+}
+
 //------------ Colunas Grid Saldo Terceiro
 obterColunasExtraKit(): Array<PoTableColumn> {
   return [
@@ -314,5 +328,41 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
                    .pipe(take(1));
   }
 
+  //---------------------- Salvar registro
+  public Salvar(params?: any){
+    return this.http.post(`${this._url}/SalvarCalcEstab`, params, {headers:headersTotvs})
+                .pipe(take(1));
+  }
+  
 
+  //---------------------- Obter Lista
+  public Obter(params?: any){
+    return this.http.get(`${this._url}/ObterCalcEstab`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+  //---------------------- Deletar registro
+  public Deletar(params?: any){
+    return this.http.get(`${this._url}/DeletarCalcEstab`, {params:params, headers:headersTotvs})
+                    .pipe(take(1));
+  }
+  
+   //Ordenacao campos num array
+   public ordenarCampos =
+   (fields: any[]) =>
+   (a: { [x: string]: number }, b: { [x: string]: number }) =>
+     fields
+       .map((o) => {
+         let dir = 1;
+         if (o[0] === '-') {
+           dir = -1;
+           o = o.substring(1);
+         }
+         return a[o] > b[o] ? dir : a[o] < b[o] ? -dir : 0;
+       })
+       .reduce((p, n) => (p ? p : n), 0);
 }
+
+
+
+
