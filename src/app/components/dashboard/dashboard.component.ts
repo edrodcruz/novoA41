@@ -19,8 +19,10 @@ export class DashboardComponent {
   private srvNotification = inject(PoNotificationService)
 
   //---Variaveis
+  tabNFE:boolean=true
   codEstabel:string=''
   codUsuario:string=''
+  rpwStatus:string=''
   nrProcess:number=0
   statusProcess:number=0
   tempoProcess:number=0
@@ -56,7 +58,7 @@ export class DashboardComponent {
   ngOnInit(): void {
 
     //--- Informacoes iniciais tela
-     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'DASHBOARD NOTA FISCAL', dashboard: true})
+     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL', dashboard: true})
 
      //--- Selecionar usuario para mostrar notas no dashboard
      this.loginModal?.open()
@@ -122,10 +124,8 @@ export class DashboardComponent {
                   this.srvTotvs.EmitirParametros({estabInfo:this.codEstabel, tecInfo:this.codUsuario, processoInfo:this.nrProcess})
 
                   //Colunas do grid
-                  if (this.statusProcess === 1)
                     this.colunasNFE = this.srvTotvs.obterColunasEntradas()
-                  else
-                    this.colunasNFE = this.srvTotvs.obterColunasEntradasEstoque();  
+                    this.colunasNFS = this.srvTotvs.obterColunasSaidas();  
 
                   //Chamar o programa de verificacao
                   this.verificarNotas()
@@ -163,7 +163,9 @@ verificarNotas(){
       //TODO: Preciso saber qual status do processo
       //      Passo 1: Gerar NFE
       //      Passo 2: Reprocessar Notas no RE1005
-      //      Passo 3: Reparos e Saídas
+      //      Passo 3: Saídas
+      //      Passo 4: Informacoes Embalagem
+      //      Passo 5: Criacao Reparos
 
       if (this.statusProcess < 3){
         
@@ -172,8 +174,9 @@ verificarNotas(){
         let paramsNota:any = {CodEstab: this.codEstabel, CodTecnico: this.codUsuario, NrProcess: this.nrProcess}
         this.srvTotvs.ObterNotas(paramsNota).subscribe({
           next: (response: any) => {
-              this.listaNFS = response.items
-              console.log(this.statusProcess)
+              this.listaNFE = response.nfe
+              this.listaNFS = response.nfs
+              this.rpwStatus = response.rpw
 
               //Se todas as notas ja foram atualizadas enviar as entradas para atualizar estoque
               if (this.statusProcess === 1){
@@ -181,11 +184,12 @@ verificarNotas(){
                  }
                  else{
                     //Processar Notas no re1005 pela segunda vez
-                    this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
+                  /*  this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
                         next: (response:any) => {},
                         error: (e) => {}
 
                     })
+                    */
                  }
               }
 

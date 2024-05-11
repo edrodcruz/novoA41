@@ -153,6 +153,35 @@ obterColunasEntradas(): Array<PoTableColumn> {
   ]
 }
 
+obterColunasSaidas(): Array<PoTableColumn> {
+  return [
+    { property: 'idi-sit', label: 'Sefaz', type: 'label',
+    labels: [
+      { value: 1,  color: 'color-08', label: 'NFe não autorizada' },
+      { value: 2,  color: 'color-08', label: 'Em Processamento' },
+      { value: 3,  color: 'color-10', label: 'Autorizada' },
+      { value: 4,  color: 'color-07', label: 'Uso denegado' },
+      { value: 5,  color: 'color-07', label: 'Docto Rejeitado' },
+      { value: 6,  color: 'color-07', label: 'Docto Cancelado' },
+      { value: 7,  color: 'color-07', label: 'Docto Inutilizado' },
+      { value: 8,  color: 'color-08', label: 'Em processamento no Aplicativo de Transmissão' },
+      { value: 9,  color: 'color-08', label: 'Em processamento na SEFAZ' },
+      { value: 10, color: 'color-08', label: 'Em processamento no SCAN' },
+      { value: 11, color: 'color-10', label: 'NF-e Gerada' },
+      { value: 12, color: 'color-08', label: 'NF-e em Processo de Cancelamento' },
+      { value: 13, color: 'color-08', label: 'NF-e em Processo de Inutilizacao' },
+      { value: 14, color: 'color-08', label: 'NF-e Pendente de Retorno' },
+      { value: 15, color: 'color-07', label: 'DPEC recebido pelo SCE' },
+      { value: 99, color: 'color-07', label: 'Aguardando Proc Nota Entrada' },
+    ]},
+    { property: 'cod-estabel', label:"Estab"},
+    { property: 'serie', label:"Série"},
+    { property: 'nr-nota-fis', label:"Nr Nota"},
+    { property: 'nome-ab-cli', label:"Emitente"},
+    { property: 'nat-operacao', label:"Nat.Oper"}
+  ]
+}
+
 obterColunasEntradasEstoque(): Array<PoTableColumn> {
   return [
     { property: 'idi-sit', label: 'Estoque', type: 'label',

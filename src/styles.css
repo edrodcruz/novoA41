@@ -2,3 +2,5 @@
 :root{
     --color-10:green;
 }
+
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";

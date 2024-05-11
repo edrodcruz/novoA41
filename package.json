@@ -21,6 +21,7 @@
     "@po-ui/ng-components": "^16.14.0",
     "@po-ui/ng-templates": "^16.14.0",
     "@totvs/po-theme": "^16.15.0",
+    "bootstrap-icons": "^1.11.3",
     "exceljs": "^1.12.1",
     "file-saver": "^2.0.5",
     "rxjs": "~7.5.5",

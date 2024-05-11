@@ -17,10 +17,12 @@ private srvTotvs = inject(TotvsService)
 
   //--------- Opcoes de Menu
  readonly menus: Array<PoMenuItem> = [
-  // { label: 'Tela Principal', icon:'po-icon-home', link:'/'},
-  { label: 'Cálculo Auto Atendimento', icon: 'po-icon-calculator', link:'/'},
-  { label: 'Dashboard Notas Fiscais', icon: 'po-icon-device-desktop', link:'/dashboard'},
-  { label: 'Finalizar Processo', icon: 'po-icon-edit', link:'/reparos'}
+ { label:  'Tela Principal'          , icon: 'bi bi-house'             , link:'/', shortLabel:'Home'},
+  { label: 'Informe Ordem de Serviço', icon: 'bi bi-card-checklist', link:'/informe', shortLabel:'Informe'},
+  { label: 'Cálculo Auto Atendimento', icon: 'bi bi-calculator'    , link:'/calculo', shortLabel:'Cálculo'},
+  { label: 'Entradas e Saídas'       , icon: 'bi bi-archive', link:'/dashboard', shortLabel:'Notas'},
+  { label: 'Finalizar NFS'           , icon: 'bi bi-pencil-square'          , link:'/nfs', shortLabel:'Fim NFS'},
+  { label: 'Finalizar Reparos'       , icon: 'bi bi-tools'          , link:'/reparos', shortLabel:'Fim Rep'}
 ];
 
 //------ Label de menu principal

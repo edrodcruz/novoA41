@@ -1,0 +1,195 @@
+<po-accordion style="margin-top: 10px;">
+    <po-accordion-item p-label="Informações do Técnico" #item1>
+      <po-widget>
+        <form [formGroup]="form">
+
+        <div class="po-md-4">
+          <po-combo formControlName="codEstabel" [p-options]="listaEstabelecimentos" p-label="Estabelecimento"
+          (p-change)="onEstabChange($event)"
+            p-icon="bi bi-pin-map" p-placeholder="Selecione o estabelecimento" p-clean="true">
+            <ng-template p-combo-option-template let-option>
+              <div class="po-row">
+                <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="bi bi-pin-map"></po-icon>
+                <div class="po-sm-10 po-md-9 po-lg-11">
+                  <div class="po-font-text-large-bold">{{ option.label }}</div>
+                  <div class="po-font-text-smaller">Filial: {{ option.codFilial }}</div>
+                </div>
+              </div>
+            </ng-template>
+          </po-combo>
+        </div>
+
+        <div class="po-md-4">
+          <po-combo p-label="Técnico" formControlName="codUsuario" 
+                p-icon="bi bi-person-workspace"     [p-options]="listaTecnicos"
+                [p-placeholder]="loadTecnico" [p-clean]="true" >
+                <ng-template p-combo-option-template let-option>
+                  <div class="po-row">
+                    <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="bi bi-person-workspace"></po-icon>
+                    <div class="po-sm-10 po-md-9 po-lg-11">
+                      <div class="po-font-text-large-bold">{{ option.label }}</div>
+                      <div class="po-font-text-smaller">Técnico: {{ option.value }}</div>
+                    </div>
+                  </div>
+                </ng-template>
+              </po-combo>
+        </div>
+
+        <div class="po-md-4">
+          <div class="po-md-8"><po-password name="password" formControlName="senha" p-label="Senha" p-icon="bi bi-pass"> </po-password></div>
+          <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-check2" (p-click)="onLogar()" [p-disabled]="!this.form.valid"></po-button></div>
+          
+        </div>
+       </form>
+      </po-widget>
+    </po-accordion-item>
+
+    <po-accordion-item p-label="Ordens de Serviço e Itens da Ordem" [p-label-tag]="cTag" #item2>
+
+      <div class="po-md-12" *ngIf=" this.mostrarDados === true" style="margin-bottom: 15px; margin-top: 15px;">
+        <po-button p-label="Concluir OS sem Item/NF" (p-click)="onConcluirSemItemNF()" p-icon="bi bi-check2-all" p-kind="primary" style="float:inline-end;margin-left: 10px;"></po-button>
+        <po-button p-label="Impressão Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer" p-kind="primary" style="float:inline-end"></po-button>
+        
+        
+      </div>
+      
+        <div class="po-md-5">
+                <po-tag p-value="Ordens de Serviço"></po-tag>
+                <po-table [p-items]="listaOrdens" class="po-font-smaller" #gridOrdens 
+                          (p-selected)="selecionarOrdem($event)"
+                          [p-actions]="acoesGridOrdem"
+                          [p-striped]="true" 
+                          [p-loading]="loadGridOrdem"
+                          [p-single-select]="true"
+                          [p-selectable]="true"
+                          [p-columns]="colunasOrdens"
+                          [p-hide-table-search]="true" 
+                          p-container="true"
+                          [p-height]="400"
+                          [p-hide-columns-manager]="true" />
+              
+              <div class="po-md-12" style="margin-top: 5px;" *ngIf="this.mostrarDados === true">
+                  <div class="po-md-6">
+                    <po-button p-icon="bi bi-plus" p-kind="primary" style="margin-right: 5px;" p-kind="primary" p-label="Adicionar Ordem" (p-click)="onIncluirOrdem()"></po-button>
+                    
+                    <!-- <po-button p-icon="bi bi-file-earmark-check" p-kind="primary" style="margin-right: 5px;" p-tooltip="Marcar OS" (p-click)="onMarcar()"></po-button>
+                    <po-button p-icon="bi bi-file" style="margin-right: 5px;" p-tooltip="Desmarcar OS" (p-click)="onDesmarcar()"></po-button>
+                    <po-button p-icon="bi bi-bicycle" p-kind="primary" style="margin-right: 5px;" p-tooltip="Marcar Moto" (p-click)="onMarcarMoto()"></po-button>
+                    <po-button p-icon="bi bi-bicycle" p-tooltip="Desmarcar Moto" (p-click)="onDesmarcarMoto()"></po-button> -->
+                  </div>
+                  <!-- <div class="po-md-6">
+                   
+                    <po-button p-icon="bi bi-pencil-square" p-kind="primary" style="margin-right: 5px;" p-tooltip="Alterar OS" (p-click)="onIncluirOrdem()"></po-button>
+                    <po-button p-icon="bi bi-trash" p-kind="primary" p-tooltip="Eliminar OS" p-danger="true" (p-click)="onExcluirOS()"></po-button>
+                  </div> -->
+              </div>
+              <div class="po-md-12" style="margin-top: 15px;">
+                <po-widget [p-height]="90">
+                  <div class="po-md-4"><po-tag p-label="Usadas"     [p-value]="cUsadas" p-color="color-10" p-text-color="white"></po-tag></div>
+                  <div class="po-md-4"><po-tag p-label="Em Branco"  [p-value]="cBrancas" p-color="color-01" p-text-color="white"></po-tag></div>
+                  <div class="po-md-4"><po-tag p-label="Total"      [p-value]="cTotal" p-color="color-07" p-text-color="white"></po-tag></div>
+                </po-widget>
+              </div>
+        </div>
+
+        <div class="po-md-7">
+          <po-tag [p-value]="cInfoItem"></po-tag>
+
+          <po-table [p-items]="listaItens" 
+                    [p-loading]="loadGrid" 
+                    [p-actions]="acoesGridItem"
+                    (p-selected)="selecionarItemOrdem($event)"
+                    [p-striped]="true" 
+                    [p-single-select]="true"
+                    [p-selectable]="true"
+                    [p-columns]="colunasItens"
+                    p-container="true"
+                    [p-height]="400"
+                    [p-hide-table-search]="true" 
+                    [p-hide-columns-manager]="true" />
+
+          <div class="po-md-12" style="margin-top: 5px;" *ngIf="this.mostrarDados === true">
+            <po-button p-icon="bi bi-plus" style="margin-right: 5px;" p-label="Incluir Item OS" p-kind="primary" (p-click)="onIncluirItemOrdem()"></po-button> 
+            
+          
+            <!-- <div class="po-md-4">
+              <po-button p-icon="bi bi-pencil-square" p-kind="primary" style="margin-right: 5px;" p-tooltip="Alterar Item da Ordem" (p-click)="onAlterarItemOrdem()"></po-button>  
+              <po-button p-icon="bi bi-trash" p-kind="primary" p-tooltip="Excluir Item da Ordem" p-danger="true" (p-click)="onExcluirItemOrdem()"></po-button>
+            </div>
+           -->
+          
+          </div>
+          <div class="po-md-12" style="margin-top: 15px;">
+            <po-widget [p-height]="90">
+              <div class="po-md-12"><po-info [p-value]="edObservacao"> </po-info></div>
+            </po-widget>
+          </div>
+        </div>
+    </po-accordion-item>
+  </po-accordion>
+
+  <po-modal #telaIncluirOrdem p-title="Incluir Ordem Serviço"
+                              p-size="auto" 
+                              p-click-out="false" 
+                              [p-hide-close]="true"
+                              [p-primary-action]="acaoIncluirOrdem" 
+                              [p-secondary-action]="acaoCancelarOrdem">
+      <form [formGroup]="formOrdem">
+        <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="NumOS" > </po-input></div>
+        <div class="po-md-6"><po-input name="chamado" formControlName="chamado" p-label="Chamado" ></po-input></div>
+      </form>
+  </po-modal>
+
+  <po-modal #telaIncluirItemOrdem p-title="Incluir Item Ordem Serviço"
+                              p-size="auto" 
+                              p-click-out="false" 
+                              [p-hide-close]="true"
+                              [p-primary-action]="acaoIncluirItemOrdem" 
+                              [p-secondary-action]="acaoCancelarItemOrdem">
+      <form [formGroup]="formItemOrdem">
+        <div class="po-md-12">
+          <div class="po-md-6">
+             <po-widget p-title="Dados do Item">
+              <div class="po-md-6" ><po-input name="numOS" formControlName="numOS" p-label="Item"></po-input></div>
+              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Nota Fiscal"></po-input></div>
+              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Quantidade"></po-input></div>
+              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Série"></po-input></div>
+              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Nat.Operação"></po-input></div>
+              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Evento"></po-input></div>
+             </po-widget>
+          </div>
+          <div class="po-md-6">
+            <div class="po-md-12"><po-widget>
+              <po-radio-group
+              [p-columns]=1
+              name="radioGroupBasic"
+              p-label="Itens de Residentes"
+              [p-options]="[
+                { label: 'Não Retornou por Transportador', value: '1' },
+                { label: 'Retornou por Transportador', value: '2' }
+              ]"
+            >
+            </po-radio-group>
+
+            </po-widget></div>
+            <div class="po-md-12"><po-widget p-title="Itens - Série">
+              <div class="po-md-4" ><po-input name="numOS" formControlName="numOS" p-label="Envelope Segurança"></po-input></div>
+              <div class="po-md-4" ><po-input name="numOS" formControlName="numOS" p-label="Num Série Instalado"></po-input></div>
+              <div class="po-md-4" ><po-input name="numOS" formControlName="numOS" p-label="Num. Série Retirado"></po-input></div>
+              
+            </po-widget></div>
+          </div>
+          
+        </div>
+
+        <div class="po-md-12"><div class="po-md-12"><po-widget p-title="Dados da ENC">
+          <div class="po-md-12" style="margin-bottom: 10px;"><po-checkbox name="checkbox" p-label="ENC Não Informada"> </po-checkbox></div>
+          <div class="po-md-4"><po-input name="numOS" formControlName="numOS" p-label="Número ENC"></po-input></div>
+          <div class="po-md-4"><po-input name="numOS" formControlName="numOS" p-label="Série ENC"></po-input></div>
+          <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-file-plus"></po-button></div>
+        </po-widget></div>
+         </div>
+      </form>
+  </po-modal>
+
+
