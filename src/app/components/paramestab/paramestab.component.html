@@ -1,7 +1,5 @@
       <div class="po-md-12">
-        <po-button p-label="Novo Estabelecimento" (p-click)="onNovo()" p-icon="po-icon po-icon-plus"
-          p-kind="primary"></po-button>
-        <hr>
+        <po-button p-label="Nova Filial" (p-click)="onNovo()" p-icon="bi bi-plus" p-kind="primary"></po-button>
       </div>
       <div class="po-md-12">
         <po-table [p-items]="lista" 
@@ -12,10 +10,17 @@
                   [p-hide-table-search]="false" 
                   [p-hide-columns-manager]="true" 
                   p-container="true"
+                  [p-height]="400"
                   />
   
       </div>
-  
+      <div style="margin-left: 20px;">
+        <div>
+           <i class="bi bi-exclamation-circle" style="float:left">&nbsp;</i>
+           <po-info p-label="Os parâmetros são utilizados no programa de Cálculo para sugestão inicial de valores" style="display: block;"></po-info>
+      </div>
+      </div>
+      
       <po-modal #cadModal [p-title]= "tipoAcao ==='I' ? 'Novo Estabelecimento': tipoAcao ==='C' ? 'Copiar [' + nomeEstabel + '] ': nomeEstabel" 
                           p-size="lg" 
                           p-click-out="false" 

@@ -2,8 +2,71 @@
 <div class="hero-image">
     <div class="hero-text">
         <i class="bi bi-display" style="font-size:64px"></i>
-      <h1 style="font-size:50px">Central Auto Atendimento</h1>
-      <p>Rotinas Destinadas ao Pagamento e Reposição de Peças aos Técnicos </p>
-      <po-button p-label="Verifique os Parâmetros das Filiais" p-kind="primary" style="margin-top: 30px;" [routerLink]="['/paramestab']"></po-button>
+      <h1 style="font-size:50px;text-align: center;">Monitor Atendimento</h1>
+      <p>Central de Auto Atendimento </p>
+      <po-button p-label="Verifique os Parâmetros das Filiais" p-kind="primary" style="margin-top: 20px;" [routerLink]="['/paramestab']"></po-button>
     </div>
+</div>
+<div class="po-md-12" style="margin-top: 5px;">
+  <div class="po-md-3" style="margin-top: 20px;">
+      <div class="po-md-12" style="display: flex;">
+        <div style="display:block">
+          <div class="po-md-12" style="float:left"><h3>Rotinas de Auto Atendimento</h3></div>
+          <div class="po-md-12" style="float:left; color:gray">Monitor para realização de pagamentos e reposição de peças aos técnicos.</div>
+        </div>
+      </div>
   </div>
+
+  <div class="po-md-9">
+     <po-widget>
+      <div class="po-md-6 bloco">
+        <div class="square" style="color: green;"><i class="bi bi-clipboard-data" style="font-size: 32px;"></i></div>
+        <div style="display:block">
+          <div class="po-md-12" style="float:left"><h4><i>Informe Ordem de Serviço</i></h4></div>
+          <div class="po-md-12" style="float:left;color: gray;">Acesse o link <a [routerLink]="['/informe']">informe de os</a></div>
+        </div>
+      </div>
+
+      <div class="po-md-6 bloco">
+        <div class="square" style="color: steelblue;"><i class="bi bi-archive" style="font-size: 32px;"></i></div>
+        <div style="display:block">
+          <div class="po-md-12" style="float:left"><h4><i>Notas de Entradas e Saídas</i></h4></div>
+          <div class="po-md-12" style="float:left;color: gray;">Acesse o link <a [routerLink]="['/dashboard']">notas fiscais</a></div>
+        </div>
+      </div>
+
+      <div class="po-md-6 bloco">
+        <div class="square" style="color: green;"><i class="bi bi-calculator" style="font-size: 32px;"></i></div>
+        <div style="display:block">
+          <div class="po-md-12" style="float:left"><h4><i>Cálculo do Auto Atendimento</i></h4></div>
+          <div class="po-md-12" style="float:left;color: gray;">Acesse o link <a [routerLink]="['/calculo']">cálculo</a></div>
+        </div>
+      </div>
+
+      <div class="po-md-6 bloco">
+        <div class="square" style="color: steelblue;"><i class="bi bi-box2" style="font-size: 32px;"></i></div>
+        <div style="display:block">
+          <div class="po-md-12" style="float:left"><h4><i>Informações de Embalagem</i></h4></div>
+          <div class="po-md-12" style="float:left;color: gray;">Acesse o link <a [routerLink]="['/nfs']">embalagem</a></div>
+        </div>
+      </div>
+
+      <div class="po-md-6" style="display: flex;">
+        <div class="square" style="color: red;float:left;"><i class="bi bi-gear" style="font-size: 32px;"></i></div>
+        <div style="display:block">
+          <div class="po-md-12" style="float:left"><h4><i>Parâmetros Filiais</i></h4></div>
+          <div class="po-md-12" style="float:left;color: gray;">Acesse o link <a [routerLink]="['/paramestab']">param filiais</a></div>
+        </div>
+      </div>
+
+      <div class="po-md-6" style="display: flex;">
+        <div class="square" style="color: steelblue;float:left;"><i class="bi bi-tools" style="font-size: 32px;"></i></div>
+        <div style="display:block">
+          <div class="po-md-12" style="float:left"><h4><i>Criar Reparos</i></h4></div>
+          <div class="po-md-12" style="float:left;color: gray;">Acesse o link <a [routerLink]="['/reparos']">reparo</a></div>
+        </div>
+      </div>
+    </po-widget>
+  </div>
+  
+</div>

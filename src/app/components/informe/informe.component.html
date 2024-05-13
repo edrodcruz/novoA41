@@ -46,15 +46,12 @@
 
     <po-accordion-item p-label="Ordens de Serviço e Itens da Ordem" [p-label-tag]="cTag" #item2>
 
-      <div class="po-md-12" *ngIf=" this.mostrarDados === true" style="margin-bottom: 15px; margin-top: 15px;">
-        <po-button p-label="Concluir OS sem Item/NF" (p-click)="onConcluirSemItemNF()" p-icon="bi bi-check2-all" p-kind="primary" style="float:inline-end;margin-left: 10px;"></po-button>
-        <po-button p-label="Impressão Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer" p-kind="primary" style="float:inline-end"></po-button>
-        
-        
+      <div class="po-md-12" *ngIf=" this.mostrarDados === true" style="margin-top: 5px;">
+        <po-button p-label="Impressão Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer" p-kind="primary" style="margin-right: 5px;" ></po-button>
+        <po-button p-label="Concluir OS sem Item/NF" (p-click)="onConcluirSemItemNF()" p-icon="bi bi-check2-all" p-kind="primary" ></po-button>
       </div>
       
-        <div class="po-md-5">
-                <po-tag p-value="Ordens de Serviço"></po-tag>
+        <div class="po-md-5" style="margin-top: 24px;">
                 <po-table [p-items]="listaOrdens" class="po-font-smaller" #gridOrdens 
                           (p-selected)="selecionarOrdem($event)"
                           [p-actions]="acoesGridOrdem"
@@ -66,28 +63,22 @@
                           [p-hide-table-search]="true" 
                           p-container="true"
                           [p-height]="400"
-                          [p-hide-columns-manager]="true" />
-              
+                          [p-hide-columns-manager]="true">
+                    <ng-template  p-table-column-template p-property="flag" let-value>
+                      <i class="bi bi-check-square-fill" *ngIf="value === 'X'" [style.color]="'#c64840'" [style.font-size]="'16px'"></i>
+                    </ng-template>
+                </po-table>
+                          
               <div class="po-md-12" style="margin-top: 5px;" *ngIf="this.mostrarDados === true">
-                  <div class="po-md-6">
-                    <po-button p-icon="bi bi-plus" p-kind="primary" style="margin-right: 5px;" p-kind="primary" p-label="Adicionar Ordem" (p-click)="onIncluirOrdem()"></po-button>
-                    
-                    <!-- <po-button p-icon="bi bi-file-earmark-check" p-kind="primary" style="margin-right: 5px;" p-tooltip="Marcar OS" (p-click)="onMarcar()"></po-button>
-                    <po-button p-icon="bi bi-file" style="margin-right: 5px;" p-tooltip="Desmarcar OS" (p-click)="onDesmarcar()"></po-button>
-                    <po-button p-icon="bi bi-bicycle" p-kind="primary" style="margin-right: 5px;" p-tooltip="Marcar Moto" (p-click)="onMarcarMoto()"></po-button>
-                    <po-button p-icon="bi bi-bicycle" p-tooltip="Desmarcar Moto" (p-click)="onDesmarcarMoto()"></po-button> -->
-                  </div>
-                  <!-- <div class="po-md-6">
-                   
-                    <po-button p-icon="bi bi-pencil-square" p-kind="primary" style="margin-right: 5px;" p-tooltip="Alterar OS" (p-click)="onIncluirOrdem()"></po-button>
-                    <po-button p-icon="bi bi-trash" p-kind="primary" p-tooltip="Eliminar OS" p-danger="true" (p-click)="onExcluirOS()"></po-button>
-                  </div> -->
+                    <po-button p-icon="bi bi-plus" p-kind="primary" style="margin-right: 5px;" p-kind="primary" p-label="Incluir OS" (p-click)="onIncluirOrdem()"></po-button>
               </div>
-              <div class="po-md-12" style="margin-top: 15px;">
+              <div class="po-md-12" style="margin-top: 15px">
                 <po-widget [p-height]="90">
-                  <div class="po-md-4"><po-tag p-label="Usadas"     [p-value]="cUsadas" p-color="color-10" p-text-color="white"></po-tag></div>
-                  <div class="po-md-4"><po-tag p-label="Em Branco"  [p-value]="cBrancas" p-color="color-01" p-text-color="white"></po-tag></div>
-                  <div class="po-md-4"><po-tag p-label="Total"      [p-value]="cTotal" p-color="color-07" p-text-color="white"></po-tag></div>
+                  <div class="box">
+                    <div class="po-md-4"><po-tag p-label="Usadas"     [p-value]="cUsadas" p-color="color-10" p-text-color="white"></po-tag></div>
+                    <div class="po-md-4"><po-tag p-label="Em Branco"  [p-value]="cBrancas" p-color="color-01" p-text-color="white"></po-tag></div>
+                    <div class="po-md-4"><po-tag p-label="Total"      [p-value]="cTotal" p-color="color-07" p-text-color="white"></po-tag></div>
+                </div>
                 </po-widget>
               </div>
         </div>
@@ -110,14 +101,6 @@
 
           <div class="po-md-12" style="margin-top: 5px;" *ngIf="this.mostrarDados === true">
             <po-button p-icon="bi bi-plus" style="margin-right: 5px;" p-label="Incluir Item OS" p-kind="primary" (p-click)="onIncluirItemOrdem()"></po-button> 
-            
-          
-            <!-- <div class="po-md-4">
-              <po-button p-icon="bi bi-pencil-square" p-kind="primary" style="margin-right: 5px;" p-tooltip="Alterar Item da Ordem" (p-click)="onAlterarItemOrdem()"></po-button>  
-              <po-button p-icon="bi bi-trash" p-kind="primary" p-tooltip="Excluir Item da Ordem" p-danger="true" (p-click)="onExcluirItemOrdem()"></po-button>
-            </div>
-           -->
-          
           </div>
           <div class="po-md-12" style="margin-top: 15px;">
             <po-widget [p-height]="90">

@@ -126,7 +126,7 @@ export class ParamestabComponent {
   ngOnInit(): void {
 
     //--- Titulo Tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DO ESTABELECIMENTO', dashboard: false})
+    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DA FILIAL', dashboard: false})
 
     //Colunas do grid
     this.colunas = this.srvTotvs.obterColunas()

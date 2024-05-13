@@ -51,7 +51,7 @@ obterColunasItems(): Array<PoTableColumn> {
 
 obterColunasOrdens(): Array<PoTableColumn> {
   return [
-    { property: 'flag', label: "*", color:'color-07'},
+    { property: 'flag', label: " ", color:'color-07', type: 'columnTemplate'},
     { property: 'NumOS', label: "NumOs" },
     { property: 'situacao', label: "Situação" },
     { property: 'Chamado', label: "Chamado"},

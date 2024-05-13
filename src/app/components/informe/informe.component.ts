@@ -321,7 +321,7 @@ export class InformeComponent {
     this.ordemSelecionada = obj
     this.srvDialog.confirm({
       title: 'CONFIRMAÇÃO',
-      message: 'Confirma a Alteração do Status para Utilizado (M)',
+      message: 'Confirma a Alteração do Status para Utilizado (M)?',
       literals: {"cancel": "Não", "confirm": "Sim"},
       confirm: () => {
 
@@ -330,7 +330,7 @@ export class InformeComponent {
         this.srvTotvs46.MarcarMoto(params).subscribe({
           next: (response:any)=>{
             this.loadGridOrdem = false
-            let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.flag = ''}
+            let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.situacao = 'M'}
             this.gridOrdens?.updateItem(this.ordemSelecionada, registro)
             this.srvNotification.success("Registro alterado com sucesso !" )
           },
@@ -346,7 +346,7 @@ export class InformeComponent {
 
     this.srvDialog.confirm({
       title: 'CONFIRMAÇÃO',
-      message: 'Confirma a Alteração do Status para Utilizado (U)',
+      message: 'Confirma a Alteração do Status para Utilizado (U)?',
       literals: {"cancel": "Não", "confirm": "Sim"},
       confirm: () => {
 
@@ -355,7 +355,7 @@ export class InformeComponent {
         this.srvTotvs46.DesmarcarMoto(params).subscribe({
           next: (response:any)=>{
             this.loadGridOrdem = false
-            let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.flag = ''}
+            let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.situacao = 'U'}
             this.gridOrdens?.updateItem(this.ordemSelecionada, registro)
             this.srvNotification.success("Registro alterado com sucesso !" )
           },

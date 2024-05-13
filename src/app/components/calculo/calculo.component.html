@@ -126,7 +126,7 @@
           (p-secondary-action)="stepper.next()">
 
           <div class="po-md-6">
-            <po-button p-label="Excluir Seleção" (p-click)="onExcluirSelecaoExtraKit()" p-icon="bi bi-trash" p-kind="primary"></po-button><hr>
+            <po-button p-label="Excluir Seleção" (p-click)="onExcluirSelecaoExtraKit()" p-icon="bi bi-trash" p-kind="primary"></po-button>
          </div>
 
          <div class="po-row">
@@ -136,6 +136,7 @@
                                     p-single-select="true"
                                     p-hide-columns-manager="true"
                                     p-striped="true"
+                                    [p-height]="400"
                                     [p-single-select]="false"
                                     [p-selectable]="true">
             </po-table>
