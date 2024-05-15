@@ -158,6 +158,14 @@ obterColunasEntradas(): Array<PoTableColumn> {
       { value: 13, color: 'color-08', label: 'NF-e em Processo de Inutilizacao', textColor:'white' },
       { value: 14, color: 'color-08', label: 'NF-e Pendente de Retorno', textColor:'white' },
       { value: 15, color: 'color-07', label: 'DPEC recebido pelo SCE', textColor:'white' },
+      { value: 98, color: 'color-08', label: 'Aguard.Proc reapi0190', textColor:'white' },
+      { value: 99, color: 'color-08', label: 'Aguard.Proc.re1005rp', textColor:'white' },
+      { value: 100, color: 'color-10', label: 'Nota Atualizada Estoque', textColor:'white' },
+      { value: 101, color: 'color-07', label: 'Situação desconhecida', textColor:'white' },
+      
+      
+      
+
     ]},
     { property: 'cod-estabel', label:"Estab"},
     { property: 'cod-emitente', label:"Emitente"},
@@ -187,6 +195,7 @@ obterColunasSaidas(): Array<PoTableColumn> {
       { value: 14, color: 'color-08', label: 'NF-e Pendente de Retorno', textColor:'white' },
       { value: 15, color: 'color-07', label: 'DPEC recebido pelo SCE', textColor:'white' },
       { value: 99, color: 'color-07', label: 'Aguardando Proc Nota Entrada', textColor:'white' },
+      { value: 100, color: 'color-10', label: 'Nota Atualizada Estoque', textColor:'white'}
     ]},
     { property: 'cod-estabel', label:"Estab"},
     { property: 'serie', label:"Série"},

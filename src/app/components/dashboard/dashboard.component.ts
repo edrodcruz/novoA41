@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { PoModalAction, PoModalComponent, PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
+import { PoAccordionItemComponent, PoModalAction, PoModalComponent, PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
 import { Subscription, delay, interval } from 'rxjs';
 import { TotvsServiceMock } from 'src/app/services/totvs-service-mock.service';
 import { TotvsService } from 'src/app/services/totvs-service.service';
@@ -13,6 +13,7 @@ export class DashboardComponent {
 
   //---------- Acessar a DOM
   @ViewChild('loginModal', { static: true }) loginModal: PoModalComponent | undefined;
+  @ViewChild(PoAccordionItemComponent, { static: true }) item1!: PoAccordionItemComponent;
 
   //---Injection
   private srvTotvs = inject(TotvsService)
@@ -58,7 +59,7 @@ export class DashboardComponent {
   ngOnInit(): void {
 
     //--- Informacoes iniciais tela
-     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL', dashboard: true})
+     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL', dashboard: true, abrirMenu:true})
 
      //--- Selecionar usuario para mostrar notas no dashboard
      this.loginModal?.open()
@@ -80,7 +81,7 @@ export class DashboardComponent {
   }
 
   ngOnDestroy():void{
-    this.sub.unsubscribe()
+    
   }
 
   onRefresh(){
@@ -130,6 +131,8 @@ export class DashboardComponent {
                   //Chamar o programa de verificacao
                   this.verificarNotas()
 
+                  this.item1.expand()
+
                   //Setar o tempo para o relogio 
                   this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
               },
@@ -177,32 +180,6 @@ verificarNotas(){
               this.listaNFE = response.nfe
               this.listaNFS = response.nfs
               this.rpwStatus = response.rpw
-
-              //Se todas as notas ja foram atualizadas enviar as entradas para atualizar estoque
-              if (this.statusProcess === 1){
-                 if (this.listaNFS.filter(nota => nota["idi-sit"] !== 3).length > 0) {
-                 }
-                 else{
-                    //Processar Notas no re1005 pela segunda vez
-                  /*  this.srvTotvs.ProcessarEntradas(paramsNota).subscribe({
-                        next: (response:any) => {},
-                        error: (e) => {}
-
-                    })
-                    */
-                 }
-              }
-
-              //Se as notas de entrada estiverem atualizadas no of gerar as saídas e os reparos
-              if (this.statusProcess === 2){
-                if (this.listaNFS.filter(nota => nota["idi-sit"] !== 1).length > 0) {
-                } 
-                else {
-                  //Processar as notas de saida e reparos
-                }
-              }
-
-
               this.loadTela = false
           },
           error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}

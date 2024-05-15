@@ -1,43 +1,51 @@
 
-<div class="po-md-12">
+<div class="po-md-12" style="margin-bottom: 20px;">
   <div class="po-md-6">
-    <po-button p-label="Atualizar Tela" (p-click)="verificarNotas()" p-icon="bi bi-arrow-clockwise" p-kind="primary"></po-button>
+    <po-button p-label="Atualizar Tela" (p-click)="verificarNotas()" p-icon="bi bi-arrow-clockwise" p-kind="primary"></po-button> &nbsp;
+    <po-button p-label="Reprocessar Notas" (p-click)="verificarNotas()" p-icon="bi bi-calendar2-check" p-danger="true"></po-button>
   </div>
   <div class="po-md-6">
-      <b>Pedido Execução:</b> {{rpwStatus.split(';')[0]}} - {{rpwStatus.split(';')[1]}} / {{rpwStatus.split(';')[2]}}
+    <div class="grid-pedido-execucao">
+      <div class="icone"><i class="bi bi-exclamation-triangle-fill"></i></div>
+      <div class="linha1"> Pedido Execução:  {{rpwStatus.split(';')[0]}} - {{rpwStatus.split(';')[1]}} / {{rpwStatus.split(';')[2]}}</div>
+      <div class="linha2"> Aguardando Ação de Reprocessar Notas</div>
+    </div>
   </div>
 </div>
 
 <div class="po-md-12">
-<po-tabs>
-  <po-tab [p-active]="tabNFE" p-label="Nota Fiscal Entrada">
-     <po-widget>
-      <po-table
-            [p-items]="listaNFE"
-            [p-loading]="loadTela"
-            [p-striped]="true"
-            [p-sort]="true"
-            [p-height]="450"
-            [p-columns]="colunasNFE"
-            [p-hide-table-search]="false"
-            [p-hide-columns-manager]="true"/>
+  <po-accordion style="margin-top: 10px;">
+    <po-accordion-item p-label="Notas Fiscais de Entrada" #item1>
+      <po-widget>
+        <po-table
+              [p-items]="listaNFE"
+              [p-loading]="loadTela"
+              [p-striped]="true"
+              [p-sort]="true"
+              [p-height]="350"
+              [p-columns]="colunasNFE"
+              [p-hide-table-search]="true"
+              [p-hide-columns-manager]="true"/>
+  
+       </po-widget>
 
-     </po-widget>
-  </po-tab>
-  <po-tab  [p-active]="!tabNFE" p-label="Nota Fiscal Saída">
-    <po-widget>
-      <po-table
-            [p-items]="listaNFS"
-            [p-loading]="loadTela"
-            [p-striped]="true"
-            [p-sort]="true"
-            [p-height]="450"
-            [p-columns]="colunasNFS"
-            [p-hide-table-search]="false"
-            [p-hide-columns-manager]="true"/>
+    </po-accordion-item>
+    <po-accordion-item p-label="Notas Fiscais de Saída">
+      <po-widget>
+        <po-table
+              [p-items]="listaNFS"
+              [p-loading]="loadTela"
+              [p-striped]="true"
+              [p-sort]="true"
+              [p-height]="350"
+              [p-columns]="colunasNFS"
+              [p-hide-table-search]="true"
+              [p-hide-columns-manager]="true"/>
       </po-widget>
-  </po-tab>
-</po-tabs>
+    </po-accordion-item>
+    </po-accordion>
+
+
 </div>
 
 <po-modal #loginModal  p-title="Selecione o Técnico" 

@@ -138,7 +138,7 @@ readonly acaoLogar: PoModalAction = {
   ngOnInit(): void {
 
     //--- Titulo Tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DE CÁLCULO', dashboard: false})
+    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DE CÁLCULO', dashboard: false, abrirMenu:true})
 
 
 

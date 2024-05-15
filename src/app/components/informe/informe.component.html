@@ -1,3 +1,6 @@
+<div class="sample-container">
+  <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
+</div>
 <po-accordion style="margin-top: 10px;">
     <po-accordion-item p-label="Informações do Técnico" #item1>
       <po-widget>
@@ -119,7 +122,7 @@
                               [p-secondary-action]="acaoCancelarOrdem">
       <form [formGroup]="formOrdem">
         <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="NumOS" > </po-input></div>
-        <div class="po-md-6"><po-input name="chamado" formControlName="chamado" p-label="Chamado" ></po-input></div>
+        <div class="po-md-6"><po-input name="Chamado" formControlName="Chamado" p-label="Chamado" ></po-input></div>
       </form>
   </po-modal>
 

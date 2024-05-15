@@ -61,7 +61,7 @@ export class InformeComponent {
 
   public formOrdem = this.formBuilder.group({
     numOS:[0, Validators.required],
-    chamado:[0, Validators.required],
+    Chamado:[0, Validators.required],
     codEstabel:[''],
     codEmitente:[0],
     moto:[false]
@@ -69,7 +69,7 @@ export class InformeComponent {
 
   public formItemOrdem = this.formBuilder.group({
     numOS:[0, Validators.required],
-    chamado:[0, Validators.required]
+    chamado:[0]
   })
 
   //---Variaveis
@@ -78,9 +78,9 @@ export class InformeComponent {
   loadGridOrdem: boolean = false
   loadIncluirOrdem: boolean = false
   loadTecnico: string = ''
-  cUsadas:string="0"
-  cBrancas:string="0"
-  cTotal:string="0"
+  cUsadas:any=0
+  cBrancas:any=0
+  cTotal:any=0
   mostrarDados:boolean=false
   edObservacao:string=''
   ordemSelecionada:any=undefined;
@@ -151,7 +151,7 @@ export class InformeComponent {
   ngOnInit(): void {
 
     //--- Titulo Tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA46 - INFORME DE OS', dashboard: false})
+    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA46 - INFORME DE OS', dashboard: false, abrirMenu:false})
 
 
     //Colunas do grid
@@ -187,7 +187,8 @@ export class InformeComponent {
   onNumeroSeriePendente(){}
 
   onIncluirOrdem(){
-    this.formOrdem.reset()
+    this.formOrdem.controls.numOS.setValue(0)
+    this.formOrdem.controls.Chamado.setValue(0)
     this.telaIncluirOrdem?.open()
   }
 
@@ -198,15 +199,14 @@ export class InformeComponent {
     this.formOrdem.controls.codEstabel.setValue(this.form.controls.codEstabel.value)
     this.formOrdem.controls.moto.setValue(false)
 
-    //Montar as informacoes para enviar para api
-
     
+
+    //Montar as informacoes para enviar para api
     let params:any={paramsTela: this.formOrdem.value}
 
     //Criar a Ordem Servico
     this.srvTotvs46.CriarOrdem(params).subscribe({
       next: (response:any)=>{
-        console.log(response)
           if (response.ordem !== undefined && response.ordem.length > 0) {
              this.listaOrdens=[...this.listaOrdens, ...response.ordem]
              this.telaIncluirOrdem?.close()  
@@ -217,6 +217,7 @@ export class InformeComponent {
             this.telaIncluirOrdem?.close()
           }
           this.loadIncluirOrdem = false
+          this.atualizarContadores()
       },
       error: (e)=> {this.loadIncluirOrdem = false}
       })
@@ -267,14 +268,21 @@ export class InformeComponent {
     });
   }
 
+  atualizarContadores(){
+   // this.cBrancas = Number(this.listaOrdens.filter( x => x.Chamado === 0).length)
+   // this.cUsadas = Number(this.listaOrdens.filter( x => x.Chamado > 0).length)
+   // this.cTotal = Number(this.cUsadas) + Number(this.cBrancas)
+
+  }
+
   resetarVariaveis(){
       this.item1.label = 'Informações do Técnico'
       this.listaOrdens = []
       this.listaItens=[]
       this.edObservacao=''
-      this.cUsadas = ''
-      this.cBrancas = ''
-      this.cTotal = ''
+      this.cUsadas = 0
+      this.cBrancas = 0
+      this.cTotal = 0
       this.cTag=''
       this.mostrarDados = false
       }

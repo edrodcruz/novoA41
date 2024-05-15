@@ -169,11 +169,12 @@ export class ParamestabComponent {
 
     this.srvTotvs.Obter().subscribe({
       next: (response: any) => {
-        console.log(response)
+        if (response === null) return
         this.lista = response.items
         this.loadTela = false
       },
-      error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
+      error: (e) => {this.srvNotification.error('Ocorreu um erro na requisição')
+                    this.loadTela=false},
     });
   }
 

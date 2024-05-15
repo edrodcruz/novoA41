@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { PoMenuItem } from '@po-ui/ng-components';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { PoMenuComponent, PoMenuItem } from '@po-ui/ng-components';
 import { TotvsServiceMock } from './services/totvs-service-mock.service';
 import { Subscription } from 'rxjs';
 import { TotvsService } from './services/totvs-service.service';
@@ -13,6 +13,7 @@ import { TotvsService } from './services/totvs-service.service';
 export class AppComponent {
 
 private srvTotvs = inject(TotvsService)
+@ViewChild('menuLateral', { static: true }) menuLateral: PoMenuComponent | undefined;
 
 
   //--------- Opcoes de Menu
@@ -32,6 +33,7 @@ estabInfo!: string
 processoInfo!: string
 tituloTela!:string
 dashboard:boolean=false
+abrirMenu:boolean=false
 
 private sub!: Subscription
 
@@ -48,6 +50,13 @@ ngOnInit(): void {
       this.processoInfo = response.processoInfo ?? this.processoInfo
       this.tituloTela = response.tituloTela ?? this.tituloTela
       this.dashboard = response.dashboard ?? this.dashboard
+      this.abrirMenu = response.abrirMenu ?? false
+
+      if(this.abrirMenu)
+        this.menuLateral?.expand()
+      else
+        this.menuLateral?.collapse()
+
       this.cdRef.detectChanges()
     }})
 }

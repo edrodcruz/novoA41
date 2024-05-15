@@ -1,0 +1,28 @@
+.grid-pedido-execucao {
+    display: grid; 
+    grid-template-columns: 40px auto; 
+    grid-template-rows: 20px 20px; 
+    vertical-align: center; 
+    grid-column-gap: 10px;
+}
+
+.icone{
+    color:#9e3933; 
+    grid-row: 1 / span 2; 
+    margin-top: 3px;
+}
+
+.icone > i {
+    font-size: 40px;
+}
+
+.linha1{
+    grid-column: 2; 
+    grid-row: 1;
+}
+
+.linha2{
+    grid-column: 2; 
+    grid-row: 2;
+    font-weight: bold;
+}
