@@ -1,14 +1,19 @@
+<div class="sample-container">
+  <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
+</div>
 
 <div class="po-md-12" style="margin-bottom: 20px;">
   <div class="po-md-6">
-    <po-button p-label="Atualizar Tela" (p-click)="verificarNotas()" p-icon="bi bi-arrow-clockwise" p-kind="primary"></po-button> &nbsp;
-    <po-button p-label="Reprocessar Notas" (p-click)="verificarNotas()" p-icon="bi bi-calendar2-check" p-danger="true"></po-button>
+    <po-button (p-click)="verificarNotas()" p-icon="bi bi-arrow-clockwise" p-tooltip="Atualizar Tela" ></po-button> &nbsp;
+    <po-button  (p-click)="onAbrirArquivo()" p-icon="bi bi-bug" p-danger="true" p-tooltip="Verificar Erros"></po-button> &nbsp;
+    <po-button p-label="Reprocessar" (p-click)="onAbrirArquivo()" p-icon="bi bi-calendar2-check" p-tooltip="Reprocessar Notas Fiscais"></po-button> 
+    
   </div>
   <div class="po-md-6">
-    <div class="grid-pedido-execucao">
+    <div class="grid-pedido-execucao square">
       <div class="icone"><i class="bi bi-exclamation-triangle-fill"></i></div>
-      <div class="linha1"> Pedido Execução:  {{rpwStatus.split(';')[0]}} - {{rpwStatus.split(';')[1]}} / {{rpwStatus.split(';')[2]}}</div>
-      <div class="linha2"> Aguardando Ação de Reprocessar Notas</div>
+      <div class="linha1"> RPW:  {{rpwStatus.split(';')[0]}} - {{rpwStatus.split(';')[1]}} / {{rpwStatus.split(';')[2]}}</div>
+      <div class="linha2"><i> Aguardando Ação de Reprocessar Notas</i></div>
     </div>
   </div>
 </div>
@@ -19,7 +24,7 @@
       <po-widget>
         <po-table
               [p-items]="listaNFE"
-              [p-loading]="loadTela"
+              [p-loading]="loadGrid"
               [p-striped]="true"
               [p-sort]="true"
               [p-height]="350"
@@ -34,7 +39,7 @@
       <po-widget>
         <po-table
               [p-items]="listaNFS"
-              [p-loading]="loadTela"
+              [p-loading]="loadGrid"
               [p-striped]="true"
               [p-sort]="true"
               [p-height]="350"
@@ -86,5 +91,17 @@
   </div>
 
 
+</po-modal>
+
+<po-modal #abrirArquivo  p-title="processo-1421429.txt" 
+          p-size="lg" 
+          p-click-out="false" >
+         
+          <!--div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>-->
+          <po-textarea [(ngModel)]="conteudoArquivo" [p-rows]="30"></po-textarea>
+
+         
+          <po-button p-label="imprimir" (p-click)="onImprimirConteudoArquivo()"></po-button>
+          
 </po-modal>
 

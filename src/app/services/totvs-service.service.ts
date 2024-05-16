@@ -355,6 +355,12 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
     return this.http.get(`${this._url}/DeletarCalcEstab`, {params:params, headers:headersTotvs})
                     .pipe(take(1));
   }
+
+  //---------------------- Abrir Arquivos
+  public AbrirArquivo(params?: any){
+    return this.http.get(`${this._url}/AbrirArquivo`, {params:params, headers:headersTotvs})
+                    .pipe(take(1));
+  }
   
    //Ordenacao campos num array
    public ordenarCampos =

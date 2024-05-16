@@ -40,9 +40,8 @@ export class InformeComponent {
   private formBuilder = inject(FormBuilder);
   
   //---------- Acessar a DOM
-  @ViewChild('telaIncluirOrdem', { static: true }) telaIncluirOrdem:
-    | PoModalComponent
-    | undefined;
+    @ViewChild('telaIncluirOrdem', { static: true }) telaIncluirOrdem: | PoModalComponent | undefined;
+    @ViewChild('telaAlterarOrdem', { static: true }) telaAlterarOrdem: | PoModalComponent | undefined;
 
     @ViewChild('telaIncluirItemOrdem', { static: true }) telaIncluirItemOrdem:
     | PoModalComponent
@@ -106,8 +105,8 @@ export class InformeComponent {
     {label: 'Desmarcar OS', icon: 'bi bi-file', action: this.onDesmarcar.bind(this)},
     {separator:true, label: 'Marcar Moto', icon: 'bi bi-bicycle', action: this.onMarcarMoto.bind(this)},
     {label: 'Desmarcar Moto', icon: 'bi bi-bicycle', action: this.onDesmarcarMoto.bind(this)},
-    {separator: true, label: 'Alterar Chamado', icon: 'bi bi-pencil-square', action: this.onSelecionarOS.bind(this)},
-    {separator: true, label: 'Eliminar OS', icon: 'bi bi-trash', action: this.onSelecionarOS.bind(this), type:'danger'},
+    {separator: true, label: 'Alterar Chamado', icon: 'bi bi-pencil-square', action: this.onAlterarOrdem.bind(this)},
+    {separator: true, label: 'Eliminar OS', icon: 'bi bi-trash', action: this.onExcluirOrdem.bind(this), type:'danger'},
   ]
 
   readonly acoesGridItem: PoTableAction[] =[
@@ -130,9 +129,17 @@ export class InformeComponent {
     disabled: !this.formOrdem.valid
   }
 
+  readonly acaoAlterarOrdem: PoModalAction = {
+    label: 'Salvar',
+    action: () => { this.alterarOrdem() },
+    loading: this.loadIncluirOrdem,
+    disabled: !this.formOrdem.valid
+  }
+
+
   readonly acaoCancelarOrdem: PoModalAction = {
     label: 'Cancelar',
-    action: () => { this.telaIncluirOrdem?.close() }
+    action: () => { this.telaIncluirOrdem?.close(); this.telaAlterarOrdem?.close() }
   }
 
   readonly acaoIncluirItemOrdem: PoModalAction = {
@@ -175,7 +182,19 @@ export class InformeComponent {
 
   }
 
-  onImpressao() { }
+  onImpressao() {
+    let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
+    console.log(params)
+    this.loadTela = true
+    this.srvTotvs46.ImprimirOS(params).subscribe({
+      next: (response:any)=>{
+        console.log(response)
+        this.loadTela = false
+      },
+      error: (e)=> {this.loadTela = false}
+      })
+    
+  }
   onConcluirSemItemNF() {}
 
   onIncluirItemOrdem(){this.telaIncluirItemOrdem?.open()}
@@ -192,14 +211,20 @@ export class InformeComponent {
     this.telaIncluirOrdem?.open()
   }
 
+  onAlterarOrdem(obj:any){
+    this.ordemSelecionada = obj;
+    this.formOrdem.controls.numOS.setValue(obj.NumOS)
+    this.formOrdem.controls.Chamado.setValue(obj.Chamado)
+    this.telaAlterarOrdem?.open()
+
+  }
+
   incluirOrdem(){
     this.loadIncluirOrdem = true
     //Setar os valores que estao na tela
     this.formOrdem.controls.codEmitente.setValue(Number(this.form.controls.codUsuario.value))
     this.formOrdem.controls.codEstabel.setValue(this.form.controls.codEstabel.value)
     this.formOrdem.controls.moto.setValue(false)
-
-    
 
     //Montar as informacoes para enviar para api
     let params:any={paramsTela: this.formOrdem.value}
@@ -209,7 +234,8 @@ export class InformeComponent {
       next: (response:any)=>{
           if (response.ordem !== undefined && response.ordem.length > 0) {
              this.listaOrdens=[...this.listaOrdens, ...response.ordem]
-             this.telaIncluirOrdem?.close()  
+             this.telaIncluirOrdem?.close() 
+             this.atualizarContadores() 
              this.srvNotification.success("Registro adicionado com sucesso !" )
           }
           else{
@@ -217,13 +243,66 @@ export class InformeComponent {
             this.telaIncluirOrdem?.close()
           }
           this.loadIncluirOrdem = false
-          this.atualizarContadores()
+          
       },
       error: (e)=> {this.loadIncluirOrdem = false}
       })
   }
 
-  onExcluirOS(){}
+  alterarOrdem(){
+    this.loadIncluirOrdem = true
+    //Setar os valores que estao na tela
+    this.formOrdem.controls.numOS.setValue(this.ordemSelecionada.NumOS)
+    this.formOrdem.controls.codEmitente.setValue(Number(this.form.controls.codUsuario.value))
+    this.formOrdem.controls.codEstabel.setValue(this.form.controls.codEstabel.value)
+    this.formOrdem.controls.moto.setValue(false)
+
+    //Montar as informacoes para enviar para api
+    let params:any={paramsTela: this.formOrdem.value}
+
+    //Alterar a Ordem Servico
+    this.srvTotvs46.AlterarOrdem(params).subscribe({
+      next: (response:any)=>{
+            this.ordemSelecionada.Chamado = this.formOrdem.controls.Chamado.value
+            let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.Chamado = this.formOrdem.controls.Chamado.value}
+            this.gridOrdens?.updateItem(this.ordemSelecionada, registro)
+            this.listaOrdens = this.gridOrdens?.items as any[]
+            this.gridOrdens?.unselectRows()
+            this.telaAlterarOrdem?.close()  
+            this.atualizarContadores()
+            this.loadIncluirOrdem = false
+            this.srvNotification.success("Registro adicionado com sucesso !" )
+      },
+      error: (e)=> {this.loadIncluirOrdem = false}
+      })
+  }
+
+  onExcluirOrdem(obj:any){
+    this.ordemSelecionada = obj
+    this.srvDialog.confirm({
+      title: 'CONFIRMAÇÃO',
+      message: 'Confirma exclusão da Ordem de Serviço?',
+      literals: {"cancel": "Não", "confirm": "Sim"},
+      confirm: () => {
+
+        this.loadGridOrdem = true
+        let params:any={cRowId: this.ordemSelecionada['c-rowId']}
+        this.srvTotvs46.ExcluirOrdem(params).subscribe({
+          next: (response:any)=>{
+            this.loadGridOrdem = false
+            this.gridOrdens?.removeItem(obj)
+            this.listaOrdens = this.gridOrdens?.items as any[]
+            this.gridOrdens?.unselectRows()
+
+            this.atualizarContadores()
+            this.srvNotification.success("Registro excluído com sucesso !" )
+          },
+          error:(e)=>{this.loadGridOrdem = false}        
+        })
+      },
+      cancel:  () => { }
+    })
+  }
 
   selecionarOrdem(obj:any){
     this.ordemSelecionada=obj;
@@ -269,10 +348,18 @@ export class InformeComponent {
   }
 
   atualizarContadores(){
-   // this.cBrancas = Number(this.listaOrdens.filter( x => x.Chamado === 0).length)
-   // this.cUsadas = Number(this.listaOrdens.filter( x => x.Chamado > 0).length)
-   // this.cTotal = Number(this.cUsadas) + Number(this.cBrancas)
+    let params:any={codEstabel: this.form.controls.codEstabel.value, codUsuario: this.form.controls.codUsuario.value}
+    this.srvTotvs46.ObterContadores(params).subscribe({
+      next: (response: any) => {
+        this.cUsadas = response.tela[0].usada
+        this.cBrancas = response.tela[0].branco
+        this.cTotal = response.tela[0].TOTAL
+      },
+      error: (e) => {
+       },
+    });
 
+    
   }
 
   resetarVariaveis(){
@@ -290,9 +377,6 @@ export class InformeComponent {
   //Marcar
   onMarcar(obj:any | null){
     this.ordemSelecionada = obj
-
-    if (this.ordemSelecionada.flag === 'X') return
-
     this.loadGridOrdem = true
     let params:any={cRowId: this.ordemSelecionada['c-rowId']}
     this.srvTotvs46.Marcar(params).subscribe({
@@ -309,9 +393,6 @@ export class InformeComponent {
   //Desmarcar
   onDesmarcar(obj:any | null){
     this.ordemSelecionada = obj
-    
-    if (this.ordemSelecionada.flag === '') return
-
     this.loadGridOrdem = true
     let params:any={cRowId: this.ordemSelecionada['c-rowId']}
     this.srvTotvs46.Desmarcar(params).subscribe({
@@ -327,6 +408,8 @@ export class InformeComponent {
 
   onMarcarMoto(obj:any | null){
     this.ordemSelecionada = obj
+    if(obj.situacao === 'M') return
+
     this.srvDialog.confirm({
       title: 'CONFIRMAÇÃO',
       message: 'Confirma a Alteração do Status para Utilizado (M)?',
@@ -337,10 +420,12 @@ export class InformeComponent {
         let params:any={cRowId: this.ordemSelecionada['c-rowId']}
         this.srvTotvs46.MarcarMoto(params).subscribe({
           next: (response:any)=>{
+            this.atualizarContadores()
             this.loadGridOrdem = false
             let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.situacao = 'M'}
             this.gridOrdens?.updateItem(this.ordemSelecionada, registro)
             this.srvNotification.success("Registro alterado com sucesso !" )
+            
           },
           error:(e)=>{this.loadGridOrdem = false}        
         })
@@ -351,6 +436,7 @@ export class InformeComponent {
 
   onDesmarcarMoto(obj:any | null){
     this.ordemSelecionada = obj
+    if(obj.situacao !== 'M') return
 
     this.srvDialog.confirm({
       title: 'CONFIRMAÇÃO',
@@ -362,10 +448,12 @@ export class InformeComponent {
         let params:any={cRowId: this.ordemSelecionada['c-rowId']}
         this.srvTotvs46.DesmarcarMoto(params).subscribe({
           next: (response:any)=>{
+            this.atualizarContadores()
             this.loadGridOrdem = false
             let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.situacao = 'U'}
             this.gridOrdens?.updateItem(this.ordemSelecionada, registro)
             this.srvNotification.success("Registro alterado com sucesso !" )
+            
           },
           error:(e)=>{this.loadGridOrdem = false}        
         })

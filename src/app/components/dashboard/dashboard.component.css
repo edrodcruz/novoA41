@@ -26,3 +26,19 @@
     grid-row: 2;
     font-weight: bold;
 }
+
+div.square {
+    border: solid 1px #c4c2c2;
+    border-radius: 3px;
+    float:left; 
+    padding: 0px 5px 5px 5px;
+    
+    }
+    
+.formatoTexto{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12px;
+       
+    }
+
+    

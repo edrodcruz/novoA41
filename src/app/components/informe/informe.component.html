@@ -126,6 +126,17 @@
       </form>
   </po-modal>
 
+  <po-modal #telaAlterarOrdem p-title="Alterar Chamado"
+                              p-size="sm" 
+                              p-click-out="false" 
+                              [p-hide-close]="true"
+                              [p-primary-action]="acaoAlterarOrdem" 
+                              [p-secondary-action]="acaoCancelarOrdem">
+      <form [formGroup]="formOrdem">
+        <div class="po-md-6"><po-input name="Chamado" formControlName="Chamado" p-label="Chamado" ></po-input></div>
+      </form>
+  </po-modal>
+
   <po-modal #telaIncluirItemOrdem p-title="Incluir Item Ordem Serviço"
                               p-size="auto" 
                               p-click-out="false" 

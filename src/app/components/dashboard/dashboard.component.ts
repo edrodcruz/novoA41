@@ -13,6 +13,7 @@ export class DashboardComponent {
 
   //---------- Acessar a DOM
   @ViewChild('loginModal', { static: true }) loginModal: PoModalComponent | undefined;
+  @ViewChild('abrirArquivo', { static: true }) abrirArquivo: PoModalComponent | undefined;
   @ViewChild(PoAccordionItemComponent, { static: true }) item1!: PoAccordionItemComponent;
 
   //---Injection
@@ -29,18 +30,16 @@ export class DashboardComponent {
   tempoProcess:number=0
   senha:string=''
   loadLogin:boolean=false
-  labelLoadTela:string = ''
-  loadTela: boolean = false
+  loadGrid: boolean = false
+  loadTela:boolean=false
   usuarioLogado: boolean=false
   loadTecnico: string = ''
   placeHolderEstabelecimento:string=''
-
+  conteudoArquivo:string=''
 
   //ListasCombo
   listaEstabelecimentos!: any[]
   listaTecnicos!: any[]
-
-
 
   //---Grids de Notas
   colunasNFS!: PoTableColumn[]
@@ -86,6 +85,32 @@ export class DashboardComponent {
 
   onRefresh(){
 
+  }
+
+  onImprimirConteudoArquivo(){
+    let win = window.open('','childWindow','location=yes, menubar=yes, toolbar=yes')
+    win?.document.open()
+    win?.document.write("<html><head><meta charset='UTF-8'><title>processo-1421429.txt</title></head><style>p{ font-family: 'Courier New', Courier, monospace;font-size: 11px; }</style><body><p>")
+    win?.document.write(this.conteudoArquivo.replace(/\n/gi, '<br>'))
+    win?.document.write('</p></body></html>')
+    win?.print()
+    win?.document.close()
+    win?.close()
+  }
+
+  onAbrirArquivo(){
+    let params:any={nomeArquivo:'processo-1421429.txt'}
+    this.loadTela=true
+    this.srvTotvs.AbrirArquivo(params).subscribe({
+      next: (response: any) => {
+       this.conteudoArquivo = response.arquivo //.replace(/\n/gi, '<br>')
+       
+        this.loadTela=false
+        this.abrirArquivo?.open()
+      },
+      error: (e) => {this.loadTela=false}
+    })
+  
   }
 
   onLogarUsuario(){
@@ -143,7 +168,7 @@ export class DashboardComponent {
 
                this.srvNotification.error("Erro na validação do usuário:"  + response.mensagem)
                this.loadLogin = false
-               this.loadTela = false
+               this.loadGrid = false
                this.usuarioLogado=false
           }
 
@@ -151,7 +176,7 @@ export class DashboardComponent {
       error: (e) => {
         this.srvNotification.error("Ocorreu um erro na requisição " )
         this.loadLogin = false
-        this.loadTela = false
+        this.loadGrid = false
         this.usuarioLogado=false
       }
     })
@@ -172,15 +197,14 @@ verificarNotas(){
 
       if (this.statusProcess < 3){
         
-        this.labelLoadTela = "Verificando notas..."
-        this.loadTela = true
+        this.loadGrid = true
         let paramsNota:any = {CodEstab: this.codEstabel, CodTecnico: this.codUsuario, NrProcess: this.nrProcess}
         this.srvTotvs.ObterNotas(paramsNota).subscribe({
           next: (response: any) => {
               this.listaNFE = response.nfe
               this.listaNFS = response.nfs
               this.rpwStatus = response.rpw
-              this.loadTela = false
+              this.loadGrid = false
           },
           error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
         })

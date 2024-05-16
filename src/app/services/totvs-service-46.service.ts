@@ -86,12 +86,36 @@ obterColunasOrdens(): Array<PoTableColumn> {
                 .pipe(take(1));
   }
   
+  //---------------------- 
+  public AlterarOrdem(params?: any){
+     return this.http.post(`${this._url}/AlterarOrdem`, params, {headers:headersTotvs})
+                .pipe(take(1));
+  }
+
+  public ExcluirOrdem(params?: any){
+    return this.http.get(`${this._url}/ExcluirOrdem`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
 
   //---------------------- 
   public ObterDados(params?: any){
     return this.http.get(`${this._url}/ObterDados`, {params:params, headers:headersTotvs})
                    .pipe(take(1));
   }
+
+  //---------------------- 
+  public ObterContadores(params?: any){
+    return this.http.get(`${this._url}/ObterContadores`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+  
+  //---------------------- 
+  public ImprimirOS(params?: any){
+    return this.http.get(`${this._url}/ImprimirOS`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+  
 
   public ObterItens(params?: any){
     return this.http.get(`${this._url}/ObterItens`, {params:params, headers:headersTotvs})
