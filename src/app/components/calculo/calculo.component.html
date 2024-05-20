@@ -69,7 +69,7 @@
               <po-divider p-label="Transporte e Entrega"></po-divider>
               <div class="po-md-12">
                 <po-combo p-label="Transportadora Entrada" p-icon="bi bi-truck"
-                  [p-options]="listaTransp" p-placeholder="Selecione transportadora" [p-clean]="true"
+                  [p-options]="listaTransp" p-placeholder="Aguardade carregamento..." [p-clean]="true"
                   [ngModel]="codTransEnt" (ngModelChange)="codTransEnt = $event">
                   <ng-template p-combo-option-template let-option>
                     <div class="po-row">
@@ -84,7 +84,7 @@
               </div>
               <div class="po-md-12">
                 <po-combo p-label="Transportadora Saída" p-icon="bi bi-truck"
-                  [p-options]="listaTransp" p-placeholder="Selecione transportadora" [p-clean]="true"
+                  [p-options]="listaTransp" p-placeholder="Aguardade carregamento..." [p-clean]="true"
                   [ngModel]="codTransSai" (ngModelChange)="codTransSai = $event">
                   <ng-template p-combo-option-template let-option>
                     <div class="po-row">
@@ -101,7 +101,7 @@
 
               <div class="po-md-12">
                 <po-combo p-label="Entrega" p-icon="bi bi-pin-map" [p-options]="listaEntrega"
-                  p-placeholder="Selecione entrega" [p-clean]="true"
+                p-placeholder="Aguardade carregamento..." [p-clean]="true"
                   [ngModel]="codEntrega" (ngModelChange)="codEntrega = $event">
                   <ng-template p-combo-option-template let-option>
                     <div class="po-row">
@@ -153,9 +153,40 @@
           <div class="po-md-12">
             <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)" 
                             p-label="Tipo de Cálculo" [p-options]="options" />
+                          
           </div>
+          <div class="po-row"></div>
+            <div class="container-card">
+              <div class="card" style="background: steelblue;">
+                <div><h2>{{labelContadores[0]}}</h2><span>Visão Geral</span></div>
+                <div><button (click)="onOpenModal('VisaoGeral')">Exibir</button></div>
+              </div>
+              <div class="card" style="background: #9e3933;">
+                <div><h2>{{labelContadores[1]}}</h2><span>Pagamentos</span></div>
+                <div><button (click)="onOpenModal('Pagamentos')">Exibir</button></div>
+              </div>
+              <div class="card" style="background: green;">
+                <div><h2>{{labelContadores[2]}}</h2><span>Renovações</span></div>
+                <div><button (click)="onOpenModal('Renovacao')">Exibir</button></div>
+              </div>
+              <div class="card" style="background: green;">
+                <div><h2>{{labelContadores[3]}}</h2><span>Somente Entrada</span></div>
+                <div><button (click)="onOpenModal('Renovacao')">Exibir</button></div>
+              </div>
+              <div class="card" style="background: orange;">
+                <div><h2>{{labelContadores[4]}}</h2><span>ExtraKit</span></div>
+                <div><button (click)="onOpenModal('SemSaldo')">Exibir</button></div>
+              </div>
+              <div class="card" style="background: #9e3933;">
+                <div><h2>{{labelContadores[5]}}</h2><span>Sem Saldo</span></div>
+                <div><button (click)="onOpenModal('SemSaldo')">Exibir</button></div>
+              </div>
+            </div>
+            
+           
+       
 
-          <div class="po-md-12">
+          <!-- <div class="po-md-12">
 
           <po-widget class="po-lg-2 po-mt-2" [p-height]="150" p-primary-label="Exibir" 
               (p-primary-action)="onOpenModal('VisaoGeral')">
@@ -192,19 +223,12 @@
               <div class="po-font-subtitle po-text-center" style="color:orange">{{labelContadores[5]}}</div>
               <div class="po-text-center" style="color:orange">Sem Saldo</div>
             </po-widget>
-          </div>
-            <div class="po-row">&nbsp;</div>
-            <hr>
-            <div class="po-md-12">
-
-              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar" (p-click)="onAprovarCalculo()"
-                p-kind="primary" ></po-button>
-
-              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar Sem Gerar Saída"
-                p-kind="primary"></po-button>
-
+          </div> -->
+            
+            <div class="po-md-12" style="margin-top: 50px;">
+              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar" (p-click)="onAprovarCalculo()"></po-button>
+              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar Sem Gerar Saída"></po-button>
             </div>
-
           </po-widget>
       </po-step>
     </po-stepper>

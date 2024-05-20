@@ -43,5 +43,33 @@ div.square {
        
        
     }
+    
+      .icone {
+        /*border: solid 1px #c4c2c2;*/
+        width: 50px;
+        height: 40px;
+        font-size:32px;
+        float:left; 
+        margin: 0 5px 5px 0;
+        text-align: center; 
+
+          i{
+            color:white;
+          }
+        
+        }
+
+     .rpwInfo{
+        color:white;
+        align-content: center;
+        background: #9e3933;
+        border-radius: 3px;
+        box-shadow: 2px 20px 25px gray;
+        width: 100%;
+
+          h4{
+            color:white;
+        }
+      }
 
     

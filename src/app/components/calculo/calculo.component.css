@@ -1,0 +1,61 @@
+.icone {
+    /*border: solid 1px #c4c2c2;*/
+    width: 50px;
+    height: 40px;
+    font-size:32px;
+    float:left; 
+    margin: 0 5px 5px 0;
+    text-align: center; 
+
+      i{
+        color:white;
+      }
+    
+    }
+
+    .container-card{
+        display: flex;
+        flex: 0 0 100%;
+        justify-content: space-around;
+      }
+  
+      .card{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        justify-content:space-between;
+        align-items: center;
+        color:white;
+       /* background: #9e3933;*/
+        border-radius: 5px;
+        box-shadow: 2px 20px 25px gray;
+        height: 150px;
+        transition: transform 300ms;
+       
+          div{
+            padding: 10px;
+            h2{ color:white; text-align: center;}
+            hr{color:white}
+          }
+
+          button {
+            display: block;
+            cursor: pointer;
+            outline: none;
+            border: 1px solid white;
+            padding: 5px;
+            background-color: transparent;
+            border-radius: 10px;
+            color: white;
+            width:120px;
+            }
+
+            button:hover{
+                
+                color: black;
+                border: 1px solid black;
+                
+            }
+      }
+
+ 

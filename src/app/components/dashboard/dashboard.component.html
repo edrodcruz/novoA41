@@ -3,17 +3,25 @@
 </div>
 
 <div class="po-md-12" style="margin-bottom: 20px;">
-  <div class="po-md-6">
+  <div class="po-md-5">
     <po-button (p-click)="verificarNotas()" p-icon="bi bi-arrow-clockwise" p-tooltip="Atualizar Tela" ></po-button> &nbsp;
     <po-button  (p-click)="onImprimirConteudoArquivo()" p-icon="bi bi-bug" p-danger="true" p-tooltip="Verificar Erros"></po-button> &nbsp;
     <po-button p-label="Reprocessar" (p-click)="onAbrirArquivo()" p-icon="bi bi-calendar2-check" p-tooltip="Reprocessar Notas Fiscais"></po-button> 
     
   </div>
-  <div class="po-md-6">
-    <div class="grid-pedido-execucao square">
+  <div class="po-md-7">
+    <!-- <div class="grid-pedido-execucao square">
       <div class="icone"><i class="bi bi-exclamation-triangle-fill"></i></div>
       <div class="linha1"> RPW:  {{rpwStatus.split(';')[0]}} - {{rpwStatus.split(';')[1]}} / {{rpwStatus.split(';')[2]}}</div>
       <div class="linha2"><i> Aguardando Ação de Reprocessar Notas</i></div>
+    </div> -->
+
+    <div class="rpwInfo">
+      <div class="icone"><i class="bi bi-exclamation-triangle" ></i></div>
+      <div class="info">
+        <div><h4>RPW: {{rpwStatus.split(';')[0]}} - {{rpwStatus.split(';')[1]}} / {{rpwStatus.split(';')[2]}}</h4></div>
+        <span>Verificar erros reportados durante processamento das notas fiscais</span>
+      </div>
     </div>
   </div>
 </div>
