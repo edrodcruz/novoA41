@@ -49,16 +49,25 @@ export class DashboardComponent {
   sub!:Subscription;
 
   acaoLogin: PoModalAction = {
-    action: () => {
-      this.onLogarUsuario();
-    },
+    action: () => {this.onLogarUsuario()},
     label: 'Selecionar'
+  };
+
+
+  acaoImprimir: PoModalAction = {
+    action: () => {this.onImprimirConteudoArquivo()},
+    label: 'Gerar PDF'
+  };
+
+  acaoSair: PoModalAction = {
+    action: () => {this.abrirArquivo?.close()},
+    label: 'Imprimir via RPW'
   };
 
   ngOnInit(): void {
 
     //--- Informacoes iniciais tela
-     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL', dashboard: true, abrirMenu:true})
+     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL', dashboard: true})
 
      //--- Selecionar usuario para mostrar notas no dashboard
      this.loginModal?.open()
@@ -88,23 +97,24 @@ export class DashboardComponent {
   }
 
   onImprimirConteudoArquivo(){
-    let win = window.open('','childWindow','location=yes, menubar=yes, toolbar=yes')
-    win?.document.open()
-    win?.document.write("<html><head><meta charset='UTF-8'><title>processo-1421429.txt</title></head><style>p{ font-family: 'Courier New', Courier, monospace;font-size: 11px; }</style><body><p>")
-    win?.document.write(this.conteudoArquivo.replace(/\n/gi, '<br>'))
-    win?.document.write('</p></body></html>')
-    win?.print()
-    win?.document.close()
-    win?.close()
+    let win = window.open('', '', 'height=' + window.innerHeight + ', width=' + (window.innerWidth) +', left=0, top=0');
+        win?.document.open()
+        win?.document.write("<html><head><meta charset='UTF-8'><title>processo-1421429.txt</title></head><style>p{ font-family: 'Courier New', Courier, monospace;font-size: 12px; font-variant-numeric: tabular-nums;}</style><body><p>")
+        win?.document.write(this.conteudoArquivo.replace(/\n/gi, '<br>').replace(/\40/gi, "&nbsp;").replace(//gi, '<br>'))
+        win?.document.write('</p></body></html>')
+        win?.print()
+        win?.document.close()
+        win?.close()
+    
   }
 
   onAbrirArquivo(){
-    let params:any={nomeArquivo:'processo-1421429.txt'}
+    let params:any={nomeArquivo:'InfOS-142-84606-01527944.tmp'}
     this.loadTela=true
     this.srvTotvs.AbrirArquivo(params).subscribe({
       next: (response: any) => {
-       this.conteudoArquivo = response.arquivo //.replace(/\n/gi, '<br>')
-       
+       this.conteudoArquivo = response.arquivo.replace(/\n/gi, '<br>').replace(/\40/gi, "&nbsp;").replace(//gi, '<br>')
+
         this.loadTela=false
         this.abrirArquivo?.open()
       },
@@ -147,7 +157,9 @@ export class DashboardComponent {
                   this.tempoProcess = response.tempoProcesso
 
                   //Atualizar Informacoes Tela
-                  this.srvTotvs.EmitirParametros({estabInfo:this.codEstabel, tecInfo:this.codUsuario, processoInfo:this.nrProcess})
+                  let estab = this.listaEstabelecimentos.find(o => o.value === this.codEstabel)
+                  let tec = this.listaTecnicos.find(o => o.value === this.codUsuario)
+                  this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo: this.nrProcess})
 
                   //Colunas do grid
                     this.colunasNFE = this.srvTotvs.obterColunasEntradas()

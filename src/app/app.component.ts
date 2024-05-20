@@ -50,7 +50,7 @@ ngOnInit(): void {
       this.processoInfo = response.processoInfo ?? this.processoInfo
       this.tituloTela = response.tituloTela ?? this.tituloTela
       this.dashboard = response.dashboard ?? this.dashboard
-      this.abrirMenu = response.abrirMenu ?? false
+      this.abrirMenu = response.abrirMenu ?? true
 
       if(this.abrirMenu)
         this.menuLateral?.expand()

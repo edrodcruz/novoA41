@@ -1,6 +1,6 @@
 
 <div class="po-wrapper">
-  <po-menu [p-menus]="menus" [p-automatic-toggle]="false" [p-collapsed]="true" #menuLateral>
+  <po-menu [p-menus]="menus" [p-automatic-toggle]="false" [p-collapsed]="false" #menuLateral>
     <div *p-menu-header-template>
       <po-widget>
         <p style="color: #045B8F"><b>AUTO ATENDIMENTO</b></p>
@@ -11,7 +11,7 @@
           <p style="color: #045B8F" *ngIf="processoInfo !== ''"><i class="bi bi-clipboard-data"></i><i>&nbsp;
               {{processoInfo}}</i></p>
           <br> 
-          <div *ngIf="dashboard === true">
+          <!-- <div *ngIf="dashboard === true">
             <p style="color: #045B8F"><b>PROCESSAMENTO</b></p>
             <div *ngIf="estabInfo !== ''">
               <hr>
@@ -20,8 +20,8 @@
               <p style="color: #045B8F"><i> Notas de Saída &nbsp;</i><i class="po-icon po-icon-okn"></i></p>
               <p style="color: #045B8F"><i> Gerar Reparos &nbsp;</i><i class="po-icon po-icon-okn"></i></p>
             </div>
-            <div class="po-row">&nbsp;</div>
-          </div>
+            <div class="po-row">&nbsp;</div> 
+          </div>-->
         </div>
       </po-widget>
     </div>

@@ -34,10 +34,13 @@ div.square {
     padding: 0px 5px 5px 5px;
     
     }
-    
+
 .formatoTexto{
         font-family: 'Courier New', Courier, monospace;
         font-size: 12px;
+        /*font-feature-settings: frac;
+        font-variant-numeric: tabular-nums;*/
+       
        
     }
 

@@ -163,9 +163,6 @@ obterColunasEntradas(): Array<PoTableColumn> {
       { value: 100, color: 'color-10', label: 'Nota Atualizada Estoque', textColor:'white' },
       { value: 101, color: 'color-07', label: 'Situação desconhecida', textColor:'white' },
       
-      
-      
-
     ]},
     { property: 'cod-estabel', label:"Estab"},
     { property: 'cod-emitente', label:"Emitente"},

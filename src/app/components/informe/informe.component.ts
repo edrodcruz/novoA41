@@ -49,7 +49,10 @@ export class InformeComponent {
 
 
     @ViewChild('gridOrdens', { static: true }) gridOrdens: PoTableComponent | undefined;
+    
+    @ViewChild(PoAccordionComponent, { static: true }) principal!: PoAccordionComponent;
     @ViewChild(PoAccordionItemComponent, { static: true }) item1!: PoAccordionItemComponent;
+    @ViewChild(PoAccordionItemComponent, { static: true }) item2!: PoAccordionItemComponent;
 
    //Formulario
    public form = this.formBuilder.group({
@@ -158,12 +161,15 @@ export class InformeComponent {
   ngOnInit(): void {
 
     //--- Titulo Tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA46 - INFORME DE OS', dashboard: false, abrirMenu:false})
+    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA46 - INFORME DE OS', dashboard: false})
 
 
     //Colunas do grid
     this.colunasOrdens = this.srvTotvs46.obterColunasOrdens()
     this.colunasItens = this.srvTotvs46.obterColunasItems()
+
+    //this.principal.expandAllItems()
+    this.item1.expand()
 
     //Carregar combo de estabelecimentos
     this.srvTotvs46.ObterEstabelecimentos().subscribe({
@@ -176,10 +182,6 @@ export class InformeComponent {
         return
       },
     });
-
-    //Expandir guia 1
-    this.item1.expand();
-
   }
 
   onImpressao() {
@@ -327,7 +329,10 @@ export class InformeComponent {
     let params:any={codEstabel: this.form.controls.codEstabel.value, codUsuario: this.form.controls.codUsuario.value, senha: this.form.controls.senha.value}
     this.srvTotvs46.ObterDados(params).subscribe({
       next: (response: any) => {
-        this.item1.label = `Estabelecimento: ${this.form.controls.codEstabel.value} - Técnico: ${this.form.controls.codUsuario.value}`
+        let estab = this.listaEstabelecimentos.find(o => o.value === this.form.controls.codEstabel.value)
+        let tec = this.listaTecnicos.find(o => o.value === this.form.controls.codUsuario.value)
+        this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label})
+
         this.cTag=response.tela[0].os
         this.mostrarDados = true
         this.listaOrdens = response.ordens
@@ -337,7 +342,21 @@ export class InformeComponent {
         this.cUsadas = response.tela[0].usada
         this.cBrancas = response.tela[0].branco
         this.cTotal = response.tela[0].TOTAL
-        this.item1.collapse()
+        this.principal.poAccordionItems.forEach(x=> x.label === 'Informações do Técnico' ? x.collapse() : x.expand())
+
+        //Parametros da Nota
+        let paramsTec:any = {codEstabel: this.form.controls.codEstabel.value, codTecnico: this.form.controls.codUsuario.value}
+                  
+        //Chamar Método 
+        this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
+          next: (response: any) => {
+              //Atualizar Informacoes Tela
+              this.srvTotvs.EmitirParametros({processoInfo:response.nrProcesso})
+          },
+          error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+        })
+
+
         this.loadTela = false
       },
       error: (e) => {
@@ -363,7 +382,9 @@ export class InformeComponent {
   }
 
   resetarVariaveis(){
-      this.item1.label = 'Informações do Técnico'
+     // this.item1.label = 'Informações do Técnico'
+     this.srvTotvs.EmitirParametros({estabInfo: '', tecInfo:'', processoInfo:''})
+
       this.listaOrdens = []
       this.listaItens=[]
       this.edObservacao=''

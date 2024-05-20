@@ -5,7 +5,7 @@
 <div class="po-md-12" style="margin-bottom: 20px;">
   <div class="po-md-6">
     <po-button (p-click)="verificarNotas()" p-icon="bi bi-arrow-clockwise" p-tooltip="Atualizar Tela" ></po-button> &nbsp;
-    <po-button  (p-click)="onAbrirArquivo()" p-icon="bi bi-bug" p-danger="true" p-tooltip="Verificar Erros"></po-button> &nbsp;
+    <po-button  (p-click)="onImprimirConteudoArquivo()" p-icon="bi bi-bug" p-danger="true" p-tooltip="Verificar Erros"></po-button> &nbsp;
     <po-button p-label="Reprocessar" (p-click)="onAbrirArquivo()" p-icon="bi bi-calendar2-check" p-tooltip="Reprocessar Notas Fiscais"></po-button> 
     
   </div>
@@ -94,14 +94,16 @@
 </po-modal>
 
 <po-modal #abrirArquivo  p-title="processo-1421429.txt" 
-          p-size="lg" 
-          p-click-out="false" >
-         
-          <!--div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>-->
-          <po-textarea [(ngModel)]="conteudoArquivo" [p-rows]="30"></po-textarea>
+          p-size="xl" 
+          p-click-out="false" 
+          [p-primary-action]="acaoSair" 
+          [p-secondary-action]="acaoImprimir" >
 
-         
-          <po-button p-label="imprimir" (p-click)="onImprimirConteudoArquivo()"></po-button>
+          <!-- <po-button p-label="Gerar PDF" p-kind="primary" (p-click)="onImprimirConteudoArquivo()"></po-button> -->
+          <div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div> 
+          
+         <!--    <po-textarea [(ngModel)]="conteudoArquivo" [p-rows]="15"></po-textarea>-->
+          
           
 </po-modal>
 
