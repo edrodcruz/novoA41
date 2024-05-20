@@ -38,13 +38,12 @@
 
   div.square {
     /*border: solid 1px #c4c2c2;*/
-    
-    border-radius: 3px;
     width: 50px;
     height: 40px;
     float:left; 
+    margin-top: 5px;
     text-align: center; 
-    padding: 13px 10px 13px 9px;
+    
     }
 
     
@@ -62,8 +61,8 @@
         border-radius: 5px;
         background: linear-gradient(90deg,#ebeef0 0%, #f7f7f7 100%);
         transition: transform 300ms;
-        height: 65px;
-        padding-top: 10px;
+        height: 75px;
+        align-content: center;
       }
 
       & i{ font-size: 32px;}
@@ -74,6 +73,7 @@
         transform: translateY(-5px);
         background: #045B8F;
         border-radius: 5px;
+        box-shadow: 2px 20px 25px gray;
 
         & i{
           color:white
