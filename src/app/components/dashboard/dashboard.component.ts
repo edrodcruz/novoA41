@@ -36,6 +36,7 @@ export class DashboardComponent {
   loadTecnico: string = ''
   placeHolderEstabelecimento:string=''
   conteudoArquivo:string=''
+  mostrarInfo:boolean=false
 
   //ListasCombo
   listaEstabelecimentos!: any[]
@@ -171,7 +172,7 @@ export class DashboardComponent {
                   this.item1.expand()
 
                   //Setar o tempo para o relogio 
-                  this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
+                  //this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
               },
               error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
             })

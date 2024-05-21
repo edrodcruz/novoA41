@@ -155,31 +155,31 @@
                             p-label="Tipo de Cálculo" [p-options]="options" />
                           
           </div>
-          <div class="po-row"></div>
+          <div class="po-row" style="margin-bottom: 30px;"></div>
             <div class="container-card">
-              <div class="card" style="background: steelblue;">
+              <div class="card blue">
                 <div><h2>{{labelContadores[0]}}</h2><span>Visão Geral</span></div>
-                <div><button (click)="onOpenModal('VisaoGeral')">Exibir</button></div>
+                <div><button (click)="onOpenModal('VisaoGeral')" class="btnblue">Exibir</button></div>
               </div>
-              <div class="card" style="background: #9e3933;">
+              <div class="card red">
                 <div><h2>{{labelContadores[1]}}</h2><span>Pagamentos</span></div>
-                <div><button (click)="onOpenModal('Pagamentos')">Exibir</button></div>
+                <div><button (click)="onOpenModal('Pagamentos')" class="btnred">Exibir</button></div>
               </div>
-              <div class="card" style="background: green;">
+              <div class="card green">
                 <div><h2>{{labelContadores[2]}}</h2><span>Renovações</span></div>
-                <div><button (click)="onOpenModal('Renovacao')">Exibir</button></div>
+                <div><button (click)="onOpenModal('Renovacao')" class="btngreen">Exibir</button></div>
               </div>
-              <div class="card" style="background: green;">
+              <div class="card green">
                 <div><h2>{{labelContadores[3]}}</h2><span>Somente Entrada</span></div>
-                <div><button (click)="onOpenModal('Renovacao')">Exibir</button></div>
+                <div><button (click)="onOpenModal('Renovacao')" class="btngreen">Exibir</button></div>
               </div>
-              <div class="card" style="background: orange;">
+              <div class="card orange">
                 <div><h2>{{labelContadores[4]}}</h2><span>ExtraKit</span></div>
-                <div><button (click)="onOpenModal('SemSaldo')">Exibir</button></div>
+                <div><button (click)="onOpenModal('SemSaldo')" class="btnorange">Exibir</button></div>
               </div>
-              <div class="card" style="background: #9e3933;">
+              <div class="card red">
                 <div><h2>{{labelContadores[5]}}</h2><span>Sem Saldo</span></div>
-                <div><button (click)="onOpenModal('SemSaldo')">Exibir</button></div>
+                <div><button (click)="onOpenModal('SemSaldo')" class="btnred">Exibir</button></div>
               </div>
             </div>
             

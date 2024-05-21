@@ -16,7 +16,7 @@
       <div class="linha2"><i> Aguardando Ação de Reprocessar Notas</i></div>
     </div> -->
 
-    <div class="rpwInfo">
+    <div class="rpwInfo" *ngIf="mostrarInfo===true">
       <div class="icone"><i class="bi bi-exclamation-triangle" ></i></div>
       <div class="info">
         <div><h4>RPW: {{rpwStatus.split(';')[0]}} - {{rpwStatus.split(';')[1]}} / {{rpwStatus.split(';')[2]}}</h4></div>
