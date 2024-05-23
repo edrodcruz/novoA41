@@ -162,6 +162,9 @@ obterColunasEntradas(): Array<PoTableColumn> {
       { value: 99, color: 'color-08', label: 'Aguard.Proc.re1005rp', textColor:'white' },
       { value: 100, color: 'color-10', label: 'Nota Atualizada Estoque', textColor:'white' },
       { value: 101, color: 'color-07', label: 'Situação desconhecida', textColor:'white' },
+      { value: 102, color: 'color-07', label: 'ERRO verificar pendências', textColor:'white' },
+      { value: 103, color: 'color-08', label: 'Aguardando Reprocessamento', textColor:'white' },
+      
       
     ]},
     { property: 'cod-estabel', label:"Estab"},
@@ -191,8 +194,9 @@ obterColunasSaidas(): Array<PoTableColumn> {
       { value: 13, color: 'color-08', label: 'NF-e em Processo de Inutilizacao', textColor:'white' },
       { value: 14, color: 'color-08', label: 'NF-e Pendente de Retorno', textColor:'white' },
       { value: 15, color: 'color-07', label: 'DPEC recebido pelo SCE', textColor:'white' },
-      { value: 99, color: 'color-07', label: 'Aguardando Proc Nota Entrada', textColor:'white' },
-      { value: 100, color: 'color-10', label: 'Nota Atualizada Estoque', textColor:'white'}
+      { value: 99, color: 'color-08', label: 'Aguardando Nota Entrada', textColor:'white' },
+      { value: 100, color: 'color-10', label:'Nota Atualizada Estoque', textColor:'white'},
+      { value: 102, color: 'color-07', label: 'ERRO verificar pendências', textColor:'white' },
     ]},
     { property: 'cod-estabel', label:"Estab"},
     { property: 'serie', label:"Série"},
@@ -214,6 +218,14 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
     { property: 'serie-docto', label:"Serie"},
     { property: 'nro-docto', label:"Docto"},
     { property: 'nat-operacao', label:"Nat.Oper"}
+  ]
+}
+
+obterColunasErrosProcessamento(): Array<PoTableColumn>{
+  return [
+    {property: 'nomeArquivo', label: "Arquivo"},
+    {property: 'mensagemErro', label: "Mensagem"},
+   
   ]
 }
 
@@ -289,6 +301,19 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
     return this.http.post(`${this._url}/PrepararCalculo`, params, {headers:headersTotvs})
                    .pipe(take(1));
   }
+
+    //---------------------- Resumo
+    public AprovarCalculo(params?: any){
+      return this.http.post(`${this._url}/AprovarCalculo`, params, {headers:headersTotvs})
+                     .pipe(take(1));
+    }
+
+     //---------------------- Resumo
+     public ReprocessarCalculo(params?: any){
+      return this.http.post(`${this._url}/ReprocessarCalculo`, params, {headers:headersTotvs})
+                     .pipe(take(1));
+    }
+  
 
     //---------------------- Processar Entradas
     public ProcessarEntradas(params?: any){

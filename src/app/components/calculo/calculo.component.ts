@@ -233,6 +233,7 @@ readonly acaoLogar: PoModalAction = {
 
   //--------------- onChange do RadioGroud Tipo de Calculo
   onTipoCalculo(event: any) {
+    this.tipoCalculo = event
     if (this.listaResumo.length > 0){
        if (event === "1" )
           this.itemsResumo = this.listaResumo
@@ -580,12 +581,29 @@ readonly acaoLogar: PoModalAction = {
       confirm: () => {
         this.labelLoadTela = "Gerando execução RPW..."
         this.loadTela = true
-        setTimeout(() =>
-        { this.loadTela = false
-          this.srvNotification.success('Execução do cálculo realizada com sucesso ! Processo RPW: 1010202000')
-          this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:''})
-          this.stepper?.first()
-        }, 3000)
+        
+        let params:any={paramsTela: {
+                          opcao: this.tipoCalculo,         
+                          codEstab: this.codEstabelecimento,     
+                          codEmitente: this.codTecnico,  
+                          nrProcess:  this.processoInfo,    
+                          serieEntra: this.serieEntra,    
+                          serieSai:  this.serieSaida,     
+                          codTranspEntra: this.codTransEnt,
+                          codTranspSai: this.codTransSai,  
+                          codEntrega:  this.codEntrega   
+        }}
+
+        this.srvTotvs.AprovarCalculo(params).subscribe({
+          next: (response: any) => {
+            console.log("aprovar calculo", response)
+            this.loadTela=false
+            this.srvNotification.success('Execução do cálculo realizada com sucesso ! Processo RPW: ' + response.rpw)
+            this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:''})
+            this.stepper?.first()
+          },
+          error:(e)=>{this.loadTela=false}
+        })
       },
       cancel: () => this.srvNotification.error("Cancelada pelo usuário")
     })}
