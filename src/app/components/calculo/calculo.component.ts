@@ -140,8 +140,6 @@ readonly acaoLogar: PoModalAction = {
     //--- Titulo Tela
     this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DE CÁLCULO', dashboard: false})
 
-
-
     //--- Tempo padrao notificacao
     this.srvNotification.setDefaultDuration(3000)
 
@@ -189,7 +187,17 @@ readonly acaoLogar: PoModalAction = {
          //Atualizar informações do Técnico e Estabelecimento
          let estab = this.listaEstabelecimentos.find(o => o.value === this.codEstabelecimento)
          let tec = this.listaTecnicos.find(o => o.value === this.codTecnico)
-         this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo: this.processoInfo})
+         
+         //Obter as informacoes do Processo
+         let paramsTec:any = {codEstabel: this.codEstabelecimento, codTecnico: this.codTecnico}
+         //Chamar Método 
+         this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
+           next: (response: any) => {
+               this.processoInfo = response.nrProcesso
+               this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso})
+           },
+           error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+         })
 
          //Setar Valores Padrao
          this.srvTotvs

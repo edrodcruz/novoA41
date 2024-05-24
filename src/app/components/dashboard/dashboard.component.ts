@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {
+  PoAccordionComponent,
   PoAccordionItemComponent,
   PoDialogService,
   PoModalAction,
@@ -25,8 +26,9 @@ export class DashboardComponent {
   @ViewChild('abrirArquivo', { static: true }) abrirArquivo:
     | PoModalComponent
     | undefined;
-  @ViewChild(PoAccordionItemComponent, { static: true })
-  item1!: PoAccordionItemComponent;
+    @ViewChild(PoAccordionComponent, { static: true }) principal!: PoAccordionComponent;
+    @ViewChild(PoAccordionItemComponent, { static: true }) item1!: PoAccordionItemComponent;
+    @ViewChild(PoAccordionItemComponent, { static: true }) item2!: PoAccordionItemComponent;
 
   //---Injection
   private srvTotvs = inject(TotvsService);
@@ -177,8 +179,6 @@ export class DashboardComponent {
         //Chamar o programa de verificacao
         this.verificarNotas();
 
-        this.item1.expand();
-
         //Setar o tempo para o relogio
         //this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
       },
@@ -205,6 +205,19 @@ export class DashboardComponent {
           console.log(response)
           this.listaNFE = response.nfe;
           this.listaNFS = response.nfs;
+
+          //Atualizar tela
+         
+          this.principal.poAccordionItems.forEach(x=> {
+            if (x.label.startsWith('Notas Fiscais de ENTRADA'))
+              x.label = `Notas Fiscais de ENTRADA (${response.nfe.length})`
+            else if (x.label.startsWith('Notas Fiscais de SAÍDA'))
+              x.label = `Notas Fiscais de SAÍDA (${response.nfs.length})`
+            else
+              x.label = `Log Erros (${response.erros.length})`
+          })
+
+
           this.rpwStatus = response.rpw;
           this.listaErros = response.erros;
           this.cRPW = `RPW: ${response.rpw[0].numPedExecucao} (${response.rpw[0].situacaoExecucao} / ${response.rpw[0].motivoExecucao})`;
@@ -215,17 +228,7 @@ export class DashboardComponent {
           if (response.rpw[0].situacaoExecucao === '')
             this.esconderPainel()
           else{
-            if (response.rpw[0].situacaoExecucao === 'Executado'){
-
-              if (response.rpw[0].motivoExecucao === 'Execução com Sucesso'){
-                if (this.listaNFE.filter((x) => x['idi-sit'] === 102).length > 0)
-                    this.aplicarCorPainel('erro');
-                else
-                    this.aplicarCorPainel('ok')
-              }
-            }
-            else
-              this.aplicarCorPainel('info')
+            this.aplicarCorPainel(response.rpw[0].mensagemTela)
           }
           this.loadTela = false;
         },
@@ -237,7 +240,6 @@ export class DashboardComponent {
     }
   }
 
-  
   onReprocessarNotas() {
     this.srvDialog.confirm({
       title: 'REPROCESSAR NOTAS',
@@ -256,13 +258,12 @@ export class DashboardComponent {
 
         this.srvTotvs.ReprocessarCalculo(params).subscribe({
           next: (response: any) => {
-            console.log('ReprocessarNotas', response)
-            this.loadTela = false
             this.srvNotification.success('Execução do cálculo realizada com sucesso ! Processo RPW: ' + response.rpw)
 
             setTimeout(() => {
+              //Atualizar tela logo apos enviar o processamento
               this.verificarNotas()
-            }, 2000);
+            }, 1000);
           },
           error: (e) => {
             this.srvNotification.error('Ocorreu um erro na requisição')
@@ -280,7 +281,7 @@ export class DashboardComponent {
     //Popular o Combo do Emitente
     this.listaTecnicos = [];
     this.codUsuario = '';
-    this.loadTecnico = `Populando técnicos do estab ${obj} ...`
+    this.loadTecnico = `Populando técnicos estab: ${obj} ...`
 
     //Chamar servico
     this.srvTotvs.ObterEmitentesDoEstabelecimento(obj).subscribe({

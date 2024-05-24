@@ -22,24 +22,24 @@
 </div>
 
 <div class="po-md-12">
-  <po-accordion>
+  <po-accordion #principal p-allow-expand-all-items="false" p-show-manager-accordion="false">
     <po-accordion-item p-label="Log de Erros">
       <po-widget>
-        <po-table [p-items]="listaErros" [p-striped]="true" [p-sort]="true" [p-height]="300"
+        <po-table [p-items]="listaErros" [p-striped]="true" [p-sort]="true" 
           [p-actions]="acoesGridErro" [p-columns]="colunasErro" [p-hide-table-search]="true"
           [p-hide-columns-manager]="true" />
       </po-widget>
     </po-accordion-item>
 
-    <po-accordion-item p-label="Notas Fiscais de ENTRADA" #item1>
+    <po-accordion-item #item1 p-label="Notas Fiscais de ENTRADA" p-tooltip="1">
       <po-widget>
-        <po-table [p-items]="listaNFE" [p-striped]="true" [p-sort]="true" [p-height]="300"
+        <po-table [p-items]="listaNFE" [p-striped]="true" [p-sort]="true" 
           [p-columns]="colunasNFE" [p-hide-table-search]="true" [p-hide-columns-manager]="true" />
       </po-widget>
     </po-accordion-item>
-    <po-accordion-item p-label="Notas Fiscais de SAÍDA">
+    <po-accordion-item #item2 p-label="Notas Fiscais de SAÍDA" p-tooltip="2">
       <po-widget>
-        <po-table [p-items]="listaNFS" [p-striped]="true" [p-sort]="true" [p-height]="300"
+        <po-table [p-items]="listaNFS" [p-striped]="true" [p-sort]="true" 
           [p-columns]="colunasNFS" [p-hide-table-search]="true" [p-hide-columns-manager]="true" />
       </po-widget>
     </po-accordion-item>
