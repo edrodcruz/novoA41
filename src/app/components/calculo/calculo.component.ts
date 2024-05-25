@@ -5,6 +5,7 @@ import { catchError, delay, elementAt } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ExcelService } from '../../services/excel-service.service';
 import { TotvsServiceMock } from '../../services/totvs-service-mock.service';
+import { Usuario } from 'src/app/interfaces/usuario';
 
 
 @Component({
@@ -138,7 +139,21 @@ readonly acaoLogar: PoModalAction = {
   ngOnInit(): void {
 
     //--- Titulo Tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DE CÁLCULO', dashboard: false})
+    this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - PARÂMETROS DE CÁLCULO'})
+
+    //--- Login Unico
+    this.srvTotvs.ObterUsuario().subscribe({
+      next:(response:Usuario)=>{
+        console.log("calculo",response)
+        if (response === undefined){
+          this.srvTotvs.EmitirParametros({estabInfo:''})
+        }
+        else{
+          this.codEstabelecimento = response.codEstabelecimento
+          this.codUsuario = response.codUsuario
+          this.processoInfo  = response.nrProcesso
+          
+      }}})
 
     //--- Tempo padrao notificacao
     this.srvNotification.setDefaultDuration(3000)
@@ -187,6 +202,8 @@ readonly acaoLogar: PoModalAction = {
          //Atualizar informações do Técnico e Estabelecimento
          let estab = this.listaEstabelecimentos.find(o => o.value === this.codEstabelecimento)
          let tec = this.listaTecnicos.find(o => o.value === this.codTecnico)
+
+         
          
          //Obter as informacoes do Processo
          let paramsTec:any = {codEstabel: this.codEstabelecimento, codTecnico: this.codTecnico}
@@ -194,7 +211,10 @@ readonly acaoLogar: PoModalAction = {
          this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
            next: (response: any) => {
                this.processoInfo = response.nrProcesso
-               this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso})
+               this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
+              
+               //Setar usuario
+               this.srvTotvs.SetarUsuario(this.codEstabelecimento, this.codUsuario, response.nrProcesso)
            },
            error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
          })

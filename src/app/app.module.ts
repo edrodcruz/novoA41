@@ -14,6 +14,9 @@ import { CalculoComponent } from './components/calculo/calculo.component';
 import { HomeComponent } from './components/home/home.component';
 import { InformeComponent } from './components/informe/informe.component';
 import { ParamestabComponent } from './components/paramestab/paramestab.component';
+import { EmbalagemComponent } from './components/embalagem/embalagem.component';
+import { ReparosComponent } from './components/reparos/reparos.component';
+import { SeletorComponent } from './components/seletor/seletor.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { ParamestabComponent } from './components/paramestab/paramestab.componen
     CalculoComponent,
     HomeComponent,
     InformeComponent,
-    ParamestabComponent
+    ParamestabComponent,
+    EmbalagemComponent,
+    ReparosComponent,
+    SeletorComponent
   ],
   imports: [
     BrowserModule,

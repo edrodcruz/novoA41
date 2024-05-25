@@ -25,6 +25,7 @@ import { TotvsService46 } from '../../services/totvs-service-46.service';
     Validators,
   } from '@angular/forms';
 import { TotvsService } from 'src/app/services/totvs-service.service';
+import { Usuario } from 'src/app/interfaces/usuario';
 
 
 @Component({
@@ -161,7 +162,19 @@ export class InformeComponent {
   ngOnInit(): void {
 
     //--- Titulo Tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA46 - INFORME DE OS', dashboard: false})
+    this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA46 - INFORME DE OS'})
+
+    //--- Login Unico
+    this.srvTotvs.ObterUsuario().subscribe({
+      next:(response:Usuario)=>{
+        console.log("calculo",response)
+        if (response === undefined){
+          this.srvTotvs.EmitirParametros({estabInfo:''})
+        }
+        else{
+          this.formOrdem.controls.codEmitente.setValue(Number(response.codEstabelecimento))
+          this.formOrdem.controls.codEstabel.setValue(response.codUsuario)
+      }}})
 
 
     //Colunas do grid
@@ -344,14 +357,21 @@ export class InformeComponent {
         this.cTotal = response.tela[0].TOTAL
         this.principal.poAccordionItems.forEach(x=> x.label === 'Informações do Técnico' ? x.collapse() : x.expand())
 
+         
+
         //Parametros da Nota
         let paramsTec:any = {codEstabel: this.form.controls.codEstabel.value, codTecnico: this.form.controls.codUsuario.value}
                   
         //Chamar Método 
         this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
           next: (response: any) => {
+
+              //Setar usuario
+              this.srvTotvs.SetarUsuario(this.form.controls.codEstabel.value!, this.form.controls.codUsuario.value!, response.nrProcesso)
+
               //Atualizar Informacoes Tela
-              this.srvTotvs.EmitirParametros({processoInfo:response.nrProcesso})
+              this.srvTotvs.EmitirParametros({processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
+             
           },
           error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
         })

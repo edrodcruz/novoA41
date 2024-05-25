@@ -5,11 +5,12 @@
        <div style="min-height: 50px;">
         <p style="color: white; text-align: center;padding-top: 15px" ><b>AUTO ATENDIMENTO</b></p>
         <hr>
-        <div *ngIf="estabInfo !== ''" style="margin-left: 10px; padding-bottom: 20px;">
-          <p style="color: white"><i class="bi bi-pin-map"></i><i>&nbsp; {{estabInfo}}</i></p>
-          <p style="color: white"><i class="bi bi-person-workspace"></i><i>&nbsp; {{tecnicoInfo}}</i></p>
-          <p style="color: white" *ngIf="processoInfo !== ''"><i class="bi bi-clipboard-data"></i><i>&nbsp;
-              {{processoInfo}}</i></p>
+        <div *ngIf="estabInfo !== ''" class="painelProcess">
+          <p><i class="bi bi-pin-map"></i>&nbsp;{{estabInfo}}</p>
+          <p><i class="bi bi-person-workspace"></i>&nbsp;{{tecnicoInfo}}</p>
+          <p *ngIf="processoInfo !== ''"><i class="bi bi-clipboard-data"></i>&nbsp;{{processoInfo}}</p>
+          <p class="infoProcess" *ngIf="processoInfo !== ''">
+             <i>{{processoSituacao}}</i></p>
           
           <!-- <div *ngIf="dashboard === true">
             <p style="color: #045B8F"><b>PROCESSAMENTO</b></p>
@@ -30,6 +31,8 @@
 
   <po-page-default>
     <router-outlet></router-outlet>
+
+   
   </po-page-default>
 
 </div>

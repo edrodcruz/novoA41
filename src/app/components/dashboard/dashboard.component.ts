@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   PoAccordionComponent,
   PoAccordionItemComponent,
@@ -10,6 +11,7 @@ import {
   PoTableColumn,
 } from '@po-ui/ng-components';
 import { Subscription, delay, interval } from 'rxjs';
+import { Usuario } from 'src/app/interfaces/usuario';
 import { TotvsServiceMock } from 'src/app/services/totvs-service-mock.service';
 import { TotvsService } from 'src/app/services/totvs-service.service';
 
@@ -34,20 +36,24 @@ export class DashboardComponent {
   private srvTotvs = inject(TotvsService);
   private srvNotification = inject(PoNotificationService);
   private srvDialog = inject(PoDialogService);
+  private router = inject(Router)
 
   //---Variaveis
   tabNFE: boolean = true;
   codEstabel: string = '';
   codUsuario: string = '';
+
   rpwStatus!: {
-    mensagemTela: string;
-    motivoExecucao: string;
-    numPedExecucao: string;
-    situacaoExecucao: string;
+    mensagemTela: string,
+    motivoExecucao: string,
+    numPedExecucao: string,
+    situacaoExecucao: string,
+    mensagemRPW:string,
   };
   cRPW: string = '';
+  cMensagemErroRPW=''
   infoTela: string = '';
-  nrProcess: number = 0;
+  nrProcess: string = '';
   statusProcess: number = 0;
   tempoProcess: number = 0;
   senha: string = '';
@@ -74,7 +80,7 @@ export class DashboardComponent {
 
   acaoLogin: PoModalAction = {
     action: () => {
-      this.onLogarUsuario();
+      this.LogarUsuario();
     },
     label: 'Selecionar',
   };
@@ -107,88 +113,36 @@ export class DashboardComponent {
 
     this.esconderPainel();
     //--- Informacoes iniciais tela
-    this.srvTotvs.EmitirParametros({
-      estabInfo: '',
-      tecInfo: '',
-      processoInfo: '',
-      tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL',
-      dashboard: true,
-    });
+    this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL'});
 
-    //--- Selecionar usuario para mostrar notas no dashboard
-    this.loginModal?.open();
+    //Colunas grids
+    this.colunasNFE = this.srvTotvs.obterColunasEntradas();
+    this.colunasNFS = this.srvTotvs.obterColunasSaidas();
+    this.colunasErro = this.srvTotvs.obterColunasErrosProcessamento();
 
-    //--- Carregar combo de estabelecimentos
-    this.placeHolderEstabelecimento = 'Aguarde, carregando lista...';
-    this.srvTotvs.ObterEstabelecimentos().subscribe({
-      next: (response: any) => {
-        this.listaEstabelecimentos = (response as any[]).sort(
-          this.srvTotvs.ordenarCampos(['label'])
-        );
-        this.placeHolderEstabelecimento = 'Selecione um estabelecimento';
-      },
-      error: (e) => {
-        this.srvNotification.error('Ocorreu um erro na requisição');
-        return;
-      },
-    });
+    //Login Unico
+    this.srvTotvs.ObterUsuario().subscribe({
+      next:(response:Usuario)=>{
+        
+        if (response === undefined){
+          this.LogarUsuario()
+        }
+        else{
+          this.codEstabel = response.codEstabelecimento
+          this.codUsuario = response.codUsuario
+          this.nrProcess  = response.nrProcesso
+          this.usuarioLogado = true
+          this.verificarNotas()
+       }
+      }
+    })
   }
 
-  onLogarUsuario() {
-    if (this.codEstabel === '' || this.codUsuario === '') {
-      this.srvNotification.error('Seleção inválida, verifique !');
-      return;
-    }
 
-    //Fechar a tela de login
-    this.loginModal?.close();
-    this.loadTela = true;
-
-    //Parametros da Nota
-    let paramsTec: any = {
-      codEstabel: this.codEstabel,
-      codTecnico: this.codUsuario,
-    };
-
-    //Setar usuario como logado
-    this.usuarioLogado = true;
-
-    //Chamar Método
-    this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
-      next: (response: any) => {
-        this.nrProcess = response.nrProcesso;
-        this.statusProcess = response.statusProcesso;
-        this.tempoProcess = response.tempoProcesso;
-
-        //Atualizar Informacoes Tela
-        let estab = this.listaEstabelecimentos.find(
-          (o) => o.value === this.codEstabel
-        );
-        let tec = this.listaTecnicos.find((o) => o.value === this.codUsuario);
-        this.srvTotvs.EmitirParametros({
-          estabInfo: estab.label,
-          tecInfo: tec.label,
-          processoInfo: this.nrProcess,
-        });
-
-        //Colunas do grid
-        this.colunasNFE = this.srvTotvs.obterColunasEntradas();
-        this.colunasNFS = this.srvTotvs.obterColunasSaidas();
-        this.colunasErro = this.srvTotvs.obterColunasErrosProcessamento();
-
-        //Chamar o programa de verificacao
-        this.verificarNotas();
-
-        //Setar o tempo para o relogio
-        //this.sub = interval(this.tempoProcess).subscribe(execucao=> this.verificarNotas())
-      },
-      error: (e) => {
-        this.srvNotification.error('Ocorreu um erro na requisição');
-        return;
-      },
-    });
-  }
-
+LogarUsuario() {
+   this.router.navigate(['seletor'], {queryParams:{redirectTo:'dashboard'}}) 
+}
+  
   verificarNotas() {
     
     if (!this.usuarioLogado) {
@@ -214,12 +168,13 @@ export class DashboardComponent {
             else if (x.label.startsWith('Notas Fiscais de SAÍDA'))
               x.label = `Notas Fiscais de SAÍDA (${response.nfs.length})`
             else
-              x.label = `Log Erros (${response.erros.length})`
+              x.label = `Logs do Processo (${response.erros.length})`
           })
 
 
           this.rpwStatus = response.rpw;
           this.listaErros = response.erros;
+          this.cMensagemErroRPW = response.rpw[0].mensagemRPW
           this.cRPW = `RPW: ${response.rpw[0].numPedExecucao} (${response.rpw[0].situacaoExecucao} / ${response.rpw[0].motivoExecucao})`;
           //this.infoTela = response.rpw[0].mensagemTela;
 
@@ -275,24 +230,7 @@ export class DashboardComponent {
     });
   }
 
-  public onEstabChange(obj: string) {
-    if (obj === undefined) return;
-
-    //Popular o Combo do Emitente
-    this.listaTecnicos = [];
-    this.codUsuario = '';
-    this.loadTecnico = `Populando técnicos estab: ${obj} ...`
-
-    //Chamar servico
-    this.srvTotvs.ObterEmitentesDoEstabelecimento(obj).subscribe({
-      next: (response: any) => {
-        this.listaTecnicos = response;
-        this.loadTecnico = 'Selecione o técnico'
-      },
-      error: (e) =>
-        this.srvNotification.error('Ocorreu um erro na requisição '),
-    });
-  }
+ 
 
   aplicarCorPainel(cor: string) {
     const elemento: HTMLInputElement | null = document.querySelector(

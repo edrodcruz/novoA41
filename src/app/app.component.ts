@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
-import { PoMenuComponent, PoMenuItem } from '@po-ui/ng-components';
+import { PoMenuComponent, PoMenuItem, PoModalAction, PoModalComponent, PoNotificationService } from '@po-ui/ng-components';
 import { TotvsServiceMock } from './services/totvs-service-mock.service';
 import { Subscription } from 'rxjs';
 import { TotvsService } from './services/totvs-service.service';
@@ -12,7 +12,9 @@ import { TotvsService } from './services/totvs-service.service';
 })
 export class AppComponent {
 
-private srvTotvs = inject(TotvsService)
+  private srvTotvs = inject(TotvsService)
+
+
 @ViewChild('menuLateral', { static: true }) menuLateral: PoMenuComponent | undefined;
 
 
@@ -23,47 +25,49 @@ private srvTotvs = inject(TotvsService)
   { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data', link:'/informe'   , shortLabel:'Informe'},
   { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'    , link:'/calculo'   , shortLabel:'Cálculo'},
   { label: 'Entradas e Saídas'         , icon: 'bi bi-archive'       , link:'/dashboard' , shortLabel:'Notas'},
-  { label: 'Info Embalagem NF'         , icon: 'bi bi-box2'          , link:'/nfs'       , shortLabel:'Fim NFS'},
-  { label: 'Criar Reparos'             , icon: 'bi bi-tools'         , link:'/reparos'   , shortLabel:'Fim Rep'}
+  { label: 'Embalagem NF'              , icon: 'bi bi-box2'          , link:'/embalagem' , shortLabel:'Embalagem'},
+  { label: 'Criar Reparos'             , icon: 'bi bi-tools'         , link:'/reparos'   , shortLabel:'Reparos'}
 ];
 
 //------ Label de menu principal
 tecnicoInfo!: string
 estabInfo!: string
 processoInfo!: string
+processoSituacao!:string
 tituloTela!:string
 dashboard:boolean=false
 abrirMenu:boolean=false
+abrirSeletor:boolean=false
 
 private sub!: Subscription
 
 constructor(private cdRef : ChangeDetectorRef){
-
 }
 
 
 ngOnInit(): void {
-  this.sub = this.srvTotvs.ObterParametros().subscribe({
+  this.sub = this.srvTotvs.EnviarParametros().subscribe({
     next: (response: any) => {
       this.estabInfo = response.estabInfo ?? this.estabInfo
       this.tecnicoInfo = response.tecInfo ?? this.tecnicoInfo
       this.processoInfo = response.processoInfo ?? this.processoInfo
+      this.processoSituacao = response.processoSituacao ?? this.processoSituacao
       this.tituloTela = response.tituloTela ?? this.tituloTela
       this.dashboard = response.dashboard ?? this.dashboard
       this.abrirMenu = response.abrirMenu ?? true
+      this.abrirSeletor = response.selecionarUsuario ?? false
 
       if(this.abrirMenu)
         this.menuLateral?.expand()
       else
         this.menuLateral?.collapse()
-
       this.cdRef.detectChanges()
     }})
 }
 
+
 ngOnDestroy(): void{
   this.sub.unsubscribe()
 }
-
 
 }

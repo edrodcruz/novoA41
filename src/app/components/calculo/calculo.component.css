@@ -46,7 +46,7 @@
         cursor: pointer;
         outline: none;
         padding: 5px;
-        border: 1px solid white;
+       /* border: 1px solid white;*/
         background-color: transparent;
         border-radius: 10px;
         color: white;

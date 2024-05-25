@@ -4,7 +4,7 @@
 
 <div class="po-md-12" style="margin-bottom: 10px;">
   <div class="po-md-5" style="display: flex; gap: 10px;">
-    <po-button (p-click)="loginModal?.open()" p-icon="bi bi-person-workspace" p-tooltip="Selecionar outro usuário"></po-button>
+    <po-button (p-click)="LogarUsuario()" p-icon="bi bi-person-workspace" p-tooltip="Selecionar outro usuário"></po-button>
     <po-button (p-click)="verificarNotas()" p-icon="bi bi-arrow-clockwise" p-label="Atualizar" p-tooltip="Atualizar Informações Tela"></po-button>
     <po-button p-label="Reprocessar" (p-click)="onReprocessarNotas()" p-icon="bi bi-calendar2-check" p-kind="primary"
       p-tooltip="Reprocessar Notas Fiscais"></po-button>
@@ -23,12 +23,16 @@
 
 <div class="po-md-12">
   <po-accordion #principal p-allow-expand-all-items="false" p-show-manager-accordion="false">
-    <po-accordion-item p-label="Log de Erros">
+    <po-accordion-item p-label="Logs do Processo">
       <po-widget>
         <po-table [p-items]="listaErros" [p-striped]="true" [p-sort]="true" 
           [p-actions]="acoesGridErro" [p-columns]="colunasErro" [p-hide-table-search]="true"
           [p-hide-columns-manager]="true" />
       </po-widget>
+      <po-widget p-title="Mensagem RPW">
+        <div class="po-md-12"><span>{{cMensagemErroRPW}}</span></div>
+      </po-widget>
+      
     </po-accordion-item>
 
     <po-accordion-item #item1 p-label="Notas Fiscais de ENTRADA" p-tooltip="1">
@@ -46,41 +50,6 @@
   </po-accordion>
 
 </div>
-
-<po-modal #loginModal p-title="Selecione o Técnico" p-size="auto" p-click-out="false" [p-primary-action]="acaoLogin">
-
-  <div class="po-md-12">
-    <po-combo [ngModel]="codEstabel" (ngModelChange)="codEstabel = $event" (p-change)="onEstabChange($event)"
-      [p-options]="listaEstabelecimentos" p-label="Estabelecimento" p-icon="bi bi-pin-map"
-      [p-placeholder]="placeHolderEstabelecimento">
-      <ng-template p-combo-option-template let-option>
-        <div class="po-row">
-          <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="bi bi-pin-map"></po-icon>
-          <div class="po-sm-10 po-md-9 po-lg-11">
-            <div class="po-font-text-large-bold">{{ option.label }}</div>
-            <div class="po-font-text-smaller">Filial: {{ option.codFilial }}</div>
-          </div>
-        </div>
-      </ng-template>
-    </po-combo>
-  </div>
-  <div class="po-md-12">
-    <po-combo p-label="Técnico" [ngModel]="codUsuario" (ngModelChange)="codUsuario = $event"
-      p-icon="bi bi-person-workspace" [p-options]="listaTecnicos" [p-placeholder]="loadTecnico" [p-clean]="true">
-      <ng-template p-combo-option-template let-option>
-        <div class="po-row">
-          <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="bi bi-person-workspace"></po-icon>
-          <div class="po-sm-10 po-md-9 po-lg-11">
-            <div class="po-font-text-large-bold">{{ option.label }}</div>
-            <div class="po-font-text-smaller">Técnico: {{ option.value }}</div>
-          </div>
-        </div>
-      </ng-template>
-    </po-combo>
-  </div>
-
-
-</po-modal>
 
 <po-modal #abrirArquivo [p-title]="nomeArquivo" p-size="auto" p-click-out="false" [p-primary-action]="acaoSair"
   [p-secondary-action]="acaoImprimir">

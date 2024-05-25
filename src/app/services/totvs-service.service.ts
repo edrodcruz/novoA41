@@ -1,10 +1,11 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subject, map, take, tap } from 'rxjs';
+import { Subject, map, of, take, tap } from 'rxjs';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PoTableColumn } from '@po-ui/ng-components';
+import { Usuario } from '../interfaces/usuario';
 
 //--- Header somente para DEV
 const headersTotvs = new HttpHeaders(environment.totvs_header)    
@@ -29,7 +30,7 @@ export class TotvsService {
 
   //--- Observador
 
-  public ObterParametros() {
+  public EnviarParametros() {
     return this.emissorEvento$.asObservable();
   }
 
@@ -39,6 +40,8 @@ export class TotvsService {
         return mensagem.message
       return '';
   }
+
+  public UsuarioLogado!:Usuario
 
 
   //------------ Colunas Grid Saldo Terceiro
@@ -230,6 +233,19 @@ obterColunasErrosProcessamento(): Array<PoTableColumn>{
   ]
 }
 
+public SelecionarUsuario(){
+  
+  this.EmitirParametros({selecionarUsuario:true})
+  
+}
+
+public ObterUsuario():Observable<Usuario>{
+  return of(this.UsuarioLogado).pipe(take(1))
+}
+
+public SetarUsuario(estab:string, usuario:string, processo:string){
+  this.UsuarioLogado={codEstabelecimento:estab, codUsuario:usuario, nrProcesso:processo}
+}
 
   //---------------------- COMBOBOX ESTABELECIMENTOS
   //Retorno transformado no formato {label: xxx, value: yyyy}
