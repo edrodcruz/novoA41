@@ -38,6 +38,7 @@ loadTela:boolean=false
           this.codEstabel = response.codEstabelecimento
           this.codUsuario = response.codUsuario
           this.nrProcess  = response.nrProcesso
+          this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - CRIAÇÃO DE REPAROS'});
        }
       }
     })

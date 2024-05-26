@@ -13,7 +13,7 @@ export class HomeComponent {
 
   ngOnInit(): void {
     //--- Informacoes iniciais tela
-    this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - MONITOR AUTO ATENDIMENTO', abrirMenu: false})
+    this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - MONITOR AUTO ATENDIMENTO', abrirMenu: false})
   }
 
   /*

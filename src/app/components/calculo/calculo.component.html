@@ -11,7 +11,7 @@
           <div class="po-md-12">
             <div class="po-md-6">
               <po-combo [ngModel]="codEstabelecimento" (ngModelChange)="codEstabelecimento = $event"
-                 (p-change)="onEstabChange($event)"
+                 (p-change)="onEstabChange($event)" p-clean="true"
                 [p-options]="listaEstabelecimentos" p-label="Estabelecimento" p-icon="bi bi-pin-map"
                 [p-placeholder]="placeHolderEstabelecimento">
                 <ng-template p-combo-option-template let-option>
@@ -125,7 +125,7 @@
           [p-secondary-label]="lblStepExecutar" (p-primary-action)="stepper.previous()"
           (p-secondary-action)="stepper.next()">
 
-          <div class="po-md-6">
+          <div class="po-md-6" style="margin-bottom: 10px;">
             <po-button p-label="Excluir Seleção" (p-click)="onExcluirSelecaoExtraKit()" p-icon="bi bi-trash" p-kind="primary"></po-button>
          </div>
 
@@ -157,28 +157,28 @@
           </div>
           <div class="po-row" style="margin-bottom: 30px;"></div>
             <div class="container-card">
-              <div class="card blue">
-                <div><h2>{{labelContadores[0]}}</h2><span>Visão Geral</span></div>
-                <div><button (click)="onOpenModal('VisaoGeral')" class="btnblue">Exibir</button></div>
+              <div class="card gray">
+                <div><h2>{{labelContadores[0]}}</h2><span>Visão Geral</span></div><hr>
+                <div><button (click)="onOpenModal('VisaoGeral')" class="btngray">Exibir</button></div>
               </div>
-              <div class="card red">
-                <div><h2>{{labelContadores[1]}}</h2><span>Pagamentos</span></div>
-                <div><button (click)="onOpenModal('Pagamentos')" class="btnred">Exibir</button></div>
+              <div class="card blue">
+                <div><h2>{{labelContadores[1]}}</h2><span>Pagamentos</span></div><hr>
+                <div><button (click)="onOpenModal('Pagamentos')" class="btnblue">Exibir</button></div>
               </div>
               <div class="card green">
-                <div><h2>{{labelContadores[2]}}</h2><span>Renovações</span></div>
+                <div><h2>{{labelContadores[2]}}</h2><span>Renovações</span></div><hr>
                 <div><button (click)="onOpenModal('Renovacao')" class="btngreen">Exibir</button></div>
               </div>
               <div class="card green">
-                <div><h2>{{labelContadores[3]}}</h2><span>Somente Entrada</span></div>
+                <div><h2>{{labelContadores[3]}}</h2><span>Somente Entrada</span></div><hr>
                 <div><button (click)="onOpenModal('SomenteEntrada')" class="btngreen">Exibir</button></div>
               </div>
               <div class="card orange">
-                <div><h2>{{labelContadores[4]}}</h2><span>ExtraKit</span></div>
+                <div><h2>{{labelContadores[4]}}</h2><span>ExtraKit</span></div><hr>
                 <div><button (click)="onOpenModal('ExtraKit')" class="btnorange">Exibir</button></div>
               </div>
               <div class="card red">
-                <div><h2>{{labelContadores[5]}}</h2><span>Sem Saldo</span></div>
+                <div><h2>{{labelContadores[5]}}</h2><span>Sem Saldo</span></div><hr>
                 <div><button (click)="onOpenModal('SemSaldo')" class="btnred">Exibir</button></div>
               </div>
             </div>

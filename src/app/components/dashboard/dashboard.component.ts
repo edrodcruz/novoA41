@@ -113,7 +113,7 @@ export class DashboardComponent {
 
     this.esconderPainel();
     //--- Informacoes iniciais tela
-    this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - DASHBOARD NOTA FISCAL'});
+    this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - DASHBOARD DE NOTAS FISCAIS'});
 
     //Colunas grids
     this.colunasNFE = this.srvTotvs.obterColunasEntradas();

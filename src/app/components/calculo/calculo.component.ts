@@ -293,7 +293,14 @@ readonly acaoLogar: PoModalAction = {
 
   //-------------------------------------------------- Login
   public onLogarUsuario() {
-    this.loadLogin=true
+
+    //Fechar a tela de login
+    this.loginModal?.close()
+
+     //Montar Resumo
+     this.labelLoadTela = "Preparando Resumo"
+     this.loadTela = true
+
     //Parametros usuario e senha
     let paramsLogin: any = { CodEstabel: this.codEstabelecimento, CodUsuario: this.codUsuario, Senha: this.senha}
     //Chamar servico de login
@@ -301,12 +308,7 @@ readonly acaoLogar: PoModalAction = {
       next: (response: any) => {
            if(response.senhaValida){
 
-              //Montar Resumo
-              this.labelLoadTela = "Preparando Resumo"
-              this.loadTela = true
-
-              //Fechar a tela de login
-              this.loginModal?.close()
+              
 
               //Parametros para calculo
               let paramsE: any = { CodEstab: this.codEstabelecimento, CodTecnico: this.codTecnico, NrProcess: this.processoInfo, Extrakit: this.listaExtraKit }

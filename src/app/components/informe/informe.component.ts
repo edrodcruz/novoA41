@@ -89,6 +89,8 @@ export class InformeComponent {
   ordemSelecionada:any=undefined;
   cTag:string=''
   cInfoItem:string='Não há itens cadastrados'
+  cOS:string=''
+  cChamado:string=''
 
   //ListasCombo
   listaEstabelecimentos!: any[]
@@ -321,7 +323,9 @@ export class InformeComponent {
 
   selecionarOrdem(obj:any){
     this.ordemSelecionada=obj;
-    this.cInfoItem = `NumOS: ${obj.NumOS} / ${obj.Chamado}`
+    //this.cInfoItem = `NumOS: ${obj.NumOS} / ${obj.Chamado}`
+    this.cOS = obj.NumOS
+    this.cChamado = obj.Chamado
     let params:any={cRowId: obj['c-rowId']}
     this.loadGrid = true
     this.srvTotvs46.ObterItens(params).subscribe({
@@ -342,16 +346,20 @@ export class InformeComponent {
     let params:any={codEstabel: this.form.controls.codEstabel.value, codUsuario: this.form.controls.codUsuario.value, senha: this.form.controls.senha.value}
     this.srvTotvs46.ObterDados(params).subscribe({
       next: (response: any) => {
+        console.log(response)
         let estab = this.listaEstabelecimentos.find(o => o.value === this.form.controls.codEstabel.value)
         let tec = this.listaTecnicos.find(o => o.value === this.form.controls.codUsuario.value)
         this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label})
 
         this.cTag=response.tela[0].os
         this.mostrarDados = true
-        this.listaOrdens = response.ordens
-        this.listaItens  = response.itens
-        this.edObservacao = response.itens !== undefined ? response.itens[0].edobservacao : ''
-        this.cInfoItem = response.ordens !== undefined ? `NumOS: ${response.ordens[0].NumOS} / ${response.ordens[0].Chamado}`: 'Não há itens cadastrados'
+        if(response.ordens !==undefined){
+          this.listaOrdens = response.ordens
+          this.listaItens  = response.itens
+          this.edObservacao = response.itens !== undefined ? response.itens[0].edobservacao : ''
+          this.cOS = response.ordens[0].NumOS
+          this.cChamado = response.ordens[0].Chamado
+        }
         this.cUsadas = response.tela[0].usada
         this.cBrancas = response.tela[0].branco
         this.cTotal = response.tela[0].TOTAL

@@ -233,12 +233,6 @@ obterColunasErrosProcessamento(): Array<PoTableColumn>{
   ]
 }
 
-public SelecionarUsuario(){
-  
-  this.EmitirParametros({selecionarUsuario:true})
-  
-}
-
 public ObterUsuario():Observable<Usuario>{
   return of(this.UsuarioLogado).pipe(take(1))
 }

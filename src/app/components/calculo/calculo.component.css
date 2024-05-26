@@ -42,11 +42,11 @@
     }
 
     button {
+        margin-top: -20px;
         display: block;
         cursor: pointer;
-        outline: none;
         padding: 5px;
-       /* border: 1px solid white;*/
+        border: 0;
         background-color: transparent;
         border-radius: 10px;
         color: white;
@@ -56,8 +56,11 @@
     button.btngreen{
         background: green;
     }
+    button.btngray{
+        background: black;
+    }
     button.btnblue{
-        background: steelblue;
+        background:  #045B8F;
     }
     button.btnred{
         background: #9e3933;
@@ -67,37 +70,47 @@
     }
 
     button.btngreen:hover{
-        background: darkgreen;
+        background: rgb(1, 162, 1);
+    }
+    button.btngray:hover{
+        background: gray
     }
     button.btnblue:hover{
-        background: #045B8F;
+        background: #0677b9;
     }
     button.btnred:hover{
-        background: darkred;
+        background:  #d44c44;
     }
     button.btnorange:hover{
-        background: darkgoldenrod;
+        background: rgb(248, 186, 71)
     }
 
    
 }
 
 .card.blue {
-    background: steelblue;
-    box-shadow: 20px 20px 50px -30px steelblue;
+    background: #045B8F;
+    box-shadow: 20px 20px 50px -30px  #045B8F;
 }
+
+.card.gray {
+    /* background: rgb(44, 43, 43); */
+    background: linear-gradient(0deg, black, rgb(83, 82, 82) 80%) ;
+    box-shadow: 20px 20px 50px -30px  black;
+}
+
 
 .card.green {
     background: green;
-    box-shadow: 20px 20px 50px -30px green;
+    box-shadow: 20px 20px 50px -30px darkgreen;
 }
 
 .card.red {
     background: #9e3933;
-    box-shadow: 20px 20px 50px -30px #9e3933;
+    box-shadow: 20px 20px 50px -30px darkred;
 }
 
 .card.orange {
     background: orange;
-    box-shadow: 20px 20px 50px -30px orange;
+    box-shadow: 20px 20px 50px -30px darkorange;
 }

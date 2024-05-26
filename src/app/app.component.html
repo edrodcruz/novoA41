@@ -1,7 +1,7 @@
-
+<!--#045B8F -->
 <div class="po-wrapper">
   <po-menu [p-menus]="menus" [p-automatic-toggle]="false" [p-collapsed]="false" #menuLateral>
-    <div *p-menu-header-template style="background: #045B8F; border-radius: 5px;">
+    <div *p-menu-header-template style="background: steelblue; border-radius: 5px;">
        <div style="min-height: 50px;">
         <p style="color: white; text-align: center;padding-top: 15px" ><b>AUTO ATENDIMENTO</b></p>
         <hr>
@@ -9,20 +9,7 @@
           <p><i class="bi bi-pin-map"></i>&nbsp;{{estabInfo}}</p>
           <p><i class="bi bi-person-workspace"></i>&nbsp;{{tecnicoInfo}}</p>
           <p *ngIf="processoInfo !== ''"><i class="bi bi-clipboard-data"></i>&nbsp;{{processoInfo}}</p>
-          <p class="infoProcess" *ngIf="processoInfo !== ''">
-             <i>{{processoSituacao}}</i></p>
-          
-          <!-- <div *ngIf="dashboard === true">
-            <p style="color: #045B8F"><b>PROCESSAMENTO</b></p>
-            <div *ngIf="estabInfo !== ''">
-              <hr>
-              <p style="color: #045B8F"><i> Notas de Entrada &nbsp;</i><i class="po-icon po-icon-ok"></i></p>
-              <p style="color: #045B8F"><i> Atualizar Entradas &nbsp;</i><i class="po-icon po-icon-okn"></i></p>
-              <p style="color: #045B8F"><i> Notas de Saída &nbsp;</i><i class="po-icon po-icon-okn"></i></p>
-              <p style="color: #045B8F"><i> Gerar Reparos &nbsp;</i><i class="po-icon po-icon-okn"></i></p>
-            </div>
-            <div class="po-row">&nbsp;</div> 
-          </div>-->
+          <p class="infoProcess" *ngIf="processoInfo !== ''"><i>{{processoSituacao}}</i></p>
         </div>
      </div>
     </div>

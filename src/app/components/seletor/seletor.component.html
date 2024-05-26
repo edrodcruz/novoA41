@@ -1,3 +1,9 @@
+<div *ngIf="mostrarLabel===true" 
+      class="seletor" 
+      style="display:flex; justify-content: center;align-items: center;height: 100%;">
+<div><h1 style="color: lightgray;">ALTERNANDO USUARIO, AGUARDE...</h1></div>
+</div>
+
 <po-modal #loginModal 
      p-title="Selecione o Técnico" 
      p-size="auto" 
@@ -9,7 +15,7 @@
     <div class="po-md-12">
       <po-combo [ngModel]="codEstabel" (ngModelChange)="codEstabel = $event" (p-change)="onEstabChange($event)"
         [p-options]="listaEstabelecimentos" p-label="Estabelecimento" p-icon="bi bi-pin-map"
-        [p-placeholder]="placeHolderEstabelecimento">
+        [p-placeholder]="placeHolderEstabelecimento" p-clean="true">
         <ng-template p-combo-option-template let-option>
           <div class="po-row">
             <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="bi bi-pin-map"></po-icon>

@@ -29,6 +29,7 @@ loadTecnico: string = '';
 placeHolderEstabelecimento: string = '';
 loadTela: boolean = false;
 redirectTo!:string
+mostrarLabel:boolean=false
 
 acaoLogin: PoModalAction = {
   action: () => {this.onLogarUsuario();},
@@ -43,10 +44,10 @@ acaoCancelar: PoModalAction={
 
 ngOnInit(): void {
 
-//
+this.mostrarLabel=false
 this.redirectTo = this.route.snapshot.queryParamMap.get('redirectTo') as string;
 
-this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - SELETOR DE ESTABELECIMENTO/USUARIO', estabInfo:''});
+this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - SELETOR DE ESTABELECIMENTO E USUÁRIO', estabInfo:''});
 
 //Abrir Login
 this.loginModal?.open()
@@ -72,6 +73,8 @@ onLogarUsuario() {
     this.srvNotification.error('Seleção inválida, verifique !');
     return;
   }
+
+  this.mostrarLabel=true
 
   //Fechar a tela de login
   this.loginModal?.close();

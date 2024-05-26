@@ -55,12 +55,13 @@ ngOnInit(): void {
       this.tituloTela = response.tituloTela ?? this.tituloTela
       this.dashboard = response.dashboard ?? this.dashboard
       this.abrirMenu = response.abrirMenu ?? true
-      this.abrirSeletor = response.selecionarUsuario ?? false
+     
 
-      if(this.abrirMenu)
+       if(this.abrirMenu)
         this.menuLateral?.expand()
       else
-        this.menuLateral?.collapse()
+        this.menuLateral?.collapse() 
+
       this.cdRef.detectChanges()
     }})
 }
