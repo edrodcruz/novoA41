@@ -1,4 +1,52 @@
 <div class="po-md-12" style="margin-bottom: 10px;">
     <div class="po-md-5" style="display: flex; gap: 10px;">
-      <po-button (p-click)="LogarUsuario()" p-icon="bi bi-person-workspace" p-tooltip="Selecionar outro usuário"></po-button>
+      
 </div>  
+
+<div class="po-md-12">
+  <po-widget>
+    <div class="po-md-12 btnEliminar">
+      <po-button (p-click)="LogarUsuario()" p-icon="bi bi-person-workspace" p-tooltip="Selecionar outro usuário"></po-button>
+      <po-button p-tooltip="Eliminar Todos" p-icon="bi bi-trash" p-label="Eliminar Todos" p-danger="true"></po-button>
+    </div>
+    <po-table [p-items]="listaReparos" 
+              [p-actions]="acoesGrid"
+              [p-striped]="true" 
+              [p-height]="250"
+              p-container="true"
+              [p-columns]="colunasReparos" 
+              [p-hide-table-search]="false" 
+              [p-hide-columns-manager]="true">
+                  <ng-template  p-table-column-template p-property="temEquival" let-value>
+                    <i class="bi bi-x-square" *ngIf="value === true" [style.font-size]="'16px'"></i>
+                    <i class="bi bi-square" *ngIf="value === false" [style.font-size]="'16px'"></i>
+                  </ng-template>
+      </po-table>
+  </po-widget>
+</div>
+
+<div class="po-md-12">
+  <po-widget>
+    <b>Justificativa da Equivalência</b>
+    <po-textarea [(ngModel)]="cJustificativa" [p-rows]="2"></po-textarea>
+    <div class="po-md-12">
+      <po-button p-tooltip="Abrir Reparos e Finalizar" p-icon="bi bi-printer" p-label="Abrir Reparos e Finalizar Processos"></po-button>
+    </div>
+  </po-widget>
+</div>
+
+
+<po-modal #telaAlterar p-title="Alterar Reparo"
+                       p-size="sm" 
+                       p-click-out="false" 
+                       [p-hide-close]="true"
+                       [p-primary-action]="acaoSalvar" 
+                       [p-secondary-action]="acaoCancelar">
+      
+            <div class="po-md-6" style="margin-top: 30px;"><po-checkbox name="checkbox" p-label="Equivalente ?" (p-change)="this.habilitarCampos()"  [(ngModel)]="lEQV" > </po-checkbox></div>
+            <div class="po-md-6"><po-input name="" p-label="Item Equivalente" p-></po-input></div>
+            <div class="po-md-6"><po-input name="" p-label="ENC"></po-input></div>
+            <div class="po-md-6"><po-input name="" p-label="Num.Série Garantia"></po-input></div>
+        
+    
+  </po-modal>

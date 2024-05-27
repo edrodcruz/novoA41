@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { PoDialogService, PoNotificationService } from '@po-ui/ng-components';
+import { PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { TotvsService } from 'src/app/services/totvs-service.service';
 
@@ -10,6 +10,8 @@ import { TotvsService } from 'src/app/services/totvs-service.service';
   styleUrls: ['./reparos.component.css']
 })
 export class ReparosComponent {
+
+  @ViewChild('telaAlterar', { static: true }) telaAlterar: | PoModalComponent | undefined;
 
 //---Injection
 private srvTotvs = inject(TotvsService);
@@ -22,7 +24,57 @@ codUsuario: string = '';
 nrProcess:string='';
 loadTela:boolean=false
 
+lEQV:boolean=false
 
+listaReparos:any[]=[
+
+  { codFilial: '08'
+    , codEstabel: '131'
+    ,itCodigo: '58.131.000256-2B'
+    ,qtdReparos: 1
+    ,temEquival: false
+    ,itEquivalente: ''
+    ,enc: '123'
+    ,numSerie: '5670000'
+},
+{ codFilial: '08'
+, codEstabel: '131'
+,itCodigo: '58.131.000256-2B'
+,qtdReparos: 1
+,temEquival: true
+,itEquivalente: ''
+,enc: '123'
+,numSerie: '5670000'
+}
+]
+colunasReparos!:PoTableColumn[]
+cJustificativa!:string
+
+readonly acaoSalvar: PoModalAction = {
+  label: 'Salvar',
+  action: () => { this.onSalvar() },
+}
+
+
+readonly acaoCancelar: PoModalAction = {
+  label: 'Cancelar',
+  action: () => { this.onCancelar() }
+}
+
+//--- Actions
+readonly acoesGrid: PoTableAction[] = [
+  {
+    label: 'Editar',
+    icon: 'bi bi-pencil-square',
+    action: this.onEditar.bind(this),
+  },
+  {
+    separator:true,
+    label: 'Eliminar',
+    icon: 'bi bi-trash',
+    action: this.onDeletar.bind(this),
+    type:'danger'
+  }];
 
   ngOnInit(): void {
 
@@ -43,10 +95,32 @@ loadTela:boolean=false
       }
     })
 
+    this.colunasReparos = this.srvTotvs.obterColunasReparos()
+
    }
 
    LogarUsuario() {
     this.router.navigate(['seletor'], {queryParams:{redirectTo:'reparos'}}) 
+ }
+
+ onDeletar(obj:any){
+ }
+
+ onEditar(obj:any){
+  console.log(obj)
+  this.telaAlterar?.open()
+
+ }
+
+ onSalvar(){
+
+ }
+
+ onCancelar(){
+
+ }
+ habilitarCampos(){
+
  }
 }
 

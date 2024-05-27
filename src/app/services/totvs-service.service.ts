@@ -233,6 +233,19 @@ obterColunasErrosProcessamento(): Array<PoTableColumn>{
   ]
 }
 
+obterColunasReparos(): Array<PoTableColumn>{
+  return [
+    {property: 'codEstabel', label: "Estab"},
+    {property: 'codFilial', label: "Filial"},
+    {property: 'itCodigo', label: "Item"},
+    {property: 'qtdReparos', label: "Qtd.Reparos"},
+    {property: 'temEquival', label: "EQV", type: 'columnTemplate'},
+    {property: 'itEquivalente', label: "Item Equivalente"},
+    {property: 'enc', label: "ENC"},
+    {property: 'numSerie', label: "Num.Serie Garantia"},
+  ]
+}
+
 public ObterUsuario():Observable<Usuario>{
   return of(this.UsuarioLogado).pipe(take(1))
 }
