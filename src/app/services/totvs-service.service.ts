@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PoTableColumn } from '@po-ui/ng-components';
 import { Usuario } from '../interfaces/usuario';
+import { Monitor } from '../interfaces/monitor';
 
 //--- Header somente para DEV
 const headersTotvs = new HttpHeaders(environment.totvs_header)    
@@ -42,6 +43,7 @@ export class TotvsService {
   }
 
   public UsuarioLogado!:Usuario
+  public monitorLogado!:Monitor|undefined
 
 
   //------------ Colunas Grid Saldo Terceiro
@@ -246,12 +248,36 @@ obterColunasReparos(): Array<PoTableColumn>{
   ]
 }
 
+obterColunasMonitor():Array<PoTableColumn>{
+  return [
+    {property: 'cod-emitente', label: "Técnico"},
+    {property: 'nome-abrev', label: 'Nome'},
+    {property: 'nr-process', label: "Processo"},
+    {property: 'situacao', label: "Situação", type:'label',
+      labels: [
+        { value: 'I',  color: 'color-08', label: 'Inicializada', textColor:'white' },
+        { value: 'B',  color: 'color-09', label: 'Embalagem', textColor:'white' },
+        { value: 'E',  color: 'color-10', label: 'Entradas', textColor:'white' },
+        { value: 'S',  color: 'color-01', label: 'Saídas', textColor:'white' },
+        { value: 'R',  color: 'color-05', label: 'Reparo', textColor:'white' },
+      ]},
+  ]
+}
+
 public ObterUsuario():Observable<Usuario>{
   return of(this.UsuarioLogado).pipe(take(1))
 }
 
 public SetarUsuario(estab:string, usuario:string, processo:string){
   this.UsuarioLogado={codEstabelecimento:estab, codUsuario:usuario, nrProcesso:processo}
+}
+
+public SetarMonitor(monitor?:Monitor){
+  this.monitorLogado = monitor?? undefined;
+}
+
+public ObterMonitor(monitor?:Monitor){
+  return this.monitorLogado!;
 }
 
   //---------------------- COMBOBOX ESTABELECIMENTOS
@@ -406,6 +432,12 @@ public SetarUsuario(estab:string, usuario:string, processo:string){
   public AbrirArquivo(params?: any){
     return this.http.get(`${this._url}/AbrirArquivo`, {params:params, headers:headersTotvs})
                     .pipe(take(1));
+  }
+
+  //Parametros do Estabelecimento
+  public ObterProcessosEstab(params?: any){
+    return this.http.get(`${this._url}/ObterProcessosEstab`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
   }
   
    //Ordenacao campos num array

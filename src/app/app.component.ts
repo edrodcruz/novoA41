@@ -24,9 +24,11 @@ export class AppComponent {
 /*   { label: 'Parâmetros Filiais'        , icon: 'bi bi-gear'          , link:'/paramestab', shortLabel:'ParamEstab'}, */
   { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data', link:'/informe'   , shortLabel:'Informe'},
   { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'    , link:'/calculo'   , shortLabel:'Cálculo'},
+  { label: 'Monitor Processos'         , icon: 'bi bi-display'    , link:'/monitor'      , shortLabel:'Monitor Processos'},
+ /*    
   { label: 'Entradas e Saídas'         , icon: 'bi bi-archive'       , link:'/dashboard' , shortLabel:'Notas'},
   { label: 'Embalagem NF'              , icon: 'bi bi-box2'          , link:'/embalagem' , shortLabel:'Embalagem'},
-  { label: 'Criar Reparos'             , icon: 'bi bi-tools'         , link:'/reparos'   , shortLabel:'Reparos'}
+  { label: 'Criar Reparos'             , icon: 'bi bi-tools'         , link:'/reparos'   , shortLabel:'Reparos'} */
 ];
 
 //------ Label de menu principal

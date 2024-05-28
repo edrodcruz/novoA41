@@ -1,0 +1,33 @@
+<div class="sample-container">
+    <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
+  </div>
+<po-widget>
+<div style="display: flex; align-items:center; gap:10px;justify-content: center;">
+<div style="width: 80%;">
+    <po-combo [ngModel]="codEstabel" (ngModelChange)="codEstabel = $event" 
+        [p-options]="listaEstabelecimentos"  p-icon="bi bi-pin-map"
+        [p-placeholder]="placeHolderEstabelecimento" p-clean="true">
+        <ng-template p-combo-option-template let-option>
+            <div class="po-row">
+                <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="bi bi-pin-map"></po-icon>
+                <div class="po-sm-10 po-md-9 po-lg-11">
+                    <div class="po-font-text-large-bold">{{ option.label }}</div>
+                    <div class="po-font-text-smaller">Filial: {{ option.codFilial }}</div>
+                </div>
+            </div>
+        </ng-template>
+    </po-combo>
+</div>
+   <div><po-button p-icon="bi bi-check2" (p-click)="onListar()"></po-button></div>
+</div>
+</po-widget>
+
+<po-table [p-items]="lista" 
+          [p-actions]="acoes"
+          [p-striped]="true" 
+          [p-sort]="true" 
+          [p-height]="370"
+          p-container="true"
+          [p-columns]="colunas" 
+          [p-hide-table-search]="false" 
+          [p-hide-columns-manager]="true" />

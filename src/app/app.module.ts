@@ -17,6 +17,7 @@ import { ParamestabComponent } from './components/paramestab/paramestab.componen
 import { EmbalagemComponent } from './components/embalagem/embalagem.component';
 import { ReparosComponent } from './components/reparos/reparos.component';
 import { SeletorComponent } from './components/seletor/seletor.component';
+import { MonitorProcessosComponent } from './components/monitor-processos/monitor-processos.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SeletorComponent } from './components/seletor/seletor.component';
     ParamestabComponent,
     EmbalagemComponent,
     ReparosComponent,
-    SeletorComponent
+    SeletorComponent,
+    MonitorProcessosComponent
   ],
   imports: [
     BrowserModule,
