@@ -7,7 +7,7 @@
   margin-top: 5px;
   max-width: 520px;
 
-  h4 {
+  :is(h4) {
     color: white;
   }
 }
@@ -29,7 +29,8 @@
   font-size: 24px;
   float: left;
   text-align: center;
-  i {
+  
+  :is(i) {
     color: white;
   }
 
