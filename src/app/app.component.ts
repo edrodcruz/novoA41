@@ -46,6 +46,7 @@ constructor(private cdRef : ChangeDetectorRef){
 
 
 ngOnInit(): void {
+  this.estabInfo=''
   this.sub = this.srvTotvs.EnviarParametros().subscribe({
     next: (response: any) => {
       this.estabInfo = response.estabInfo ?? this.estabInfo
@@ -56,8 +57,7 @@ ngOnInit(): void {
       this.dashboard = response.dashboard ?? this.dashboard
       this.abrirMenu = response.abrirMenu ?? true
      
-
-       if(this.abrirMenu)
+      if(this.abrirMenu)
         this.menuLateral?.expand()
       else
         this.menuLateral?.collapse() 

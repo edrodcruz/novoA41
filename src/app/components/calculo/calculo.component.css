@@ -1,15 +1,3 @@
-.icone {
-    width: 50px;
-    height: 40px;
-    font-size: 32px;
-    float: left;
-    margin: 0 5px 5px 0;
-    text-align: center;
-    & i {
-        color: white;
-    }
-}
-
 .container-card {
     display: flex;
     flex: 0 0 100%;
@@ -131,5 +119,18 @@
     &.lemon {
         background: var(--color-09);
         box-shadow: 20px 20px 50px -30px #c1da52;
+    }
+}
+
+
+.icone {
+    width: 50px;
+    height: 40px;
+    font-size: 32px;
+    float: left;
+    margin: 0 5px 5px 0;
+    text-align: center;
+    & i {
+        color: white;
     }
 }
