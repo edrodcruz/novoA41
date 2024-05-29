@@ -27,6 +27,8 @@ lblStepProximo: string = 'Avançar';
 lblStepAnterior: string = 'Voltar';
 lblStepExecutar: string = 'Montar Resumo';
 
+qtde=0
+
 //------- Listas
 listaEstabelecimentos!: any[]
 listaTecnicos!: any[]
@@ -276,19 +278,36 @@ readonly acaoLogar: PoModalAction = {
 
   //------------------------------------------------ Label Contadores Resumo
   private AtualizarLabelsContadores(){
-
+    
       //Geral
-      this.labelContadores[0] = this.itemsResumo.length.toString()
+      this.qtde=0
+      this.itemsResumo.forEach(x=> {this.qtde += x.qtPagar + x.qtRenovar + x.qtExtrakit})
+      this.labelContadores[0] = this.qtde.toString()
+
       //Pagamento
-      this.labelContadores[1] = this.itemsResumo.filter(o => o.qtPagar > 0).length.toString()
+      this.qtde=0
+      this.itemsResumo.filter(o => o.qtPagar > 0).forEach(x=> {this.qtde += x.qtPagar})
+      this.labelContadores[1] = this.qtde.toString()
+
       //Renovacoes
-      this.labelContadores[2] = this.itemsResumo.filter(o => o.qtRenovar > 0).length.toString()
+      this.qtde=0
+      this.itemsResumo.filter(o => o.qtRenovar > 0).forEach(x=> {this.qtde += x.qtRenovar})
+      this.labelContadores[2] = this.qtde.toString()
+
       //Somente Entrada
-      this.labelContadores[3] = this.itemsResumo.filter(o => o.soEntrada).length.toString()
+      this.qtde=0
+      this.itemsResumo.filter(o => o.soEntrada).forEach(x=> {this.qtde += x.qtPagar})
+      this.labelContadores[3] = this.qtde.toString()
+
       //Extrakit
-      this.labelContadores[4] = this.itemsResumo.filter(o => o.qtExtrakit > 0).length.toString()
+      this.qtde=0
+      this.itemsResumo.filter(o => o.qtExtrakit > 0).forEach(x=> {this.qtde += x.qtExtrakit})
+      this.labelContadores[4] = this.qtde.toString()
+
       //Sem saldo
-      this.labelContadores[5] = this.listaSemSaldo.length.toString()
+      this.qtde=0
+      this.listaSemSaldo.forEach(x=> {this.qtde += x.qtPagar})
+      this.labelContadores[5] = this.qtde.toString()
   }
 
   //-------------------------------------------------- Login
@@ -435,10 +454,12 @@ readonly acaoLogar: PoModalAction = {
 
   //--------------------------------------------------------------- Chamar Modal Detalhe Resumo
   onOpenModal(type: any) {
+ 
     switch (type) {
       case 'VisaoGeral':
           this.itemsDetalhe = this.itemsResumo.sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.tituloDetalhe = `Visão Geral: ${this.itemsDetalhe.length} registros`
+          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += (x.qtPagar + x.qtRenovar + x.qtExtrakit)})
+          this.tituloDetalhe = `Visão Geral: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasTodos()
           //this.mostrarDetalhe = true
           this.opcoesGridPagto = []
@@ -447,7 +468,8 @@ readonly acaoLogar: PoModalAction = {
 
         case 'Pagamentos':
           this.itemsDetalhe = this.itemsResumo.filter(o => o.qtPagar > 0).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.tituloDetalhe = `Pagamentos: ${this.itemsDetalhe.length} registros`
+          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar})
+          this.tituloDetalhe = `Pagamentos: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasPagar()
           //this.mostrarDetalhe = true
           this.opcoesGridPagto = [{label: '', icon: 'po-icon po-icon po-icon-delete', action: this.onDeletarRegistroPagto.bind(this)} ]
@@ -456,7 +478,8 @@ readonly acaoLogar: PoModalAction = {
 
         case 'Renovacao':
           this.itemsDetalhe = this.itemsResumo.filter(o => o.qtRenovar > 0).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.tituloDetalhe = `Renovações: ${this.itemsDetalhe.length} registros`
+          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtRenovar})
+          this.tituloDetalhe = `Renovações: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasRenovar();
           //this.mostrarDetalhe=true
           this.detailsModal?.open();
@@ -465,7 +488,8 @@ readonly acaoLogar: PoModalAction = {
 
         case 'SomenteEntrada':
           this.itemsDetalhe = this.itemsResumo.filter(o => o.soEntrada).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.tituloDetalhe = `Somente Entrada: ${this.itemsDetalhe.length} registros`
+          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar})
+          this.tituloDetalhe = `Somente Entrada: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasPagar();
           //this.mostrarDetalhe=true
           this.detailsModal?.open();
@@ -474,7 +498,8 @@ readonly acaoLogar: PoModalAction = {
 
         case 'ExtraKit':
           this.itemsDetalhe = this.itemsResumo.filter(o => o.qtExtrakit > 0).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.tituloDetalhe = `ExtraKit: ${this.itemsDetalhe.length} registros`
+          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtExtrakit})
+          this.tituloDetalhe = `ExtraKit: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasExtrakit();
           //this.mostrarDetalhe=true
           this.detailsModal?.open();
@@ -483,7 +508,8 @@ readonly acaoLogar: PoModalAction = {
 
         case 'SemSaldo':
           this.itemsDetalhe = this.listaSemSaldo.sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.tituloDetalhe = `Sem Saldo: ${this.itemsDetalhe.length} registros`
+          this.qtde = 0; this.itemsDetalhe.forEach(x => {this.qtde += x.qtPagar})
+          this.tituloDetalhe = `Sem Saldo: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasSemSaldo()
           //this.mostrarDetalhe=true
           this.detailsModal?.open();

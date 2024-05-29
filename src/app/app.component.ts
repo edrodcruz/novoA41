@@ -21,15 +21,12 @@ export class AppComponent {
   //--------- Opcoes de Menu
  readonly menus: Array<PoMenuItem> = [
  { label:  'Tela Principal'            , icon: 'bi bi-house'         , link:'/'          , shortLabel:'Home'},
-/*   { label: 'Parâmetros Filiais'        , icon: 'bi bi-gear'          , link:'/paramestab', shortLabel:'ParamEstab'}, */
   { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data', link:'/informe'   , shortLabel:'Informe'},
   { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'    , link:'/calculo'   , shortLabel:'Cálculo'},
-  { label: 'Monitor Processos'         , icon: 'bi bi-display'    , link:'/monitor'      , shortLabel:'Monitor Processos'},
- /*    
-  { label: 'Entradas e Saídas'         , icon: 'bi bi-archive'       , link:'/dashboard' , shortLabel:'Notas'},
-  { label: 'Embalagem NF'              , icon: 'bi bi-box2'          , link:'/embalagem' , shortLabel:'Embalagem'},
-  { label: 'Criar Reparos'             , icon: 'bi bi-tools'         , link:'/reparos'   , shortLabel:'Reparos'} */
-];
+  { label: 'Monitor Processos'         , icon: 'bi bi-display'       , link:'/monitor'      , shortLabel:'Monitor Processos'},
+  { label: 'Danfe (FT0518)'            , icon: 'bi bi-printer'       , shortLabel:'DANFE', action:this.AbrirProgramaTotvs}
+ ]
+ ;
 
 //------ Label de menu principal
 tecnicoInfo!: string
@@ -46,6 +43,12 @@ private sub!: Subscription
 constructor(private cdRef : ChangeDetectorRef){
 }
 
+AbrirProgramaTotvs(){
+  this.srvTotvs.AbrirProgramaTotvs().subscribe({
+    next: (response:any)=> { },
+    error: (e)=>{}
+  })
+}
 
 ngOnInit(): void {
   this.estabInfo=''

@@ -255,12 +255,22 @@ obterColunasMonitor():Array<PoTableColumn>{
     {property: 'nr-process', label: "Processo"},
     {property: 'situacao', label: "Situação", type:'label',
       labels: [
-        { value: 'I',  color: 'color-08', label: 'Inicializada', textColor:'white' },
-        { value: 'B',  color: 'color-09', label: 'Embalagem', textColor:'white' },
+        { value: 'I',  color: 'color-08', label: 'Impresso', textColor:'white' },
+        { value: 'B',  color: 'color-07', label: 'Embalagem', textColor:'white' },
         { value: 'E',  color: 'color-10', label: 'Entradas', textColor:'white' },
-        { value: 'S',  color: 'color-01', label: 'Saídas', textColor:'white' },
-        { value: 'R',  color: 'color-05', label: 'Reparo', textColor:'white' },
+        { value: 'S',  color: 'color-10', label: 'Saídas', textColor:'white' },
+        { value: 'R',  color: 'color-07', label: 'Reparo', textColor:'white' },
       ]},
+  ]
+}
+
+obterColunasEmbalagem():Array<PoTableColumn>{
+  return [
+    {property:"qt-volume", label:"Volumes"},
+    {property:"cod-embal", label:"Embalagem"},
+    {property:"qt-embal", label:"Qtd Embalagem"},
+    {property:"peso-liq", label:"Peso Liq."},
+    {property:"peso-bru", label:"Peso Bru"}
   ]
 }
 
@@ -399,7 +409,7 @@ public ObterMonitor(monitor?:Monitor){
 
   //---------------------- Programas DDK
   public AbrirProgramaTotvs(params?: any){
-    return this.http.get('/totvs-menu/rest/exec?program=pdp/pd1001.w&params=', {params, headers:headersTotvs})
+    return this.http.get('/totvs-menu/rest/exec?program=ftp/ft0518.w&params=', {params, headers:headersTotvs})
                    .pipe(take(1));
   }
 
@@ -438,6 +448,12 @@ public ObterMonitor(monitor?:Monitor){
   public ObterProcessosEstab(params?: any){
     return this.http.get(`${this._url}/ObterProcessosEstab`, {params:params, headers:headersTotvs})
                    .pipe(take(1));
+  }
+
+   //---------------------- Salvar registro
+   public InformarEmbalagem(params?: any){
+    return this.http.post(`${this._url}/InformarEmbalagem`, params, {headers:headersTotvs})
+                .pipe(take(1));
   }
   
    //Ordenacao campos num array

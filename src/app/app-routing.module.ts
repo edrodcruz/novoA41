@@ -9,9 +9,10 @@ import { EmbalagemComponent } from './components/embalagem/embalagem.component';
 import { ReparosComponent } from './components/reparos/reparos.component';
 import { SeletorComponent } from './components/seletor/seletor.component';
 import { MonitorProcessosComponent } from './components/monitor-processos/monitor-processos.component';
+import { TempComponent } from './components/temp/temp.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: '', redirectTo: '/temp', pathMatch: 'full'},
   {path:'informe', component:InformeComponent},
   {path:'home', component:HomeComponent},
   {path:'dashboard', component:DashboardComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path:'reparos', component:ReparosComponent},
   {path:'seletor', component:SeletorComponent},
   {path:'monitor', component:MonitorProcessosComponent},
+  {path:'temp', component:TempComponent},
   
  
  

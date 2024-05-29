@@ -2,16 +2,34 @@
     <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
 </div>
 
-<div class="po-md-12" style="margin-bottom: 10px;">
-    <div class="po-md-5" style="display: flex; gap: 10px;">
-      <po-button (p-click)="LogarUsuario()" p-icon="bi bi-person-workspace" p-tooltip="Selecionar outro usuário"></po-button>
+<div class="po-md-12" style="margin-bottom: 20px;">
+    <po-button p-label="Efetivar Informações" (p-click)="onEfetivar()" p-icon="bi bi-check2"></po-button>
 </div>  
 
-<div class="po-md-12">
-    <po-widget>
-        
-    </po-widget>
 
+
+<div class="po-md-12">
+<po-widget p-title="Edite as Informações da Embalagem">
+<po-table [p-items]="listaGrid" #grid
+          [p-actions]="acoes"
+          
+          p-container="true"
+          [p-columns]="colunas" 
+          [p-hide-table-search]="true" 
+          [p-hide-columns-manager]="true" />
+        </po-widget>
 </div>
+
+<po-modal p-title="Informações de Embalagem" #tela [p-primary-action]="this.acaoSalvar" p-click-out="false" [p-hide-close]="true">
+    <form [formGroup]="form_">
+        <div class="po-md-4"><po-input p-clean="true" p-auto-focus="true" p-label="Volumes" formControlName="qt-volume" ></po-input></div>
+        <div class="po-md-4"><po-input p-clean="true"  p-label="Embalagem" formControlName="cod-embal"  ></po-input></div>
+        <div class="po-md-4"><po-input p-clean="true"  p-label="Qtd Embalagem" formControlName="qt-embal"  ></po-input></div>
+        <div class="po-md-6"><po-input p-clean="true"  p-label="Peso Liq." formControlName="peso-liq"  ></po-input></div>
+        <div class="po-md-6"><po-input p-clean="true"  p-label="Peso Bru." formControlName="peso-bru" ></po-input></div>
+    </form>
+</po-modal>
+
+
 
 

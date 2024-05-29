@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { PoNotificationService, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
+import { PoModalAction, PoNotificationService, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { TotvsService } from 'src/app/services/totvs-service.service';
 
@@ -40,16 +40,19 @@ readonly acoes: PoTableAction[] = [
     action: this.NotasFiscais.bind(this),
   },
   {
-    label: 'Embalagem',
-    icon: 'bi bi-box2',
-    action: this.Embalagem.bind(this),
-  },
-
-  {
     label: 'Reparos',
     icon: 'bi bi-tools',
     action: this.Reparos.bind(this),
-  }];
+  },
+  {
+    label: 'Embalagem',
+    icon: 'bi bi-box2',
+    action: this.Embalagem.bind(this),
+  }
+
+  ];
+
+  
 
 ngOnInit(): void {
 
@@ -103,11 +106,17 @@ NotasFiscais(obj:any){
 }
 
 Embalagem(obj:any){
-  this.AbrirTela(obj, 'embalagem')
+  if(obj.situacao === "B")
+   this.AbrirTela(obj, 'embalagem')
+  else
+  this.srvNotification.error("Situação do processo não permite chamar esta tela !")
 }
 
 Reparos(obj:any){
-  this.AbrirTela(obj, 'reparos')
+  if(obj.situacao === "R")
+    this.AbrirTela(obj, 'reparos')
+   else
+   this.srvNotification.error("Situação do processo não permite chamar esta tela !")
 }
 
 AbrirTela(obj:any, cTela:string){

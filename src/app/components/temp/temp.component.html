@@ -1,0 +1,19 @@
+
+
+
+
+
+
+
+<po-modal>
+<po-widget>
+<div class="po-md-6" style="margin-top: 30px;">
+    <po-checkbox [(ngModel)]="checkEquivalente" p-label="Equivalente ?" (p-change)="this.habilitarCampos()" > </po-checkbox>
+</div>
+<div class="po-md-6"><po-input [(ngModel)]="itemEquivalente" p-label="Item Equivalente" p-readonly="checkEquivalente" ></po-input></div>
+</po-widget>
+
+<div class="po-md-6"><po-input name="" p-label="ENC"></po-input></div>
+<div class="po-md-6"><po-input name="" p-label="Num.Série Garantia"></po-input></div>
+<div><input/></div>
+</po-modal>
