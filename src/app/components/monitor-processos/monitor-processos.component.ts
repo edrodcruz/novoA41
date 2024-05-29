@@ -11,7 +11,7 @@ import { TotvsService } from 'src/app/services/totvs-service.service';
 })
 export class MonitorProcessosComponent {
 
-  private srvTotvs = inject(TotvsService)
+private srvTotvs = inject(TotvsService)
 private srvNotification = inject(PoNotificationService);
 private router = inject(Router)
 
@@ -59,17 +59,19 @@ ngOnInit(): void {
   this.mostrarLabel=false
 
   this.colunas = this.srvTotvs.obterColunasMonitor()
-  this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - MONITOR ACOMPANHAMENTO DE PROCESSOS'});
+  //this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - MONITOR ACOMPANHAMENTO DE PROCESSOS'});
+  this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - MONITOR ACOMPANHAMENTO DE PROCESSOS', estabInfo:''});
 
   let monitor = this.srvTotvs.ObterMonitor()
   if (monitor !== undefined)
   {
     this.listaEstabelecimentos = monitor.listaEstab
-    this.lista = monitor.listaGrid
     this.codEstabel = monitor.estabSelecionado
+    //this.lista = monitor.listaGrid
+    this.onListar()
   }
   else{
-    this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - MONITOR ACOMPANHAMENTO DE PROCESSOS', estabInfo:''});
+    
     //--- Carregar combo de estabelecimentos
     this.placeHolderEstabelecimento = 'Aguarde, carregando lista...';
     this.srvTotvs.ObterEstabelecimentos().subscribe({

@@ -49,8 +49,8 @@ export class EmbalagemComponent {
    public form_ = this.formBuilder.group({
     'nr-process': ['', Validators.required],
     'qt-volume': [0, Validators.required],
-    'cod-embal': ['', Validators.required],
-    'qt-embal': [0, Validators.required],
+    'cod-embal': [''],
+    'qt-embal': [0],
     'peso-liq': [0, Validators.required],
     'peso-bru': [0, Validators.required],
     
@@ -70,8 +70,8 @@ export class EmbalagemComponent {
             this.codEstabel = response.codEstabelecimento
             this.codUsuario = response.codUsuario
             this.nrProcess  = response.nrProcesso
-            this.listaGrid = ([{'nr-process':response.nrProcesso, 'qt-volume':0, 'cod-embal':'', 'qt-embal':0, 'peso-liq':0, 'peso-bru':0}])
-            this.form_.setValue(this.listaGrid[0] as any)
+            this.listaGrid = ([{'nr-process':response.nrProcesso, 'qt-volume':'0', 'cod-embal':'', 'qt-embal':'0', 'peso-liq':'0,001', 'peso-bru':'0,001'}])
+            this.form_.setValue(this.listaGrid[0])
         }
       })
 
@@ -95,7 +95,18 @@ export class EmbalagemComponent {
           this.loadTela = true
           let paramsTela: any = { paramsTela: this.listaGrid[0] }
           this.srvTotvs.InformarEmbalagem(paramsTela).subscribe({
-            next: (response: any) => {},
+            next: (response: any) => {
+              
+              this.loadTela = false
+              this.form_.disable()
+              this.listaGrid=[]
+              this.srvTotvs.EmitirParametros({processoSituacao: 'FINALIZADO'});
+              this.srvDialog.alert({title:"PROCESSO FINALIZADO", message:"Informações de Embalagem gravadas com sucesso ! "})
+              
+             // this.srvNotification.success("Dados gravados com sucesso. Processo Finalizado !!!")
+
+             
+            },
             error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
           })
         },
@@ -105,12 +116,16 @@ export class EmbalagemComponent {
      }
 
      onSalvar(){
+      if (!this.form_.valid)
+        this.srvNotification.error("Informações de embalagens não foram preenchidas corretamente")
+      else{
       
-      this.listaGrid[0] = this.form_.value 
-      this.grid.items = this.listaGrid
-      console.log(this.listaGrid)
+        this.listaGrid[0] = this.form_.value 
+        this.grid.items = this.listaGrid
+        console.log(this.listaGrid)
 
-     this.tela?.close()
+        this.tela?.close()
+      }
 
      }
 

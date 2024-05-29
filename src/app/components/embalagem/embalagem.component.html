@@ -3,7 +3,7 @@
 </div>
 
 <div class="po-md-12" style="margin-bottom: 20px;">
-    <po-button p-label="Efetivar Informações" (p-click)="onEfetivar()" p-icon="bi bi-check2"></po-button>
+    <po-button p-label="Efetivar Informações" (p-click)="onEfetivar()" p-icon="bi bi-check2" [p-disabled]='form_.disabled'></po-button>
 </div>  
 
 
@@ -21,10 +21,14 @@
 </div>
 
 <po-modal p-title="Informações de Embalagem" #tela [p-primary-action]="this.acaoSalvar" p-click-out="false" [p-hide-close]="true">
-    <form [formGroup]="form_">
-        <div class="po-md-4"><po-input p-clean="true" p-auto-focus="true" p-label="Volumes" formControlName="qt-volume" ></po-input></div>
+    <form [formGroup]="form_" (ngSubmit)="onSalvar">
+        <div class="po-md-4"><po-input p-clean="true" p-auto-focus="true" p-label="Volumes" formControlName="qt-volume" ></po-input>
+            <div *ngIf="this.form_.controls['qt-volume'].errors" style="color:red">* Volume deve ser preenchido</div>
+        </div>
+        
         <div class="po-md-4"><po-input p-clean="true"  p-label="Embalagem" formControlName="cod-embal"  ></po-input></div>
         <div class="po-md-4"><po-input p-clean="true"  p-label="Qtd Embalagem" formControlName="qt-embal"  ></po-input></div>
+        <div class="po-row"></div>
         <div class="po-md-6"><po-input p-clean="true"  p-label="Peso Liq." formControlName="peso-liq"  ></po-input></div>
         <div class="po-md-6"><po-input p-clean="true"  p-label="Peso Bru." formControlName="peso-bru" ></po-input></div>
     </form>
