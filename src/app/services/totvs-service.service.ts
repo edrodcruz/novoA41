@@ -250,6 +250,7 @@ obterColunasReparos(): Array<PoTableColumn>{
 
 obterColunasMonitor():Array<PoTableColumn>{
   return [
+    {property:'opcoes', label: " ", type:'cellTemplate'},
     {property: 'cod-emitente', label: "Técnico"},
     {property: 'nome-abrev', label: 'Nome'},
     {property: 'nr-process', label: "Processo"},
@@ -266,6 +267,7 @@ obterColunasMonitor():Array<PoTableColumn>{
 
 obterColunasEmbalagem():Array<PoTableColumn>{
   return [
+    {property:'opcoes', label: " ", type:'cellTemplate'},
     {property:"qt-volume", label:"Volumes"},
     {property:"cod-embal", label:"Embalagem"},
     {property:"qt-embal", label:"Qtd Embalagem"},

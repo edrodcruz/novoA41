@@ -104,6 +104,7 @@ public onListar(){
 }
 
 NotasFiscais(obj:any){
+  console.log(obj)
   this.AbrirTela(obj, 'dashboard')
 }
 

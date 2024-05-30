@@ -11,12 +11,16 @@
 <div class="po-md-12">
 <po-widget p-title="Edite as Informações da Embalagem">
 <po-table [p-items]="listaGrid" #grid
-          [p-actions]="acoes"
-          
           p-container="true"
           [p-columns]="colunas" 
           [p-hide-table-search]="true" 
-          [p-hide-columns-manager]="true" />
+          [p-hide-columns-manager]="true" >
+          <ng-template p-table-cell-template let-column="column" let-row="row">
+            <div class="menuGrid">
+                 <div><button class="btn"  (click)="onEditar()"><i class="bi bi-pencil-square" ></i><p>Editar Embalagem</p></button></div>
+            </div>
+          </ng-template>
+          </po-table>
         </po-widget>
 </div>
 

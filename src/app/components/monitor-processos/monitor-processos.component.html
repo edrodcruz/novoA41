@@ -20,14 +20,22 @@
     </div>
     <div><po-button p-icon="bi bi-check2" (p-click)="onListar()" ></po-button></div>
 </div>
-
-<h3 style="color: #E5E5E5;margin-bottom: -50px;">Processos em Andamento por Técnico</h3>
 <po-table [p-items]="lista" 
-          [p-actions]="acoes"
           [p-striped]="true" 
-          [p-sort]="true" 
-          [p-height]="370"
+          [p-height]="400"
           p-container="true"
           [p-columns]="colunas" 
           [p-hide-table-search]="false" 
-          [p-hide-columns-manager]="true" />
+          [p-hide-columns-manager]="true">
+
+          <ng-template p-table-cell-template let-column="column" let-row="row">
+            <div class="menuGrid">
+                 <div><button class="btn"  (click)="NotasFiscais(row)"><i class="bi bi-archive" ></i><p>Notas Fiscais</p></button></div>
+                 <div><button class="btn"  (click)="Reparos(row)"><i class="bi bi-tools"></i><p>Reparos</p></button></div>
+                 <div><button class="btn"  (click)="Embalagem(row)"><i class="bi bi-box2"></i><p>Embalagem</p></button></div>
+            </div>
+          </ng-template>
+
+          </po-table>
+
+          
