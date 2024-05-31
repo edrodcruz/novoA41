@@ -185,4 +185,11 @@
       </form>
   </po-modal>
 
+  <po-modal #abrirArquivo [p-title]="nomeArquivo" p-size="auto" p-click-out="false" [p-primary-action]="acaoSair"
+  [p-secondary-action]="acaoImprimir">
+
+  <div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>
+
+</po-modal>
+
 

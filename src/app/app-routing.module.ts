@@ -12,7 +12,7 @@ import { MonitorProcessosComponent } from './components/monitor-processos/monito
 import { TempComponent } from './components/temp/temp.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/temp', pathMatch: 'full'},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path:'informe', component:InformeComponent},
   {path:'home', component:HomeComponent},
   {path:'dashboard', component:DashboardComponent},

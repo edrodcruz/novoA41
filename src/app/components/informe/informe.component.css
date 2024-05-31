@@ -74,6 +74,12 @@
     text-align: center;
   }
 
+  .formatoTexto{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px; 
+    font-variant-numeric: tabular-nums;
+  }
+
   
  
     

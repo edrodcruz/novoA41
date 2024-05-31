@@ -54,6 +54,9 @@ export class InformeComponent {
     @ViewChild(PoAccordionComponent, { static: true }) principal!: PoAccordionComponent;
     @ViewChild(PoAccordionItemComponent, { static: true }) item1!: PoAccordionItemComponent;
     @ViewChild(PoAccordionItemComponent, { static: true }) item2!: PoAccordionItemComponent;
+    @ViewChild('abrirArquivo', { static: true }) abrirArquivo:
+    | PoModalComponent
+    | undefined;
 
    //Formulario
    public form = this.formBuilder.group({
@@ -75,6 +78,20 @@ export class InformeComponent {
     chamado:[0]
   })
 
+  acaoImprimir: PoModalAction = {
+    action: () => {
+      this.onImprimirConteudoArquivo();
+    },
+    label: 'Gerar PDF',
+  };
+
+  acaoSair: PoModalAction = {
+    action: () => {
+      this.abrirArquivo?.close();
+    },
+    label: 'Sair',
+  };
+
   //---Variaveis
   loadTela: boolean = false
   loadGrid: boolean = false
@@ -91,6 +108,11 @@ export class InformeComponent {
   cInfoItem:string='Não há itens cadastrados'
   cOS:string=''
   cChamado:string=''
+
+  conteudoArquivo: string = '';
+  mostrarInfo: boolean = false;
+  nomeArquivo: string = '';
+
 
   //ListasCombo
   listaEstabelecimentos!: any[]
@@ -169,7 +191,7 @@ export class InformeComponent {
     //--- Login Unico
     this.srvTotvs.ObterUsuario().subscribe({
       next:(response:Usuario)=>{
-        console.log("calculo",response)
+       
         if (response === undefined){
           this.srvTotvs.EmitirParametros({estabInfo:''})
         }
@@ -189,10 +211,12 @@ export class InformeComponent {
     //Carregar combo de estabelecimentos
     this.srvTotvs46.ObterEstabelecimentos().subscribe({
       next: (response: any) => {
+        
         this.listaEstabelecimentos = (response as any[]).sort(
           this.srvTotvs46.ordenarCampos(['label']))
       },
       error: (e) => {
+        
         this.srvNotification.error('Ocorreu um erro na requisição')
         return
       },
@@ -201,12 +225,13 @@ export class InformeComponent {
 
   onImpressao() {
     let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
-    console.log(params)
+    
     this.loadTela = true
     this.srvTotvs46.ImprimirOS(params).subscribe({
       next: (response:any)=>{
-        console.log(response)
         this.loadTela = false
+        
+        this.onAbrirArquivo(response.arquivo)
       },
       error: (e)=> {this.loadTela = false}
       })
@@ -533,6 +558,54 @@ export class InformeComponent {
         },
         error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
       });
+  }
+
+  onAbrirArquivo(obj: any) {
+    
+    this.nomeArquivo = obj;
+    let params: any = { nomeArquivo: obj };
+    this.loadTela = true;
+    this.srvTotvs.AbrirArquivo(params).subscribe({
+      next: (response: any) => {
+        this.conteudoArquivo = response.arquivo
+          .replace(/\n/gi, '<br>')
+          .replace(/\40/gi, '&nbsp;')
+          .replace(//gi, '<br>');
+        this.loadTela = false;
+        this.abrirArquivo?.open();
+      },
+      error: (e) => {
+        this.loadTela = false;
+      },
+    });
+  }
+
+  onImprimirConteudoArquivo() {
+    let win = window.open(
+      '',
+      '',
+      'height=' +
+        window.innerHeight +
+        ', width=' +
+        window.innerWidth +
+        ', left=0, top=0'
+    );
+    win?.document.open();
+    win?.document.write(
+      "<html><head><meta charset='UTF-8'><title>" +
+        this.nomeArquivo +
+        "</title></head><style>p{ font-family: 'Courier New', Courier, monospace;font-size: 12px; font-variant-numeric: tabular-nums;}</style><body><p>"
+    );
+    win?.document.write(
+      this.conteudoArquivo
+        .replace(/\n/gi, '<br>')
+        .replace(/\40/gi, '&nbsp;')
+        .replace(//gi, '<br>')
+    );
+    win?.document.write('</p></body></html>');
+    win?.print();
+    win?.document.close();
+    win?.close();
   }
 
 

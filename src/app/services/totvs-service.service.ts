@@ -237,6 +237,7 @@ obterColunasErrosProcessamento(): Array<PoTableColumn>{
 
 obterColunasReparos(): Array<PoTableColumn>{
   return [
+    {property:'opcoes', label: " ", type:'cellTemplate'},
     {property: 'codEstabel', label: "Estab"},
     {property: 'codFilial', label: "Filial"},
     {property: 'itCodigo', label: "Item"},

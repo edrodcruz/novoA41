@@ -3,10 +3,8 @@
 </div>
 
 <div class="po-md-12" style="margin-bottom: 20px;">
-    <po-button p-label="Efetivar Informações" (p-click)="onEfetivar()" p-icon="bi bi-check2" [p-disabled]='form_.disabled'></po-button>
+    <po-button p-label="Efetivar Informações" (p-click)="onEfetivar()" p-icon="bi bi-check2" [p-disabled]='form_.disabled' p-kind="primary"></po-button>
 </div>  
-
-
 
 <div class="po-md-12">
 <po-widget p-title="Edite as Informações da Embalagem">
@@ -23,6 +21,10 @@
           </po-table>
         </po-widget>
 </div>
+
+
+
+
 
 <po-modal p-title="Informações de Embalagem" #tela [p-primary-action]="this.acaoSalvar" p-click-out="false" [p-hide-close]="true">
     <form [formGroup]="form_" (ngSubmit)="onSalvar">
