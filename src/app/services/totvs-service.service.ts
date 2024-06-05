@@ -238,14 +238,14 @@ obterColunasErrosProcessamento(): Array<PoTableColumn>{
 obterColunasReparos(): Array<PoTableColumn>{
   return [
     {property:'opcoes', label: " ", type:'cellTemplate'},
-    {property: 'codEstabel', label: "Estab"},
+    {property: 'cod-estabel', label: "Estab"},
     {property: 'codFilial', label: "Filial"},
-    {property: 'itCodigo', label: "Item"},
-    {property: 'qtdReparos', label: "Qtd.Reparos"},
-    {property: 'temEquival', label: "EQV", type: 'columnTemplate'},
-    {property: 'itEquivalente', label: "Item Equivalente"},
-    {property: 'enc', label: "ENC"},
-    {property: 'numSerie', label: "Num.Serie Garantia"},
+    {property: 'it-codigo', label: "Item"},
+    {property: 'quantidade', label: "Qtd.Reparos"},
+    {property: 'tem-equival', label: "EQV", type: 'columnTemplate'},
+    {property: 'it-equival', label: "Item Equivalente"},
+    {property: 'nr-enc', label: "ENC"},
+    {property: 'num-serie-it', label: "Num.Serie Garantia"},
   ]
 }
 
@@ -376,7 +376,6 @@ public ObterMonitor(monitor?:Monitor){
       return this.http.post(`${this._url}/ReprocessarCalculo`, params, {headers:headersTotvs})
                      .pipe(take(1));
     }
-  
 
     //---------------------- Processar Entradas
     public ProcessarEntradas(params?: any){
@@ -458,6 +457,12 @@ public ObterMonitor(monitor?:Monitor){
     return this.http.post(`${this._url}/InformarEmbalagem`, params, {headers:headersTotvs})
                 .pipe(take(1));
   }
+
+  public ObterItensParaReparo(params?: any){
+    return this.http.get(`${this._url}/ObterItensParaReparo`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
   
    //Ordenacao campos num array
    public ordenarCampos =

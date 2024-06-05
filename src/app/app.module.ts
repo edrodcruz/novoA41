@@ -20,6 +20,7 @@ import { SeletorComponent } from './components/seletor/seletor.component';
 import { MonitorProcessosComponent } from './components/monitor-processos/monitor-processos.component';
 import { TempComponent } from './components/temp/temp.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

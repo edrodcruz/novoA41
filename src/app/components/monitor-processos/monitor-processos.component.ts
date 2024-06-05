@@ -82,7 +82,7 @@ ngOnInit(): void {
         this.placeHolderEstabelecimento = 'Selecione um estabelecimento';
       },
       error: (e) => {
-        this.srvNotification.error('Ocorreu um erro na requisição');
+        //this.srvNotification.error('Ocorreu um erro na requisição');
         return;
       },
     });
@@ -104,7 +104,6 @@ public onListar(){
 }
 
 NotasFiscais(obj:any){
-  console.log(obj)
   this.AbrirTela(obj, 'dashboard')
 }
 
@@ -136,7 +135,7 @@ AbrirTela(obj:any, cTela:string){
       this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: `${obj['cod-emitente']} ${obj['nome-abrev']}`, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
       this.router.navigate([cTela])
     },
-    error: (e) => { this.srvNotification.error('Ocorreu um erro na requisição')},
+    //error: (e) => { this.srvNotification.error('Ocorreu um erro na requisição')},
   });
 }
 

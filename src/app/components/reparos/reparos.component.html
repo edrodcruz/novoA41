@@ -1,3 +1,6 @@
+<div class="sample-container">
+  <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
+</div>
 <div class="po-md-12">
   <po-widget>
     <div class="po-md-12 btnEliminar">
@@ -11,7 +14,7 @@
               [p-columns]="colunasReparos" 
               [p-hide-table-search]="false" 
               [p-hide-columns-manager]="true">
-                  <ng-template  p-table-column-template p-property="temEquival" let-value>
+                  <ng-template  p-table-column-template p-property="tem-equival" let-value>
                     <i class="bi bi-x-square" *ngIf="value === true" [style.font-size]="'16px'"></i>
                     <i class="bi bi-square" *ngIf="value === false" [style.font-size]="'16px'"></i>
                   </ng-template>

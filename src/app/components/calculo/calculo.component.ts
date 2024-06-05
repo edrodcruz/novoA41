@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ExcelService } from '../../services/excel-service.service';
 import { TotvsServiceMock } from '../../services/totvs-service-mock.service';
 import { Usuario } from 'src/app/interfaces/usuario';
+import { TotvsService46 } from 'src/app/services/totvs-service-46.service';
 
 
 @Component({
@@ -21,6 +22,22 @@ export class CalculoComponent {
 @ViewChild('detailsModal', { static: true }) detailsModal: PoModalComponent | undefined;
 @ViewChild('loginModal', { static: true }) loginModal: PoModalComponent | undefined;
 @ViewChild('stepper', { static: true }) stepper: PoStepperComponent | undefined;
+@ViewChild('abrirArquivo', { static: true }) abrirArquivo: | PoModalComponent | undefined;
+
+
+acaoImprimir: PoModalAction = {
+  action: () => {
+    this.onImprimirConteudoArquivo();
+  },
+  label: 'Gerar PDF',
+};
+
+acaoSair: PoModalAction = {
+  action: () => {
+    this.abrirArquivo?.close();
+  },
+  label: 'Sair',
+};
 
 //-------- Labels Stepper
 lblStepProximo: string = 'Avançar';
@@ -37,6 +54,7 @@ listaEntrega!: any[]
 listaExtraKit!: any[]
 listaResumo!: any[]
 listaSemSaldo!: any[]
+listaOrdens!:any[]
 
 //-------- Colunas Grid
 colunasKit!: Array<PoTableColumn>
@@ -80,6 +98,12 @@ colunasDetalhe: Array<PoTableColumn> = []
 tituloDetalhe!: string
 itemsDetalhe!: any[]
 itemsResumo!: any[]
+
+//------- Arquivo
+conteudoArquivo: string = '';
+mostrarInfo: boolean = false;
+nomeArquivo: string = '';
+
 
 //------ Controle Tela
 mostrarDetalhe:boolean=false
@@ -129,12 +153,13 @@ readonly acaoLogar: PoModalAction = {
   //----------------------------------------------------------------------------------- Injecao de Dependencia
  
   private srvTotvs = inject(TotvsService)
+  private srvTotvs46 = inject(TotvsService46)
   private srvExcel = inject(ExcelService)
   private srvNotification = inject (PoNotificationService)
   private srvDialog = inject(PoDialogService)
 
   onSair(){
-    console.log()
+    
   }
 
   //----------------------------------------------------------------------------------- Inicializar
@@ -146,7 +171,6 @@ readonly acaoLogar: PoModalAction = {
     //--- Login Unico
     this.srvTotvs.ObterUsuario().subscribe({
       next:(response:Usuario)=>{
-        console.log("calculo",response)
         if (response === undefined){
           this.srvTotvs.EmitirParametros({estabInfo:''})
         }
@@ -181,7 +205,7 @@ readonly acaoLogar: PoModalAction = {
         next:(response:any)=>{
           this.listaTransp = (response as any[]).sort(this.ordenarCampos(['label']))
         },
-        error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
+        //error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
     })
   }
 
@@ -205,21 +229,47 @@ readonly acaoLogar: PoModalAction = {
          let estab = this.listaEstabelecimentos.find(o => o.value === this.codEstabelecimento)
          let tec = this.listaTecnicos.find(o => o.value === this.codTecnico)
 
-         
-         
          //Obter as informacoes do Processo
          let paramsTec:any = {codEstabel: this.codEstabelecimento, codTecnico: this.codTecnico}
-         //Chamar Método 
+
+         /*Chamar Método 
          this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
            next: (response: any) => {
                this.processoInfo = response.nrProcesso
-               this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
-              
                //Setar usuario
                this.srvTotvs.SetarUsuario(this.codEstabelecimento, this.codUsuario, response.nrProcesso)
+               //Atualizar Informacoes Tela
+               this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
            },
-           error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+           //error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
          })
+         */
+
+         //Se o processo for igual a 0 chamar a rotina do a46 para criar um novo e setar no ambiente
+         //if (Number(this.processoInfo) === 0){
+          let params:any={codEstabel: this.codEstabelecimento, codUsuario: this.codTecnico, senha: 'moto', origem:'calculo'}
+          this.srvTotvs46.ObterDados(params).subscribe({
+            next: (response: any) => {
+                if(response.ordens !==undefined){
+                  this.listaOrdens = response.ordens
+                }
+
+                this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
+                  next: (response: any) => {
+                    this.processoInfo = response.nrProcesso
+                    //Setar usuario
+                    this.srvTotvs.SetarUsuario(this.codEstabelecimento, this.codTecnico, response.nrProcesso)
+                    //Atualizar Informacoes Tela
+                    this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
+                  },
+                 error: (e) => { }
+                })
+            },
+          error:(e)=>{
+               
+               this.stepper?.first()
+          }})
+         //} 
 
          //Setar Valores Padrao
          this.srvTotvs
@@ -239,7 +289,7 @@ readonly acaoLogar: PoModalAction = {
                 
                 }
             },
-            error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
+            //error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
           }); 
       }
 
@@ -327,8 +377,6 @@ readonly acaoLogar: PoModalAction = {
       next: (response: any) => {
            if(response.senhaValida){
 
-              
-
               //Parametros para calculo
               let paramsE: any = { CodEstab: this.codEstabelecimento, CodTecnico: this.codTecnico, NrProcess: this.processoInfo, Extrakit: this.listaExtraKit }
               this.srvTotvs.PrepararResumo(paramsE).subscribe({
@@ -354,7 +402,7 @@ readonly acaoLogar: PoModalAction = {
 
                 },
                 error: (e) => {
-                    this.srvNotification.error("Ocorreu um erro na requisição " )
+                   // this.srvNotification.error("Ocorreu um erro na requisição " )
                     this.usuarioLogado = false;
                 },
                 complete: () => {
@@ -371,7 +419,7 @@ readonly acaoLogar: PoModalAction = {
                this.loadTela = false
            }
       },
-      error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
+      //error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
       complete: () => { this.loadLogin=false ; this.usuarioLogado = false}
     })
   }
@@ -388,7 +436,7 @@ readonly acaoLogar: PoModalAction = {
             this.listaExtraKit = response.items
         },
         error: (e) => {
-              this.srvNotification.error("Ocorreu um erro na requisição " )
+             // this.srvNotification.error("Ocorreu um erro na requisição " )
               return false
         },
         complete: () => { this.loadTela = false }
@@ -417,7 +465,7 @@ readonly acaoLogar: PoModalAction = {
             this.listaTecnicos = response
             this.loadTecnico = 'Selecione o técnico'
         },
-        error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
+       // error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
       });
 
      
@@ -440,7 +488,7 @@ readonly acaoLogar: PoModalAction = {
           //this.codEntrega = "Padrão"
 
         },
-        error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
+        //error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
     })
   }
 
@@ -629,7 +677,7 @@ readonly acaoLogar: PoModalAction = {
     }
 
   //------------------------------------------------------------------- Botao Aprovar (Resumo calculo)
-  public onAprovarCalculo(){
+  public onAprovarCalculo(tipoAprov:number){
     this.srvDialog.confirm({
       title: 'EXECUÇÃO CÁLCULO',
       message: 'Confirma execução do cálculo? Serão geradas as entradas e saídas',
@@ -639,7 +687,8 @@ readonly acaoLogar: PoModalAction = {
         this.loadTela = true
         
         let params:any={paramsTela: {
-                          opcao: this.tipoCalculo,         
+                          opcao: this.tipoCalculo,  
+                          tipoAprovacao: tipoAprov,       
                           codEstab: this.codEstabelecimento,     
                           codEmitente: this.codTecnico,  
                           nrProcess:  this.processoInfo,    
@@ -663,5 +712,73 @@ readonly acaoLogar: PoModalAction = {
       },
       cancel: () => this.srvNotification.error("Cancelada pelo usuário")
     })}
+
+    onImpressao() {
+      if (this.listaOrdens === undefined){
+        this.srvNotification.error('Não existem ordens para o técnico')
+        return 
+      }
+      let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
+      this.labelLoadTela = "Gerando Informe"
+      this.loadTela = true
+      this.srvTotvs46.ImprimirOS(params).subscribe({
+        next: (response:any)=>{
+          this.loadTela = false
+          
+          this.onAbrirArquivo(response.arquivo)
+        },
+        error: (e)=> {this.loadTela = false}
+        })
+      
+    }
+
+    onAbrirArquivo(obj: any) {
+    
+      this.nomeArquivo = obj;
+      let params: any = { nomeArquivo: obj };
+      this.loadTela = true;
+      this.srvTotvs.AbrirArquivo(params).subscribe({
+        next: (response: any) => {
+          this.conteudoArquivo = response.arquivo
+            .replace(/\n/gi, '<br>')
+            .replace(/\40/gi, '&nbsp;')
+            .replace(//gi, '<br>');
+          this.loadTela = false;
+          this.abrirArquivo?.open();
+        },
+        error: (e) => {
+          this.loadTela = false;
+        },
+      });
+    }
+
+    onImprimirConteudoArquivo() {
+      let win = window.open(
+        '',
+        '',
+        'height=' +
+          window.innerHeight +
+          ', width=' +
+          window.innerWidth +
+          ', left=0, top=0'
+      );
+      win?.document.open();
+      win?.document.write(
+        "<html><head><meta charset='UTF-8'><title>" +
+          this.nomeArquivo +
+          "</title></head><style>p{ font-family: 'Courier New', Courier, monospace;font-size: 12px; font-variant-numeric: tabular-nums;}</style><body><p>"
+      );
+      win?.document.write(
+        this.conteudoArquivo
+          .replace(/\n/gi, '<br>')
+          .replace(/\40/gi, '&nbsp;')
+          .replace(//gi, '<br>')
+      );
+      win?.document.write('</p></body></html>');
+      win?.print();
+      win?.document.close();
+      win?.close();
+    }
+  
 
 }

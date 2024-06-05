@@ -144,7 +144,7 @@ export class ParamestabComponent {
           this.srvTotvs.ordenarCampos(['label']))
       },
       error: (e) => {
-        this.srvNotification.error('Ocorreu um erro na requisição')
+        //this.srvNotification.error('Ocorreu um erro na requisição')
         return
       },
     });
@@ -156,7 +156,7 @@ export class ParamestabComponent {
           this.srvTotvs.ordenarCampos(['label'])
         )
       },
-      error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
+     // error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
     })
 
     //Aplicar changes na tela
@@ -173,7 +173,7 @@ export class ParamestabComponent {
         this.lista = response.items
         this.loadTela = false
       },
-      error: (e) => {this.srvNotification.error('Ocorreu um erro na requisição')
+      error: (e) => {/*this.srvNotification.error('Ocorreu um erro na requisição')*/
                     this.loadTela=false},
     });
   }
@@ -223,7 +223,7 @@ export class ParamestabComponent {
             this.srvNotification.success('Registro eliminado com sucesso')
             this.listar()
           },
-          error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
+         // error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
         })
       },
       cancel: () => this.srvNotification.error("Cancelada pelo usuário")
@@ -247,7 +247,7 @@ export class ParamestabComponent {
         this.listar();
       },
       error: (e) => {
-        this.srvNotification.error('Ocorreu um erro na requisição ')
+       // this.srvNotification.error('Ocorreu um erro na requisição ')
       },
     })
   }

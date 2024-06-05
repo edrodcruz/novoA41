@@ -26,27 +26,8 @@ loadTela:boolean=false
 
 lEQV:boolean=false
 
-listaReparos:any[]=[
+listaReparos!:any[]
 
-  { codFilial: '08'
-    , codEstabel: '131'
-    ,itCodigo: '58.131.000256-2B'
-    ,qtdReparos: 1
-    ,temEquival: false
-    ,itEquivalente: ''
-    ,enc: '123'
-    ,numSerie: '5670000'
-},
-{ codFilial: '08'
-, codEstabel: '131'
-,itCodigo: '58.131.000256-2B'
-,qtdReparos: 1
-,temEquival: true
-,itEquivalente: ''
-,enc: '123'
-,numSerie: '5670000'
-}
-]
 colunasReparos!:PoTableColumn[]
 cJustificativa!:string
 
@@ -79,6 +60,7 @@ readonly acoesGrid: PoTableAction[] = [
   ngOnInit(): void {
 
     this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - CRIAÇÃO DE REPAROS'});
+    this.loadTela = true
 
     this.srvTotvs.ObterUsuario().subscribe({
       next:(response:Usuario)=>{
@@ -97,9 +79,19 @@ readonly acoesGrid: PoTableAction[] = [
 
     this.colunasReparos = this.srvTotvs.obterColunasReparos()
 
-   }
+    let params: any = { codEmitente: this.codUsuario, nrProcess: this.nrProcess }
+    this.srvTotvs.ObterItensParaReparo(params).subscribe({
+      next:(response:any)=>{
+        this.loadTela=false
+        if (response === undefined){
+          return
+        }
+        this.listaReparos = response.items
 
-   LogarUsuario() {
+      }})
+ }
+
+ LogarUsuario() {
     this.router.navigate(['seletor'], {queryParams:{redirectTo:'reparos'}}) 
  }
 

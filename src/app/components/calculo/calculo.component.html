@@ -150,10 +150,10 @@
         <po-widget class="po-md-12" [p-height]=450 [p-primary-label]="lblStepAnterior"
           (p-primary-action)="stepper.previous()">
 
-          <div class="po-md-12">
+          <div style="display: flex; justify-content: space-evenly; align-content: center; align-items: center; gap:20px;">
+            <po-button p-tooltip="Impressão Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer"></po-button>
             <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)" 
-                            p-label="Tipo de Cálculo" [p-options]="options" />
-                          
+                            p-label="Tipo de Cálculo" [p-options]="options" style="min-width: 80%;"/>
           </div>
           <div class="po-row" style="margin-bottom: 30px;"></div>
             <div class="container-card">
@@ -224,8 +224,8 @@
           </div> -->
             
             <div class="po-md-12" style="margin-top: 50px;">
-              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar" (p-click)="onAprovarCalculo()"></po-button>
-              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar Sem Gerar Saída"></po-button>
+              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar" (p-click)="onAprovarCalculo(1)" p-kind="primary"></po-button>
+              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar Sem Gerar Saída" (p-click)="onAprovarCalculo(2)" p-kind="primary"></po-button>
             </div>
           </po-widget>
       </po-step>
@@ -275,6 +275,13 @@
       </po-password>
     </div>
   </po-modal>
+
+  <po-modal #abrirArquivo [p-title]="nomeArquivo" p-size="auto" p-click-out="false" [p-primary-action]="acaoSair"
+  [p-secondary-action]="acaoImprimir">
+
+  <div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>
+
+</po-modal>
 
 
 

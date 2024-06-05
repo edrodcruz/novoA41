@@ -127,6 +127,7 @@ export class InformeComponent {
   listaItens!: any[]
   
   sub!: Subscription;
+  nrProcesso:number=0;
 
   readonly acoesGridOrdem: PoTableAction[] =[
     {label: 'Marcar OS', icon: 'bi bi-file-earmark-check', action: this.onMarcar.bind(this)},
@@ -217,7 +218,7 @@ export class InformeComponent {
       },
       error: (e) => {
         
-        this.srvNotification.error('Ocorreu um erro na requisição')
+       // this.srvNotification.error('Ocorreu um erro na requisição')
         return
       },
     });
@@ -232,6 +233,8 @@ export class InformeComponent {
         this.loadTela = false
         
         this.onAbrirArquivo(response.arquivo)
+        //Atualizar Situacao do Processo
+        this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
       },
       error: (e)=> {this.loadTela = false}
       })
@@ -368,10 +371,9 @@ export class InformeComponent {
 
   onLogar(){
     this.loadTela = true;
-    let params:any={codEstabel: this.form.controls.codEstabel.value, codUsuario: this.form.controls.codUsuario.value, senha: this.form.controls.senha.value}
+    let params:any={codEstabel: this.form.controls.codEstabel.value, codUsuario: this.form.controls.codUsuario.value, senha: this.form.controls.senha.value, origem:'informe'}
     this.srvTotvs46.ObterDados(params).subscribe({
       next: (response: any) => {
-        console.log(response)
         let estab = this.listaEstabelecimentos.find(o => o.value === this.form.controls.codEstabel.value)
         let tec = this.listaTecnicos.find(o => o.value === this.form.controls.codUsuario.value)
         this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label})
@@ -402,11 +404,14 @@ export class InformeComponent {
               //Setar usuario
               this.srvTotvs.SetarUsuario(this.form.controls.codEstabel.value!, this.form.controls.codUsuario.value!, response.nrProcesso)
 
+              //Processo ativo
+              this.nrProcesso = response.nrProcesso
+
               //Atualizar Informacoes Tela
               this.srvTotvs.EmitirParametros({processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
              
           },
-          error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
+         // error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
         })
 
 
@@ -452,7 +457,7 @@ export class InformeComponent {
   onMarcar(obj:any | null){
     this.ordemSelecionada = obj
     this.loadGridOrdem = true
-    let params:any={cRowId: this.ordemSelecionada['c-rowId']}
+    let params:any={cRowId: this.ordemSelecionada['c-rowId'], nrProcess: this.nrProcesso}
     this.srvTotvs46.Marcar(params).subscribe({
     next: (response:any)=>{
         this.loadGridOrdem = false
@@ -556,7 +561,7 @@ export class InformeComponent {
             this.listaTecnicos = response
             this.loadTecnico = 'Selecione o técnico'
         },
-        error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
+        //error: (e) => this.srvNotification.error("Ocorreu um erro na requisição " ),
       });
   }
 

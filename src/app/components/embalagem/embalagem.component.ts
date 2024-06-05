@@ -29,6 +29,8 @@ export class EmbalagemComponent {
   loadTela:boolean=false
   listaGrid!:any[]
   colunas!:any[]
+
+  pesoBruto:number=0
   
 
   readonly acoes: PoTableAction[] = [
@@ -48,25 +50,25 @@ export class EmbalagemComponent {
     //Formulario
    public form_ = this.formBuilder.group({
     'nr-process': ['', Validators.required],
-    'qt-volume': [0, Validators.required],
+    'qt-volume': ['', Validators.required],
     'cod-embal': [''],
-    'qt-embal': [0],
-    'peso-liq': [0, Validators.required],
-    'peso-bru': [0, Validators.required],
+    'qt-embal': [''],
+    'peso-liq': ['', Validators.required],
+    'peso-bru': ['', Validators.required],
     
   });
+
+  
 
    ngOnInit(): void {
 
       this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - INFORMAÇÕES DE EMBALAGEM'});
       this.colunas=this.srvTotvs.obterColunasEmbalagem()
-      
 
       //Login Unico
       this.srvTotvs.ObterUsuario().subscribe({
         next:(response:Usuario)=>{
           if(response ===undefined) return
-          console.log(response)
             this.codEstabel = response.codEstabelecimento
             this.codUsuario = response.codUsuario
             this.nrProcess  = response.nrProcesso
@@ -74,7 +76,6 @@ export class EmbalagemComponent {
             this.form_.setValue(this.listaGrid[0])
         }
       })
-
      }
 
      onNovo(){
@@ -93,6 +94,15 @@ export class EmbalagemComponent {
         message: `Confirma efetivação ?`,
         confirm: () => {
           this.loadTela = true
+
+          //Trocar Separador decimal
+          this.listaGrid.forEach(x => {
+            x['qt-volume'] = x['qt-volume'].replace(',', '.') 
+            x['peso-liq'] = x['peso-liq'].replace(',', '.') 
+            x['peso-bru'] = x['peso-bru'].replace(',', '.') 
+
+          })
+
           let paramsTela: any = { paramsTela: this.listaGrid[0] }
           this.srvTotvs.InformarEmbalagem(paramsTela).subscribe({
             next: (response: any) => {
@@ -107,7 +117,7 @@ export class EmbalagemComponent {
 
              
             },
-            error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
+           // error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
           })
         },
         cancel: () => this.srvNotification.error("Cancelada pelo usuário")
@@ -121,9 +131,8 @@ export class EmbalagemComponent {
       else{
       
         this.listaGrid[0] = this.form_.value 
+        let numero = this.form_.controls['peso-bru'].value
         this.grid.items = this.listaGrid
-        console.log(this.listaGrid)
-
         this.tela?.close()
       }
 

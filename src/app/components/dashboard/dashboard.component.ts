@@ -156,7 +156,6 @@ LogarUsuario() {
       };
       this.srvTotvs.ObterNotas(paramsNota).subscribe({
         next: (response: any) => {
-          console.log(response)
           this.listaNFE = response.nfe;
           this.listaNFS = response.nfs;
 
@@ -188,7 +187,7 @@ LogarUsuario() {
           this.loadTela = false;
         },
         error: (e) => {
-          this.srvNotification.error('Ocorreu um erro na requisição');
+          //this.srvNotification.error('Ocorreu um erro na requisição');
           return;
         },
       });
@@ -221,7 +220,7 @@ LogarUsuario() {
             }, 1000);
           },
           error: (e) => {
-            this.srvNotification.error('Ocorreu um erro na requisição')
+           // this.srvNotification.error('Ocorreu um erro na requisição')
             this.loadTela = false;
           },
         });
