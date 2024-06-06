@@ -216,11 +216,7 @@ export class InformeComponent {
         this.listaEstabelecimentos = (response as any[]).sort(
           this.srvTotvs46.ordenarCampos(['label']))
       },
-      error: (e) => {
-        
-       // this.srvNotification.error('Ocorreu um erro na requisição')
-        return
-      },
+      error: (e) => { },
     });
   }
 
@@ -411,7 +407,6 @@ export class InformeComponent {
               this.srvTotvs.EmitirParametros({processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
              
           },
-         // error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
         })
 
 
@@ -432,8 +427,7 @@ export class InformeComponent {
         this.cBrancas = response.tela[0].branco
         this.cTotal = response.tela[0].TOTAL
       },
-      error: (e) => {
-       },
+      error: (e) => { },
     });
 
     

@@ -44,7 +44,8 @@ constructor(private cdRef : ChangeDetectorRef){
 }
 
 AbrirProgramaTotvs(){
-  this.srvTotvs.AbrirProgramaTotvs().subscribe({
+  let params:any={program:'ftp/ft0518.w', params:''}
+  this.srvTotvs.AbrirProgramaTotvs(params).subscribe({
     next: (response:any)=> { },
     error: (e)=>{}
   })

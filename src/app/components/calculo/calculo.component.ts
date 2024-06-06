@@ -225,6 +225,8 @@ readonly acaoLogar: PoModalAction = {
       //------------- Passo 1 - OK (Atualizar informacoes de tela)
       if ((passo.label === "Técnico") && (this.codEstabelecimento !== '') && (this.codTecnico !== '')){
 
+        this.loadTela=true
+
          //Atualizar informações do Técnico e Estabelecimento
          let estab = this.listaEstabelecimentos.find(o => o.value === this.codEstabelecimento)
          let tec = this.listaTecnicos.find(o => o.value === this.codTecnico)
@@ -232,25 +234,11 @@ readonly acaoLogar: PoModalAction = {
          //Obter as informacoes do Processo
          let paramsTec:any = {codEstabel: this.codEstabelecimento, codTecnico: this.codTecnico}
 
-         /*Chamar Método 
-         this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
-           next: (response: any) => {
-               this.processoInfo = response.nrProcesso
-               //Setar usuario
-               this.srvTotvs.SetarUsuario(this.codEstabelecimento, this.codUsuario, response.nrProcesso)
-               //Atualizar Informacoes Tela
-               this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
-           },
-           //error: (e) => { this.srvNotification.error("Ocorreu um erro na requisição"); return}
-         })
-         */
-
-         //Se o processo for igual a 0 chamar a rotina do a46 para criar um novo e setar no ambiente
-         //if (Number(this.processoInfo) === 0){
+          //Chamar o mesmo método da tela do Informe porem passando a origem como Calculo
           let params:any={codEstabel: this.codEstabelecimento, codUsuario: this.codTecnico, senha: 'moto', origem:'calculo'}
           this.srvTotvs46.ObterDados(params).subscribe({
             next: (response: any) => {
-                if(response.ordens !==undefined){
+                if(response.ordens !== undefined){
                   this.listaOrdens = response.ordens
                 }
 
@@ -261,6 +249,7 @@ readonly acaoLogar: PoModalAction = {
                     this.srvTotvs.SetarUsuario(this.codEstabelecimento, this.codTecnico, response.nrProcesso)
                     //Atualizar Informacoes Tela
                     this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
+                    this.loadTela=false
                   },
                  error: (e) => { }
                 })
@@ -268,8 +257,9 @@ readonly acaoLogar: PoModalAction = {
           error:(e)=>{
                
                this.stepper?.first()
+               this.loadTela=false
           }})
-         //} 
+        
 
          //Setar Valores Padrao
          this.srvTotvs

@@ -409,12 +409,6 @@ public ObterMonitor(monitor?:Monitor){
     }
   
 
-  //---------------------- Programas DDK
-  public AbrirProgramaTotvs(params?: any){
-    return this.http.get('/totvs-menu/rest/exec?program=ftp/ft0518.w&params=', {params, headers:headersTotvs})
-                   .pipe(take(1));
-  }
-
   //---------------------- Login
   public ObterNotas(params?: any){
     return this.http.post(`${this._url}/ObterNotas`, params, {headers:headersTotvs})
@@ -460,6 +454,12 @@ public ObterMonitor(monitor?:Monitor){
 
   public ObterItensParaReparo(params?: any){
     return this.http.get(`${this._url}/ObterItensParaReparo`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+  //---------------------- Programas DDK
+  public AbrirProgramaTotvs(params?: any){
+    return this.http.get('/totvs-menu/rest/exec', {params, headers:headersTotvs})
                    .pipe(take(1));
   }
 

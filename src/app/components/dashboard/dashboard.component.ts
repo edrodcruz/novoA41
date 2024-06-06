@@ -149,11 +149,9 @@ LogarUsuario() {
       this.loginModal?.open();
     } else {
       this.loadTela = true;
-      let paramsNota: any = {
-        CodEstab: this.codEstabel,
-        CodTecnico: this.codUsuario,
-        NrProcess: this.nrProcess,
-      };
+
+
+      let paramsNota: any = {CodEstab: this.codEstabel,CodTecnico: this.codUsuario, NrProcess: this.nrProcess};
       this.srvTotvs.ObterNotas(paramsNota).subscribe({
         next: (response: any) => {
           this.listaNFE = response.nfe;
@@ -184,13 +182,26 @@ LogarUsuario() {
           else{
             this.aplicarCorPainel(response.rpw[0].mensagemTela)
           }
-          this.loadTela = false;
+          //this.loadTela = false;
         },
         error: (e) => {
           //this.srvNotification.error('Ocorreu um erro na requisição');
           return;
         },
       });
+
+      //Obter as informacoes do Processo
+      let paramsTec:any = {codEstabel: this.codEstabel, codTecnico: this.codUsuario}
+      this.srvTotvs.ObterNrProcesso(paramsTec).subscribe({
+        next: (response: any) => {
+          //Atualizar Informacoes Tela
+          this.srvTotvs.EmitirParametros({processoSituacao: response.situacaoProcesso})
+
+          this.loadTela=false
+        },
+       error: (e) => { }
+      })
+
     }
   }
 
