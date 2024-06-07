@@ -20,7 +20,7 @@
     "@angular/router": "^17.3.11",
     "@po-ui/ng-components": "17.13.1",
     "@po-ui/ng-templates": "17.13.1",
-    "@totvs/po-theme": "^16.15.0",
+    "@totvs/po-theme": "^16.16.0",
     "bootstrap-icons": "^1.11.3",
     "exceljs": "^1.12.1",
     "file-saver": "^2.0.5",

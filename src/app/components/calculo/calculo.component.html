@@ -3,14 +3,14 @@
     </div>
     <po-stepper #stepper>
       <po-step p-label="Técnico" [p-can-active-next-step]="canActiveNextStep.bind(this)">
-        <po-widget class="po-md-12" [p-height]=450 [p-primary-label]="lblStepProximo"
+        <po-widget [p-height]=450 [p-primary-label]="lblStepProximo" 
           (p-primary-action)="stepper.next()">
 
           <po-divider p-label="Estabelecimento e Técnico"></po-divider>
 
           <div class="po-md-12">
             <div class="po-md-6">
-              <po-combo [ngModel]="codEstabelecimento" (ngModelChange)="codEstabelecimento = $event"
+              <po-combo [ngModel]="codEstabelecimento" (ngModelChange)="codEstabelecimento = $event" 
                  (p-change)="onEstabChange($event)" p-clean="true"
                 [p-options]="listaEstabelecimentos" p-label="Estabelecimento" p-icon="bi bi-pin-map"
                 [p-placeholder]="placeHolderEstabelecimento">
@@ -43,6 +43,7 @@
               </po-combo>
             </div>
           </div>
+      
         </po-widget>
       </po-step>
 

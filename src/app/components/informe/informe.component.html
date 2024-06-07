@@ -2,9 +2,9 @@
   <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
 </div>
 <po-accordion style="margin-top: 10px;" #principal p-allow-expand-all-items="false" p-show-manager-accordion="false">
-    <po-accordion-item p-label="Informações do Técnico" #item1 >
-      <po-widget>
-        <form [formGroup]="form">
+    <po-accordion-item p-label="Informações do Técnico" #item1>
+       <div style="height: 70px;">
+        <form [formGroup]="form" >
 
         <div class="po-md-4">
           <po-combo formControlName="codEstabel" [p-options]="listaEstabelecimentos" p-label="Estabelecimento"
@@ -39,11 +39,13 @@
         </div>
 
         <div class="po-md-4">
-          <div class="po-md-8"><po-password name="password" formControlName="senha" p-label="Senha" p-icon="bi bi-pass"> </po-password></div>
+          <div class="po-md-8"><po-password name="password" formControlName="senha" p-label="Senha"> </po-password></div>
           <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-check2" (p-click)="onLogar()" [p-disabled]="!this.form.valid"></po-button></div>
         </div>
        </form>
-      </po-widget>
+       </div>
+     
+    
     </po-accordion-item>
 
     <po-accordion-item p-label="Ordens de Serviço e Itens da Ordem" [p-label-tag]="cTag" #item2>
