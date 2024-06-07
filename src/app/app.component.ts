@@ -24,7 +24,7 @@ export class AppComponent {
   { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data', link:'/informe'   , shortLabel:'Informe'},
   { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'    , link:'/calculo'   , shortLabel:'Cálculo'},
   { label: 'Monitor Processos'         , icon: 'bi bi-display'       , link:'/monitor'      , shortLabel:'Monitor Processos'},
-  { label: 'Danfe (FT0518)'            , icon: 'bi bi-printer'       , shortLabel:'DANFE', action:this.AbrirProgramaTotvs}
+  { label: 'Danfe (FT0518)'            , icon: 'bi bi-printer'       , shortLabel:'DANFE', action:()=>this.AbrirProgramaTotvs()}
  ]
  ;
 
@@ -50,8 +50,10 @@ AbrirProgramaTotvs(){
     error: (e)=>{}
   })
 }
+   
 
 ngOnInit(): void {
+  
   this.estabInfo=''
   this.sub = this.srvTotvs.EnviarParametros().subscribe({
     next: (response: any) => {

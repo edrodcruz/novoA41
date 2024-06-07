@@ -91,6 +91,7 @@ readonly acoesGrid: PoTableAction[] = [
       }})
  }
 
+ 
  LogarUsuario() {
     this.router.navigate(['seletor'], {queryParams:{redirectTo:'reparos'}}) 
  }
