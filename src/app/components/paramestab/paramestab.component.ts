@@ -197,7 +197,7 @@ export class ParamestabComponent {
     if (obj !== null) {
       this.nomeEstabel = obj.nomeEstabel
       this.tipoAcao='E'
-      this.form.setValue(obj)
+      this.form.patchValue(obj)
     }
   }
 
@@ -206,7 +206,7 @@ export class ParamestabComponent {
     this.cadModal?.open()
     this.nomeEstabel = obj.nomeEstabel
     this.tipoAcao='C'
-    this.form.setValue(obj)
+    this.form.patchValue(obj)
   }
 
   //---Deletar registro

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,AfterContentChecked , Component, inject, OnInit, ViewChild } from '@angular/core';
 import { PoMenuComponent, PoMenuItem, PoModalAction, PoModalComponent, PoNotificationService } from '@po-ui/ng-components';
 import { TotvsServiceMock } from './services/totvs-service-mock.service';
 import { Subscription } from 'rxjs';
@@ -77,6 +77,10 @@ ngOnInit(): void {
 
 ngOnDestroy(): void{
   this.sub.unsubscribe()
+}
+
+ngAfterContentChecked(): void {
+  this.cdRef.detectChanges();
 }
 
 }

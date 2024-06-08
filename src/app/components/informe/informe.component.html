@@ -3,7 +3,7 @@
 </div>
 <po-accordion style="margin-top: 10px;" #principal p-allow-expand-all-items="false" p-show-manager-accordion="false">
     <po-accordion-item p-label="Informações do Técnico" #item1>
-       <div style="height: 70px;">
+       <po-widget>
         <form [formGroup]="form" >
 
         <div class="po-md-4">
@@ -43,7 +43,7 @@
           <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-check2" (p-click)="onLogar()" [p-disabled]="!this.form.valid"></po-button></div>
         </div>
        </form>
-       </div>
+       </po-widget>
      
     
     </po-accordion-item>
@@ -135,27 +135,31 @@
       </form>
   </po-modal>
 
-  <po-modal #telaIncluirItemOrdem p-title="Incluir Item Ordem Serviço"
+  <po-modal #telaIncluirItemOrdem p-title="Item Ordem Serviço"
                               p-size="auto" 
                               p-click-out="false" 
-                              [p-hide-close]="true"
                               [p-primary-action]="acaoIncluirItemOrdem" 
                               [p-secondary-action]="acaoCancelarItemOrdem">
+      <div class="sample-container">
+        <po-loading-overlay *ngIf="loadModal===true" [p-screen-lock]="false"></po-loading-overlay>
+      </div>
       <form [formGroup]="formItemOrdem">
         <div class="po-md-12">
           <div class="po-md-6">
              <po-widget p-title="Dados do Item">
-              <div class="po-md-6" ><po-input name="numOS" formControlName="numOS" p-label="Item"></po-input></div>
-              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Nota Fiscal"></po-input></div>
-              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Quantidade"></po-input></div>
-              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Série"></po-input></div>
-              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Nat.Operação"></po-input></div>
-              <div class="po-md-6"><po-input name="numOS" formControlName="numOS" p-label="Evento"></po-input></div>
+              <div class="po-md-6" ><po-input name="it-codigo" formControlName="it-codigo" p-label="Item" (p-blur)="leaveItem()"></po-input></div>
+              <div class="po-md-6"><po-input name="nf-saida" formControlName="nf-saida" p-label="Nota Fiscal"></po-input></div>
+              <div class="po-md-6"><po-input name="Quantidade" formControlName="Quantidade" p-label="Quantidade"></po-input></div>
+              <div class="po-md-6"><po-input name="Serie-Nf-Saida" formControlName="Serie-Nf-Saida" p-label="Série"></po-input></div>
+              <div class="po-md-6"><po-input name="Nat-Operacao" formControlName="Nat-Operacao" p-label="Nat.Operação"></po-input></div>
+              <div class="po-md-6"><po-input name="Evento" formControlName="Evento" p-label="Evento"></po-input></div>
              </po-widget>
           </div>
           <div class="po-md-6">
             <div class="po-md-12"><po-widget>
               <po-radio-group
+              name="ret-transp"
+              formControlName="ret-transp"
               [p-columns]=1
               name="radioGroupBasic"
               p-label="Itens de Residentes"
@@ -168,9 +172,9 @@
 
             </po-widget></div>
             <div class="po-md-12"><po-widget p-title="Itens - Série">
-              <div class="po-md-4" ><po-input name="numOS" formControlName="numOS" p-label="Envelope Segurança"></po-input></div>
-              <div class="po-md-4" ><po-input name="numOS" formControlName="numOS" p-label="Num Série Instalado"></po-input></div>
-              <div class="po-md-4" ><po-input name="numOS" formControlName="numOS" p-label="Num. Série Retirado"></po-input></div>
+              <div class="po-md-4" ><po-input name="envelope-seguranca" formControlName="envelope-seguranca" p-label="Envelope Segurança"></po-input></div>
+              <div class="po-md-4" ><po-input name="serie-ins" formControlName="serie-ins" p-label="Num Série Instalado"></po-input></div>
+              <div class="po-md-4" ><po-input name="serie-ret" formControlName="serie-ret" p-label="Num. Série Retirado"></po-input></div>
               
             </po-widget></div>
           </div>
@@ -178,10 +182,10 @@
         </div>
 
         <div class="po-md-12"><div class="po-md-12"><po-widget p-title="Dados da ENC">
-          <div class="po-md-12" style="margin-bottom: 10px;"><po-checkbox name="checkbox" p-label="ENC Não Informada"> </po-checkbox></div>
-          <div class="po-md-4"><po-input name="numOS" formControlName="numOS" p-label="Número ENC"></po-input></div>
-          <div class="po-md-4"><po-input name="numOS" formControlName="numOS" p-label="Série ENC"></po-input></div>
-          <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-file-plus"></po-button></div>
+          <div class="po-md-12" style="margin-bottom: 10px;"><po-checkbox name="tag-enc" formControlName="tag-enc" p-label="ENC Não Informada"> </po-checkbox></div>
+          <div class="po-md-4"><po-input name="nr-enc" formControlName="nr-enc" p-label="Número ENC"></po-input></div>
+          <div class="po-md-4"><po-input name="Serie-enc" formControlName="Serie-enc" p-label="Série ENC"></po-input></div>
+          <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-file-plus" [p-disabled]="lDisabled"></po-button></div>
         </po-widget></div>
          </div>
       </form>

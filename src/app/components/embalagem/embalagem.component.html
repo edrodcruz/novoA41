@@ -26,7 +26,7 @@
 
 
 
-<po-modal p-title="Informações de Embalagem" #tela [p-primary-action]="this.acaoSalvar" p-click-out="false" [p-hide-close]="true">
+<po-modal p-title="Informações de Embalagem" #tela [p-primary-action]="this.acaoSalvar" p-click-out="false" >
     <form [formGroup]="form_" (ngSubmit)="onSalvar">
         <div class="po-md-4"><po-input p-clean="true" p-auto-focus="true" p-label="Volumes" formControlName="qt-volume" ></po-input>
             <div *ngIf="this.form_.controls['qt-volume'].errors" style="color:red">* Volume deve ser preenchido</div>

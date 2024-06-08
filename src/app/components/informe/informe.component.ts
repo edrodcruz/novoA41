@@ -1,7 +1,7 @@
 import { Component,
   inject,
   OnInit,
-  ViewChild, } from '@angular/core';
+  ViewChild, ChangeDetectorRef} from '@angular/core';
 
   import {
     PoAccordionComponent,
@@ -39,6 +39,7 @@ export class InformeComponent {
   private srvDialog = inject(PoDialogService)
   private srvNotification = inject(PoNotificationService);
   private formBuilder = inject(FormBuilder);
+ 
   
   //---------- Acessar a DOM
     @ViewChild('telaIncluirOrdem', { static: true }) telaIncluirOrdem: | PoModalComponent | undefined;
@@ -74,8 +75,27 @@ export class InformeComponent {
   })
 
   public formItemOrdem = this.formBuilder.group({
-    numOS:[0, Validators.required],
-    chamado:[0]
+    "CodFilial"         :[''], 
+    "envelope-seguranca":[''], 
+    "Evento"            :[''], 
+    "it-codigo"         :[''], 
+    "Nat-Operacao"      :[''], 
+    "nf-saida"          :[''], 
+    "Serie"             :[''], 
+    "NumOS"             :[''], 
+    "Quantidade"        :[''], 
+    "renova"            :[''], 
+    "serie-ins"         :[''], 
+    "Serie-Nf-Saida"    :[''], 
+    "serie-ret"         :[''], 
+    "nr-enc"            :[''], 
+    "Serie-enc"         :[''],
+    "ret-transp"        :[0],
+    "tag-enc"           :[true]
+  })
+
+  public formEnc = this.formBuilder.group({
+
   })
 
   acaoImprimir: PoModalAction = {
@@ -95,6 +115,7 @@ export class InformeComponent {
   //---Variaveis
   loadTela: boolean = false
   loadGrid: boolean = false
+  loadModal:boolean = false
   loadGridOrdem: boolean = false
   loadIncluirOrdem: boolean = false
   loadTecnico: string = ''
@@ -104,30 +125,33 @@ export class InformeComponent {
   mostrarDados:boolean=false
   edObservacao:string=''
   ordemSelecionada:any=undefined;
+  itemSelecionado:any=undefined
   cTag:string=''
   cInfoItem:string='Não há itens cadastrados'
   cOS:string=''
   cChamado:string=''
 
+  //Abertura de Arquivo
   conteudoArquivo: string = '';
   mostrarInfo: boolean = false;
   nomeArquivo: string = '';
-
 
   //ListasCombo
   listaEstabelecimentos!: any[]
   listaTecnicos!:any[]
   listaTransp!: any[]
+  listaOrdens!: any[]
+  listaItens!: any[]
+  listaStatus!:any[]
 
   //---Grid
   colunasOrdens!: PoTableColumn[]
   colunasItens!: PoTableColumn[]
   
-  listaOrdens!: any[]
-  listaItens!: any[]
   
   sub!: Subscription;
   nrProcesso:number=0;
+  lDisabled:boolean=false
 
   readonly acoesGridOrdem: PoTableAction[] =[
     {label: 'Marcar OS', icon: 'bi bi-file-earmark-check', action: this.onMarcar.bind(this)},
@@ -182,7 +206,6 @@ export class InformeComponent {
   }
 
   
-
   //---Inicializar
   ngOnInit(): void {
 
@@ -220,6 +243,81 @@ export class InformeComponent {
     });
   }
 
+  //Chamar o evento pi-gravar-item-os_leave-item para preparacao de tela
+  //Habilitar e desabilitar componentes e iniciar valores
+  leaveItem(){
+    
+    let params:any={cItCodigo: this.formItemOrdem.controls['it-codigo'].value, cRowId: this.ordemSelecionada['c-rowId']}
+    this.loadModal = true
+    this.srvTotvs46.LeaveItemOS(params).subscribe({
+      next: (response:any)=>{
+        this.listaStatus = response.statusTela
+
+        //Campo pr-item.ind-destroi 
+        if (this.listaStatus[0].valor === 'true'){
+          this.formItemOrdem.controls['envelope-seguranca'].enable()
+          this.formItemOrdem.controls['serie-ins'].enable()
+          this.formItemOrdem.controls['serie-ret'].enable()
+        }
+        else{
+          this.formItemOrdem.controls['envelope-seguranca'].disable()
+          this.formItemOrdem.controls['serie-ins'].disable()
+          this.formItemOrdem.controls['serie-ret'].disable()
+        }
+
+        //Campo Quantidade e Quantidade Nota Fiscal
+        if (this.listaStatus[1].valor === '1'){
+          this.formItemOrdem.controls['Quantidade'].disable()
+          this.formItemOrdem.controls['nf-saida'].disable()
+          this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
+          this.formItemOrdem.controls['Nat-Operacao'].disable()
+          
+        }
+        else if (this.listaStatus[1].valor === '2'){
+          this.formItemOrdem.controls['Quantidade'].enable()
+          this.formItemOrdem.controls['nf-saida'].disable()
+          this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
+          this.formItemOrdem.controls['Nat-Operacao'].disable()
+        }
+        else{
+          this.formItemOrdem.controls['Quantidade'].enable()
+          this.formItemOrdem.controls['nf-saida'].enable()
+          this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
+          this.formItemOrdem.controls['Nat-Operacao'].disable()
+        }
+
+        //Campo Not Avail tipo Uso
+        if (this.listaStatus[2].valor === 'false'){
+          this.formItemOrdem.controls['nr-enc'].patchValue('0')
+          this.formItemOrdem.controls['nr-enc'].disable()
+          this.formItemOrdem.controls['tag-enc'].patchValue(false)
+          this.formItemOrdem.controls['tag-enc'].disable()
+          this.formItemOrdem.controls['Serie-enc'].patchValue('')
+          this.formItemOrdem.controls['Serie-enc'].disable()
+        }
+        else{
+
+          //Campo pr-filiais.lib-reposicao 
+          if (this.listaStatus[3].valor === 'true'){
+            this.formItemOrdem.controls['nr-enc'].enable()
+            this.formItemOrdem.controls['tag-enc'].enable()
+            this.formItemOrdem.controls['Serie-enc'].enable()
+            this.lDisabled=false
+          }
+          else{
+            this.formItemOrdem.controls['nr-enc'].disable()
+            this.formItemOrdem.controls['tag-enc'].disable()
+            this.formItemOrdem.controls['Serie-enc'].disable()
+            this.lDisabled=true
+
+          }
+        }
+        this.loadModal=false
+      },
+      error: (e)=> {this.loadModal = false}
+      })
+  }
+
   onImpressao() {
     let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
     
@@ -242,7 +340,18 @@ export class InformeComponent {
   okIncluirItemOrdem(){}
   
   
-  onAlterarItemOrdem(){}
+  onAlterarItemOrdem(obj:any){
+    this.formItemOrdem.controls['it-codigo'].disable()
+    this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
+    this.formItemOrdem.controls['Nat-Operacao'].disable()
+    this.formItemOrdem.controls['Quantidade'].disable()
+    this.formItemOrdem.controls['envelope-seguranca'].disable()
+    this.formItemOrdem.controls['serie-ins'].disable()
+    this.formItemOrdem.controls['serie-ret'].disable()
+
+    this.formItemOrdem.patchValue(obj)
+    this.telaIncluirItemOrdem?.open()
+  }
   onExcluirItemOrdem(){}
   onNumeroSeriePendente(){}
 
@@ -362,6 +471,8 @@ export class InformeComponent {
   }
 
   selecionarItemOrdem(obj:any){
+    this.itemSelecionado = obj
+    this.formItemOrdem.patchValue(obj)
     this.edObservacao = obj !== undefined ? obj.edobservacao : ''
   }
 
@@ -382,13 +493,12 @@ export class InformeComponent {
           this.edObservacao = response.itens !== undefined ? response.itens[0].edobservacao : ''
           this.cOS = response.ordens[0].NumOS
           this.cChamado = response.ordens[0].Chamado
+          this.ordemSelecionada = this.listaOrdens[0]
         }
         this.cUsadas = response.tela[0].usada
         this.cBrancas = response.tela[0].branco
         this.cTotal = response.tela[0].TOTAL
         this.principal.poAccordionItems.forEach(x=> x.label === 'Informações do Técnico' ? x.collapse() : x.expand())
-
-         
 
         //Parametros da Nota
         let paramsTec:any = {codEstabel: this.form.controls.codEstabel.value, codTecnico: this.form.controls.codUsuario.value}
@@ -429,8 +539,6 @@ export class InformeComponent {
       },
       error: (e) => { },
     });
-
-    
   }
 
   resetarVariaveis(){

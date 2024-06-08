@@ -83,7 +83,7 @@ export class EmbalagemComponent {
      }
 
      onEditar(){
-      this.form_.setValue(this.listaGrid[0])
+      this.form_.patchValue(this.listaGrid[0])
       this.tela?.open()
      }
 

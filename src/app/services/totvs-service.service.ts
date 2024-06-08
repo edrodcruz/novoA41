@@ -88,6 +88,7 @@ obterColunasTodos(): Array<PoTableColumn> {
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
     { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"},
   ];
 }
 
@@ -102,6 +103,7 @@ obterColunasPagar(): Array<PoTableColumn> {
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
     { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"},
   ];
 }
 
@@ -116,6 +118,7 @@ obterColunasRenovar(): Array<PoTableColumn> {
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
     { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"},
   ];
 }
 
@@ -130,6 +133,7 @@ obterColunasExtrakit(): Array<PoTableColumn> {
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
     { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"},
   ];
 }
 
@@ -141,6 +145,7 @@ obterColunasSemSaldo(): Array<PoTableColumn> {
     { property: 'qtPagar', label: 'Não Atendida', type: 'number', color:"color-08", visible:true},
     { property: 'qtSaldo', label: 'Saldo', type: 'number'},
     { property: 'kit', label: "Kit"},
+    
   ];
 }
 

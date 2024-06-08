@@ -32,7 +32,7 @@ obterColunasItems(): Array<PoTableColumn> {
   return [
     { property: 'tt-seqIT', label: "Seq" },
     { property: 'it-codigo', label: "Item" },
-    { property: 'Serie-Nf-Saida', label: "Série NFS Saída"},
+    { property: 'Serie-Nf-Saida', label: "Série"},
     { property: 'nf-saida', label: "Nota Saída" },
     { property: 'Nat-Operacao', label: "Nat Oper" },
     { property: 'Quantidade', label: "Qtde" },
@@ -139,6 +139,11 @@ obterColunasOrdens(): Array<PoTableColumn> {
 
   public DesmarcarMoto(params?: any){
     return this.http.get(`${this._url}/DesmarcarMoto`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+  public LeaveItemOS(params?: any){
+    return this.http.post(`${this._url}/LeaveItemOS`, params, {headers:headersTotvs})
                    .pipe(take(1));
   }
 
