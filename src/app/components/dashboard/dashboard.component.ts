@@ -12,7 +12,6 @@ import {
 } from '@po-ui/ng-components';
 import { Subscription, delay, interval } from 'rxjs';
 import { Usuario } from 'src/app/interfaces/usuario';
-import { TotvsServiceMock } from 'src/app/services/totvs-service-mock.service';
 import { TotvsService } from 'src/app/services/totvs-service.service';
 
 @Component({
@@ -42,6 +41,10 @@ export class DashboardComponent {
   tabNFE: boolean = true;
   codEstabel: string = '';
   codUsuario: string = '';
+
+  //Progress Counter
+  percNFE = 0
+  percNFS = 0
 
   rpwStatus!: {
     mensagemTela: string,
@@ -143,7 +146,7 @@ LogarUsuario() {
    this.router.navigate(['seletor'], {queryParams:{redirectTo:'dashboard'}}) 
 }
   
-  verificarNotas() {
+verificarNotas() {
     
     if (!this.usuarioLogado) {
       this.loginModal?.open();
@@ -158,15 +161,18 @@ LogarUsuario() {
           this.listaNFS = response.nfs;
 
           //Atualizar tela
-         
           this.principal.poAccordionItems.forEach(x=> {
             if (x.label.startsWith('Notas Fiscais de ENTRADA'))
-              x.label = `Notas Fiscais de ENTRADA (${response.nfe.length})`
+              x.label = `Notas Fiscais de ENTRADA (${this.listaNFE.filter(x => x["idi-sit"] === 100).length} de ${response.nfe.length})`
             else if (x.label.startsWith('Notas Fiscais de SAÍDA'))
-              x.label = `Notas Fiscais de SAÍDA (${response.nfs.length})`
+              x.label = `Notas Fiscais de SAÍDA (${this.listaNFS.filter(x => x["idi-sit"] === 3).length} de ${response.nfs.length})`
             else
               x.label = `Logs do Processo (${response.erros.length})`
           })
+
+          //Calculo Progress Bar
+          this.percNFE = (this.listaNFE.filter(x=> x["idi-sit"] === 100).length * 100) / this.listaNFE.length
+          this.percNFS = (this.listaNFS.filter(x=> x["idi-sit"] === 3).length * 100) / this.listaNFS.length
 
 
           this.rpwStatus = response.rpw;

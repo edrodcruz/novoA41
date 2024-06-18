@@ -243,6 +243,23 @@ export class InformeComponent {
     });
   }
 
+  leaveNFS(){
+
+    let params:any={cItCodigo: this.formItemOrdem.controls['it-codigo'].value, cRowId: this.ordemSelecionada['c-rowId']}
+    this.loadModal = true
+    this.srvTotvs46.LeaveNFS(params).subscribe({
+      next: (response:any)=>{
+        this.formItemOrdem.controls['Quantidade'].setValue(response["quantidade"])
+        this.formItemOrdem.controls['nf-saida'].setValue(response["nf-saida"])
+        this.formItemOrdem.controls['Serie-Nf-Saida'].setValue(response["serie-saida"])
+        this.formItemOrdem.controls['Nat-Operacao'].setValue(response["nat-operacao"])
+        this.loadModal=false
+      },
+      error: (e)=> {this.loadModal = false}
+      })
+
+  }
+
   //Chamar o evento pi-gravar-item-os_leave-item para preparacao de tela
   //Habilitar e desabilitar componentes e iniciar valores
   leaveItem(){
@@ -348,7 +365,6 @@ export class InformeComponent {
     this.formItemOrdem.controls['envelope-seguranca'].disable()
     this.formItemOrdem.controls['serie-ins'].disable()
     this.formItemOrdem.controls['serie-ret'].disable()
-
     this.formItemOrdem.patchValue(obj)
     this.telaIncluirItemOrdem?.open()
   }
@@ -515,11 +531,8 @@ export class InformeComponent {
 
               //Atualizar Informacoes Tela
               this.srvTotvs.EmitirParametros({processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
-             
           },
         })
-
-
         this.loadTela = false
       },
       error: (e) => {

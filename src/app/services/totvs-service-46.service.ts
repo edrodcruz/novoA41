@@ -78,8 +78,6 @@ obterColunasOrdens(): Array<PoTableColumn> {
                   take(1));
   }
 
-
-  
   //---------------------- 
   public CriarOrdem(params?: any){
     return this.http.post(`${this._url}/CriarOrdem`, params, {headers:headersTotvs})
@@ -144,6 +142,11 @@ obterColunasOrdens(): Array<PoTableColumn> {
 
   public LeaveItemOS(params?: any){
     return this.http.post(`${this._url}/LeaveItemOS`, params, {headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+  public LeaveNFS(params?: any){
+    return this.http.post(`${this._url}/LeaveNFS`, params, {headers:headersTotvs})
                    .pipe(take(1));
   }
 

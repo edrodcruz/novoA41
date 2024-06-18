@@ -122,13 +122,13 @@
 
       <po-step p-label="ExtraKit" [p-can-active-next-step]="canActiveNextStep.bind(this)">
 
-        <po-widget class="po-md-12" [p-primary-label]="lblStepAnterior" [p-height]="450"
+        <po-widget class="po-md-12" [p-primary-label]="lblStepAnterior" 
           [p-secondary-label]="lblStepExecutar" (p-primary-action)="stepper.previous()"
           (p-secondary-action)="stepper.next()">
 
-          <div class="po-md-6" style="margin-bottom: 10px;">
-            <po-button p-label="Excluir Seleção" (p-click)="onExcluirSelecaoExtraKit()" p-icon="bi bi-trash" p-kind="primary"></po-button>
-         </div>
+         <!--  <div class="po-md-6" style="margin-bottom: 10px;">
+            <po-button p-label="Limpar Seleção" (p-click)="onExcluirSelecaoExtraKit()" p-icon="bi bi-trash" p-kind="primary"></po-button>
+         </div> -->
 
          <div class="po-row">
           <div class="po-md-12">
@@ -151,12 +151,13 @@
         <po-widget class="po-md-12" [p-height]=450 [p-primary-label]="lblStepAnterior"
           (p-primary-action)="stepper.previous()">
 
-          <div style="display: flex; justify-content: space-evenly; align-content: center; align-items: center; gap:20px;">
+          <div class="tipoCalculo">
             <po-button p-tooltip="Impressão Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer"></po-button>
             <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)" 
-                            p-label="Tipo de Cálculo" [p-options]="options" style="min-width: 80%;"/>
+                            [p-options]="options" style="min-width: 80%;"/>
           </div>
-          <div class="po-row" style="margin-bottom: 30px;"></div>
+         
+          <div class="po-row" style="margin-bottom: 50px;"></div>
             <div class="container-card">
               <div class="card gray">
                 <div><h2>{{labelContadores[0]}}</h2><span>Visão Geral</span></div><hr>
@@ -183,46 +184,6 @@
                 <div><button (click)="onOpenModal('SemSaldo')" class="btnred">Exibir</button></div>
               </div>
             </div>
-            
-
-          <!-- <div class="po-md-12">
-
-          <po-widget class="po-lg-2 po-mt-2" [p-height]="150" p-primary-label="Exibir" 
-              (p-primary-action)="onOpenModal('VisaoGeral')">
-              <div class="po-font-subtitle po-text-center" style="color:navy"> {{labelContadores[0]}} </div>
-              <div class="po-text-center" style="color:navy">Visão Geral</div>
-            </po-widget>
-
-            <po-widget class="po-lg-2 po-mt-2" [p-height]="150" p-primary-label="Exibir / Editar"
-              (p-primary-action)="onOpenModal('Pagamentos')">
-              <div class="po-font-subtitle po-text-center" style="color:red">{{labelContadores[1]}}</div>
-              <div class="po-text-center" style="color:red">Pagamentos</div>
-            </po-widget>
-
-            <po-widget class="po-lg-2 po-mt-2" [p-height]="150" p-primary-label="Exibir"
-              (p-primary-action)="onOpenModal('Renovacao')">
-              <div class="po-font-subtitle po-text-center" style="color:green">{{labelContadores[2]}}</div>
-              <div class="po-text-center" style="color:green">Renovações</div>
-            </po-widget>
-
-            <po-widget class="po-lg-2 po-mt-2" [p-height]="150" p-primary-label="Exibir"
-              (p-primary-action)="onOpenModal('SomenteEntrada')">
-              <div class="po-font-subtitle po-text-center" style="color:green">{{labelContadores[3]}}</div>
-              <div class="po-text-center" style="color:green">Somente Entrada</div>
-            </po-widget>
-
-            <po-widget class="po-lg-2 po-mt-2" [p-height]="150" p-primary-label="Exibir"
-              (p-primary-action)="onOpenModal('ExtraKit')">
-              <div class="po-font-subtitle po-text-center" style="color:green">{{labelContadores[4]}}</div>
-              <div class="po-text-center" style="color:green">Extra-Kit</div>
-            </po-widget>
-
-            <po-widget class="po-lg-2 po-mt-2" [p-height]="150" p-primary-label="Exibir"
-              (p-primary-action)="onOpenModal('SemSaldo')">
-              <div class="po-font-subtitle po-text-center" style="color:orange">{{labelContadores[5]}}</div>
-              <div class="po-text-center" style="color:orange">Sem Saldo</div>
-            </po-widget>
-          </div> -->
             
             <div class="po-md-12" style="margin-top: 50px;">
               <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar" (p-click)="onAprovarCalculo(1)" p-kind="primary"></po-button>
@@ -257,32 +218,33 @@
                          p-click-out="false" 
                          [p-primary-action]="acaoLogin" >
     <div class="po-row">
-      <po-input
-        p-icon="bi bi-person-workspace"
-        class="po-md-12"
-        [ngModel]="codUsuario" (ngModelChange)="codUsuario = $event"
-        p-clean
-
-        p-label="Técnico">
+      <po-input p-icon="bi bi-person-workspace"
+                class="po-md-12"
+                [(ngModel)]="codUsuario" 
+                p-clean
+                p-label="Técnico">
       </po-input>
     </div>
 
     <div class="po-row">
-      <po-password
-        class="po-md-12"
-        [ngModel]="senha" (ngModelChange)="senha = $event"
-        p-clean
-        p-label="Senha">
+      <po-password class="po-md-12"
+                   [(ngModel)]="senha" 
+                   p-clean
+                   p-label="Senha">
       </po-password>
     </div>
   </po-modal>
 
-  <po-modal #abrirArquivo [p-title]="nomeArquivo" p-size="auto" p-click-out="false" [p-primary-action]="acaoSair"
-  [p-secondary-action]="acaoImprimir">
+  <po-modal #abrirArquivo 
+              [p-title]="nomeArquivo" 
+              p-size="auto" 
+              p-click-out="false"
+              [p-primary-action]="acaoSair"
+              [p-secondary-action]="acaoImprimir">
 
-  <div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>
+    <div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>
 
-</po-modal>
+  </po-modal>
 
 
 

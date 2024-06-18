@@ -18,7 +18,7 @@ import { EmbalagemComponent } from './components/embalagem/embalagem.component';
 import { ReparosComponent } from './components/reparos/reparos.component';
 import { SeletorComponent } from './components/seletor/seletor.component';
 import { MonitorProcessosComponent } from './components/monitor-processos/monitor-processos.component';
-import { TempComponent } from './components/temp/temp.component';
+
 
 
 @NgModule({
@@ -33,7 +33,6 @@ import { TempComponent } from './components/temp/temp.component';
     ReparosComponent,
     SeletorComponent,
     MonitorProcessosComponent,
-    TempComponent
   ],
   imports: [
     BrowserModule,

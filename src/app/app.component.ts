@@ -1,6 +1,5 @@
 import { ChangeDetectorRef,AfterContentChecked , Component, inject, OnInit, ViewChild } from '@angular/core';
 import { PoMenuComponent, PoMenuItem, PoModalAction, PoModalComponent, PoNotificationService } from '@po-ui/ng-components';
-import { TotvsServiceMock } from './services/totvs-service-mock.service';
 import { Subscription } from 'rxjs';
 import { TotvsService } from './services/totvs-service.service';
 
@@ -20,11 +19,12 @@ export class AppComponent {
 
   //--------- Opcoes de Menu
  readonly menus: Array<PoMenuItem> = [
- { label:  'Tela Principal'            , icon: 'bi bi-house'         , link:'/'          , shortLabel:'Home'},
-  { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data', link:'/informe'   , shortLabel:'Informe'},
-  { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'    , link:'/calculo'   , shortLabel:'Cálculo'},
-  { label: 'Monitor Processos'         , icon: 'bi bi-display'       , link:'/monitor'      , shortLabel:'Monitor Processos'},
-  { label: 'Danfe (FT0518)'            , icon: 'bi bi-printer'       , shortLabel:'DANFE', action:()=>this.AbrirProgramaTotvs()}
+ { label:  'Tela Principal'            , icon: 'bi bi-house'             , link:'/'          , shortLabel:'Home'},
+  { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data'    , link:'/informe'   , shortLabel:'Informe'},
+  { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'        , link:'/calculo'   , shortLabel:'Cálculo'},
+  { label: 'Monitor Processos'         , icon: 'bi bi-display'           , link:'/monitor'      , shortLabel:'Monitor Processos'},
+  { label: 'Danfe (FT0518)'            , icon: 'bi bi-printer'           , shortLabel:'FT0518', action:() => this.AbrirProgramaTotvs('ftp/ft0518.w')},
+  { label: 'Consulta Nota (FT0904)'    , icon: 'bi bi-file-earmark-text' , shortLabel:'FT0904', action:() => this.AbrirProgramaTotvs('ftp/ft0904.w')}
  ]
  ;
 
@@ -43,8 +43,8 @@ private sub!: Subscription
 constructor(private cdRef : ChangeDetectorRef){
 }
 
-AbrirProgramaTotvs(){
-  let params:any={program:'ftp/ft0518.w', params:''}
+AbrirProgramaTotvs(programa:string){
+  let params:any={program:programa, params:''}
   this.srvTotvs.AbrirProgramaTotvs(params).subscribe({
     next: (response:any)=> { },
     error: (e)=>{}
@@ -55,7 +55,7 @@ AbrirProgramaTotvs(){
 ngOnInit(): void {
   
   this.estabInfo=''
-  this.sub = this.srvTotvs.EnviarParametros().subscribe({
+  this.sub = this.srvTotvs.LerParametros().subscribe({
     next: (response: any) => {
       this.estabInfo = response.estabInfo ?? this.estabInfo
       this.tecnicoInfo = response.tecInfo ?? this.tecnicoInfo

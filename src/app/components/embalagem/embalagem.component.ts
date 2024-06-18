@@ -1,7 +1,7 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoTableAction, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
+import { PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoRadioGroupOption, PoTableAction, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
 
 import { Usuario } from 'src/app/interfaces/usuario';
 import { TotvsService } from 'src/app/services/totvs-service.service';
@@ -26,9 +26,11 @@ export class EmbalagemComponent {
   codEstabel: string = '';
   codUsuario: string = '';
   nrProcess:string='';
+  titleEmbal:string=''
   loadTela:boolean=false
   listaGrid!:any[]
   colunas!:any[]
+  infoPrimeiraNota!:{"cod-estabel":string, "serie": string, "nr-nota-fis": string}
 
   pesoBruto:number=0
   
@@ -47,6 +49,12 @@ export class EmbalagemComponent {
       action: () => { this.onSalvar() }
     }
 
+    //--------- Opcoes de Calculo (Resumo)
+readonly options: Array<PoRadioGroupOption> = [
+  { label: 'Aéreo', value: 1 },
+  { label: 'Rodoviário', value: 2 },
+];
+
     //Formulario
    public form_ = this.formBuilder.group({
     'nr-process': ['', Validators.required],
@@ -55,13 +63,12 @@ export class EmbalagemComponent {
     'qt-embal': [''],
     'peso-liq': ['', Validators.required],
     'peso-bru': ['', Validators.required],
+    'modal':[1]
     
   });
 
-  
-
    ngOnInit(): void {
-
+     
       this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - INFORMAÇÕES DE EMBALAGEM'});
       this.colunas=this.srvTotvs.obterColunasEmbalagem()
 
@@ -72,10 +79,21 @@ export class EmbalagemComponent {
             this.codEstabel = response.codEstabelecimento
             this.codUsuario = response.codUsuario
             this.nrProcess  = response.nrProcesso
-            this.listaGrid = ([{'nr-process':response.nrProcesso, 'qt-volume':'0', 'cod-embal':'', 'qt-embal':'0', 'peso-liq':'0,001', 'peso-bru':'0,001'}])
+            this.form_.controls.modal.setValue(1);
+            this.listaGrid = ([{'nr-process':response.nrProcesso, 'qt-volume':'0', 'cod-embal':'', 'qt-embal':'0', 'peso-liq':'0,001', 'peso-bru':'0,001', 'modal': 1}])
             this.form_.setValue(this.listaGrid[0])
         }
       })
+
+      let paramsNota: any = {CodEstab: this.codEstabel,CodTecnico: this.codUsuario, NrProcess: this.nrProcess};
+      this.srvTotvs.ObterNotas(paramsNota).subscribe({
+        next: (response: any) => {
+          if (response.nfs)
+          this.infoPrimeiraNota = response.nfs[0];
+          this.titleEmbal = `Embalagem Nota: ${this.infoPrimeiraNota["cod-estabel"]}-${this.infoPrimeiraNota["serie"]}-${this.infoPrimeiraNota["nr-nota-fis"]}`
+        },
+        error: (e) => {},
+      });
      }
 
      onNovo(){
@@ -122,23 +140,16 @@ export class EmbalagemComponent {
         },
         cancel: () => this.srvNotification.error("Cancelada pelo usuário")
       })
-      
      }
 
      onSalvar(){
       if (!this.form_.valid)
         this.srvNotification.error("Informações de embalagens não foram preenchidas corretamente")
       else{
-      
         this.listaGrid[0] = this.form_.value 
-        let numero = this.form_.controls['peso-bru'].value
         this.grid.items = this.listaGrid
         this.tela?.close()
       }
 
      }
-
-     
-
-     
 }

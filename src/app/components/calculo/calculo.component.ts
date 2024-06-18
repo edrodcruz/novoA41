@@ -4,7 +4,6 @@ import { TotvsService } from '../../services/totvs-service.service';
 import { catchError, delay, elementAt } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ExcelService } from '../../services/excel-service.service';
-import { TotvsServiceMock } from '../../services/totvs-service-mock.service';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { TotvsService46 } from 'src/app/services/totvs-service-46.service';
 
@@ -266,7 +265,10 @@ readonly acaoLogar: PoModalAction = {
           .ObterParamsDoEstabelecimento(estab.value)
           .subscribe({
             next: (response:any) => {
-              if(response === null) return
+              if(response === null) {
+                this.srvNotification.error("Cadastro para filial não encontrado ! Verifique os Parâmetros da Filial" )
+                this.stepper?.first()
+              }
               
                 this.paramsEstab = response !== null ? response.items[0]: null
                 if (this.paramsEstab !== null){
@@ -283,11 +285,14 @@ readonly acaoLogar: PoModalAction = {
           }); 
       }
 
-
       //---------------Passo - ExtraKit - Carregar lista extrakit
       if (passo.label === "Dados NF") {
-
         this.gerarListaExtrakit()
+
+        setTimeout(() => {
+          this.SelecionarTodosExtraKit()
+        }, 2000
+        )
         
       }
 
@@ -368,7 +373,9 @@ readonly acaoLogar: PoModalAction = {
            if(response.senhaValida){
 
               //Parametros para calculo
-              let paramsE: any = { CodEstab: this.codEstabelecimento, CodTecnico: this.codTecnico, NrProcess: this.processoInfo, Extrakit: this.listaExtraKit }
+              let listaET = this.gridExtraKit?.getSelectedRows()
+              console.log("Lista ET", listaET)
+              let paramsE: any = { CodEstab: this.codEstabelecimento, CodTecnico: this.codTecnico, NrProcess: this.processoInfo, Extrakit: listaET }
               this.srvTotvs.PrepararResumo(paramsE).subscribe({
                 next: (response:any) => {
 
@@ -429,7 +436,8 @@ readonly acaoLogar: PoModalAction = {
              // this.srvNotification.error("Ocorreu um erro na requisição " )
               return false
         },
-        complete: () => { this.loadTela = false }
+        complete: () => { this.loadTela = false 
+        }
         });
 
   }
@@ -579,8 +587,18 @@ readonly acaoLogar: PoModalAction = {
 
   }
 
+  onSelecionarRegistro(obj:any){
+  }
+
+  SelecionarTodosExtraKit(){
+    this.gridExtraKit?.items.forEach(item=> this.gridExtraKit?.selectRowItem(item))
+  }
+
   //---------------------------------------------------------------- Eliminar todos os registros extrakit
   public onExcluirSelecaoExtraKit(){
+    this.gridExtraKit?.items.forEach(item=> {this.gridExtraKit?.selectRowItem(item)})
+
+    /*
     if ((this.gridExtraKit?.getSelectedRows() as any[]).length < 1){
       this.srvNotification.error("Nenhum registro selecionado !")
       return
@@ -604,6 +622,7 @@ readonly acaoLogar: PoModalAction = {
       },
       cancel:  () => { }
     })
+      */
 
   }
     //-------------------------------------------------------------- Eliminar registro grid extrakit

@@ -30,8 +30,7 @@ export class TotvsService {
   }
 
   //--- Observador
-
-  public EnviarParametros() {
+  public LerParametros() {
     return this.emissorEvento$.asObservable();
   }
 
@@ -278,7 +277,8 @@ obterColunasEmbalagem():Array<PoTableColumn>{
     {property:"cod-embal", label:"Embalagem"},
     {property:"qt-embal", label:"Qtd Embalagem"},
     {property:"peso-liq", label:"Peso Liq."},
-    {property:"peso-bru", label:"Peso Bru"}
+    {property:"peso-bru", label:"Peso Bru"},
+    {property:"modal", label:"Modalidade"}
   ]
 }
 

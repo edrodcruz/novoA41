@@ -7,7 +7,14 @@
 </div>  
 
 <div class="po-md-12">
-<po-widget p-title="Edite as Informações da Embalagem">
+<po-widget p-title="Edite as Informações da Embalagem para a Primeira Nota">
+
+    <div class="boxOS" >
+        <div><i><small>Cod.Estabel</small></i><p>{{infoPrimeiraNota["cod-estabel"]}}</p></div>
+        <div><i><small>Série</small></i><p>{{infoPrimeiraNota["serie"]}}</p></div>
+        <div><i><small>Nota Fiscal</small></i><p>{{infoPrimeiraNota["nr-nota-fis"]}}</p></div>
+    </div>
+
 <po-table [p-items]="listaGrid" #grid
           p-container="true"
           [p-columns]="colunas" 
@@ -22,29 +29,25 @@
         </po-widget>
 </div>
 
-
-
-
-
-<po-modal p-title="Informações de Embalagem" #tela [p-primary-action]="this.acaoSalvar" p-click-out="false" >
+<po-modal [p-title]="titleEmbal" #tela [p-primary-action]="this.acaoSalvar" p-click-out="false" >
+    
     <form [formGroup]="form_" (ngSubmit)="onSalvar">
         <div class="po-md-4"><po-input p-clean="true" p-auto-focus="true" p-label="Volumes" formControlName="qt-volume" ></po-input>
             <div *ngIf="this.form_.controls['qt-volume'].errors" style="color:red">* Volume deve ser preenchido</div>
         </div>
         
+        <div class="po-md-12">
+            <po-widget>
+            <po-radio-group [p-columns]="2" name="options" formControlName="modal" [p-options]="options" p-label="Modalidade Embalagem"/></po-widget>
+        </div>
+
         <div class="po-md-4"><po-input p-clean="true"  p-label="Embalagem" formControlName="cod-embal"  ></po-input></div>
         <div class="po-md-4"><po-input p-clean="true"  p-label="Qtd Embalagem" formControlName="qt-embal"  ></po-input></div>
         <div class="po-row"></div>
-        <div class="po-md-6"><po-input p-clean="true"  p-label="Peso Liq." formControlName="peso-liq"  ></po-input></div>
-        <div class="po-md-6"><po-input p-clean="true"  p-label="Peso Bru." formControlName="peso-bru" ></po-input></div> 
 
-       
+        <div class="po-md-4"><po-input p-clean="true"  p-label="Peso Liq." formControlName="peso-liq"  ></po-input></div>
+        <div class="po-md-4"><po-input p-clean="true"  p-label="Peso Bru." formControlName="peso-bru" ></po-input></div> 
     </form>
-
-  
-
-
-    
 
 </po-modal>
 
