@@ -149,6 +149,16 @@ obterColunasOrdens(): Array<PoTableColumn> {
     return this.http.post(`${this._url}/LeaveNFS`, params, {headers:headersTotvs})
                    .pipe(take(1));
   }
+  public EliminarEnc(params?: any){
+    return this.http.get(`${this._url}/EliminarEnc`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+  public GravarItemOS(params?: any){
+    return this.http.post(`${this._url}/GravarItemOS`, params, {headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
 
 
    //Ordenacao campos num array

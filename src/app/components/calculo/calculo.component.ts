@@ -289,10 +289,10 @@ readonly acaoLogar: PoModalAction = {
       if (passo.label === "Dados NF") {
         this.gerarListaExtrakit()
 
-        setTimeout(() => {
+        /* setTimeout(() => {
           this.SelecionarTodosExtraKit()
         }, 2000
-        )
+        ) */
         
       }
 

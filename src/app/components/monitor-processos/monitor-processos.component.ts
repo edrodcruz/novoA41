@@ -108,14 +108,14 @@ NotasFiscais(obj:any){
 }
 
 Embalagem(obj:any){
-  if(obj.situacao === "B")
+  if(obj.situacao.toUpperCase() === "B")
    this.AbrirTela(obj, 'embalagem')
   else
   this.srvNotification.error("Situação do processo não permite chamar esta tela !")
 }
 
 Reparos(obj:any){
-  if(obj.situacao === "R")
+  if(obj.situacao.toUpperCase() === "R")
     this.AbrirTela(obj, 'reparos')
    else
    this.srvNotification.error("Situação do processo não permite chamar esta tela !")
@@ -135,7 +135,6 @@ AbrirTela(obj:any, cTela:string){
       this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: `${obj['cod-emitente']} ${obj['nome-abrev']}`, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
       this.router.navigate([cTela])
     },
-    //error: (e) => { this.srvNotification.error('Ocorreu um erro na requisição')},
   });
 }
 

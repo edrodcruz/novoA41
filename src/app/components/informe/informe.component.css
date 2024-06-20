@@ -80,6 +80,28 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .flex-row {
+    display: flex;
+    width:1fr;
+    gap:10px;
+  }
+
+  .flex-row > div {
+    height: 30px;
+    width:150px;
+  }
+  
+   
+  .label{
+  width:150px;
+  text-align: right;
+  margin-top: 20px;
+  }
+  
+  .desc{
+  min-width:400px;
+  }
+
   
  
     

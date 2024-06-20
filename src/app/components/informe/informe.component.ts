@@ -44,20 +44,13 @@ export class InformeComponent {
   //---------- Acessar a DOM
     @ViewChild('telaIncluirOrdem', { static: true }) telaIncluirOrdem: | PoModalComponent | undefined;
     @ViewChild('telaAlterarOrdem', { static: true }) telaAlterarOrdem: | PoModalComponent | undefined;
-
-    @ViewChild('telaIncluirItemOrdem', { static: true }) telaIncluirItemOrdem:
-    | PoModalComponent
-    | undefined;
-
-
+    @ViewChild('telaIncluirItemOrdem', { static: true }) telaIncluirItemOrdem: | PoModalComponent| undefined;
     @ViewChild('gridOrdens', { static: true }) gridOrdens: PoTableComponent | undefined;
-    
     @ViewChild(PoAccordionComponent, { static: true }) principal!: PoAccordionComponent;
     @ViewChild(PoAccordionItemComponent, { static: true }) item1!: PoAccordionItemComponent;
     @ViewChild(PoAccordionItemComponent, { static: true }) item2!: PoAccordionItemComponent;
-    @ViewChild('abrirArquivo', { static: true }) abrirArquivo:
-    | PoModalComponent
-    | undefined;
+    @ViewChild('abrirArquivo', { static: true }) abrirArquivo: | PoModalComponent | undefined;
+    @ViewChild('telaIncluirEnc', { static: true }) telaIncluirEnc: | PoModalComponent | undefined;
 
    //Formulario
    public form = this.formBuilder.group({
@@ -76,7 +69,7 @@ export class InformeComponent {
 
   public formItemOrdem = this.formBuilder.group({
     "CodFilial"         :[''], 
-    "envelope-seguranca":[''], 
+    "envelope-seguranca":['0000000000'], 
     "Evento"            :[''], 
     "it-codigo"         :[''], 
     "Nat-Operacao"      :[''], 
@@ -85,16 +78,41 @@ export class InformeComponent {
     "NumOS"             :[''], 
     "Quantidade"        :[''], 
     "renova"            :[''], 
-    "serie-ins"         :[''], 
+    "serie-ins"         :['0'], 
     "Serie-Nf-Saida"    :[''], 
-    "serie-ret"         :[''], 
-    "nr-enc"            :[''], 
+    "serie-ret"         :['0'], 
+    "nr-enc"            :['0'], 
     "Serie-enc"         :[''],
-    "ret-transp"        :[0],
-    "tag-enc"           :[true]
+    "ret-transp"        :[1],
+    "tag-enc"           :[false]
   })
 
   public formEnc = this.formBuilder.group({
+    "cod-estabel":[{ value: '', disabled: true }],
+    "nom-estabel":[{ value: '', disabled: true }],
+    "CodFilial":[{ value: '', disabled: true }],
+    "nom-filial":[{ value: '', disabled: true }],
+    "nr-enc":[""],
+    "Serie-enc":[""],
+    "CodFilial-enc":[{ value: '', disabled: true }],
+    "it-codigo":[{ value: '', disabled: true }],
+    "desc-item":[{ value: '', disabled: true }],
+    "DefInd":[""],
+    "desc-defeito":[{ value: '', disabled: true }],
+    "atividade":[""],
+    "desc-atividade":[{ value: '', disabled: true }],
+    "NumSerie-atu":[""],
+    "NumSerie-ant":[""],
+    "FilAnt":[""],
+    "RRAnt":[""],
+    "DataRRAnt ":[""],
+    "clisirog":[""],
+    "cod-emitente":[""],
+    "nom-emitente":[{ value: '', disabled: true }],
+    "observacao":[""],
+
+
+
 
   })
 
@@ -152,6 +170,8 @@ export class InformeComponent {
   sub!: Subscription;
   nrProcesso:number=0;
   lDisabled:boolean=false
+
+  cRowId:string=''
 
   readonly acoesGridOrdem: PoTableAction[] =[
     {label: 'Marcar OS', icon: 'bi bi-file-earmark-check', action: this.onMarcar.bind(this)},
@@ -243,6 +263,11 @@ export class InformeComponent {
     });
   }
 
+  onZoomEnc(){
+    this.telaIncluirItemOrdem?.close()
+    this.telaIncluirEnc?.open()
+  }
+
   leaveNFS(){
 
     let params:any={cItCodigo: this.formItemOrdem.controls['it-codigo'].value, cRowId: this.ordemSelecionada['c-rowId']}
@@ -263,12 +288,20 @@ export class InformeComponent {
   //Chamar o evento pi-gravar-item-os_leave-item para preparacao de tela
   //Habilitar e desabilitar componentes e iniciar valores
   leaveItem(){
+    if (this.formItemOrdem.controls['it-codigo'].value === '' || this.formItemOrdem.controls['it-codigo'].value === null) return
     
     let params:any={cItCodigo: this.formItemOrdem.controls['it-codigo'].value, cRowId: this.ordemSelecionada['c-rowId']}
-    this.loadModal = true
+    this.loadTela = true
     this.srvTotvs46.LeaveItemOS(params).subscribe({
       next: (response:any)=>{
         this.listaStatus = response.statusTela
+        let campos = response.item[0]
+
+        //Setar Valores
+        this.formItemOrdem.controls['Quantidade'].setValue(campos["Quantidade"])
+        this.formItemOrdem.controls['nf-saida'].setValue(campos["nf-saida"])
+        this.formItemOrdem.controls['Serie-Nf-Saida'].setValue(campos["Serie-Nf-Saida"])
+        this.formItemOrdem.controls['Nat-Operacao'].setValue(campos["Nat-Operacao"])
 
         //Campo pr-item.ind-destroi 
         if (this.listaStatus[0].valor === 'true'){
@@ -329,11 +362,50 @@ export class InformeComponent {
 
           }
         }
-        this.loadModal=false
+        this.loadTela=false
       },
-      error: (e)=> {this.loadModal = false}
+      error: (e)=> {this.loadTela = false}
       })
   }
+
+  tagEnc(){
+
+    if (this.formItemOrdem.controls['tag-enc'].value){
+       if (this.formItemOrdem.controls['nr-enc'].value !== '0') {
+
+        this.srvDialog.confirm({
+            title: "CONFIRMA ELIMINAÇÃO",
+            message: `Enc já cadastrada, confirma a eliminação da ENC: ${this.formItemOrdem.controls['nr-enc'].value} ?`,
+            confirm: () => {
+              this.loadTela = true
+    
+              let paramsTela: any = { nrEnc: this.formItemOrdem.controls['nr-enc'].value }
+              this.srvTotvs46.EliminarEnc(paramsTela).subscribe({
+                next: (response: any) => {
+                  this.formItemOrdem.controls['nr-enc'].setValue("999999999")
+                  this.formItemOrdem.controls['Serie-enc'].setValue('')
+                  this.formItemOrdem.controls['nr-enc'].disable()
+                  this.formItemOrdem.controls['Serie-enc'].disable()
+                  this.loadTela=false
+                },
+              })
+            },
+            cancel: () => this.formItemOrdem.controls['tag-enc'].setValue(false)
+          })
+      }
+    }
+
+    else{
+      if (this.formItemOrdem.controls['nr-enc'].value !== "0") 
+        return
+      this.formItemOrdem.controls['nr-enc'].setValue("0")
+      this.formItemOrdem.controls['Serie-enc'].setValue('')
+      this.formItemOrdem.controls['nr-enc'].enable()
+      this.formItemOrdem.controls['Serie-enc'].enable()
+    }
+  }
+
+  
 
   onImpressao() {
     let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
@@ -351,13 +423,39 @@ export class InformeComponent {
       })
     
   }
-  onConcluirSemItemNF() {}
 
-  onIncluirItemOrdem(){this.telaIncluirItemOrdem?.open()}
-  okIncluirItemOrdem(){}
+  onIncluirItemOrdem(){
+    this.formItemOrdem.reset()
+    //cRowId da Ordem
+    this.cRowId = this.ordemSelecionada['c-rowId']
+
+    this.formItemOrdem.enable()
+    /*controls['it-codigo'].enable()
+    this.formItemOrdem.controls['Serie-Nf-Saida'].enable()
+    this.formItemOrdem.controls['Nat-Operacao'].enable()
+    this.formItemOrdem.controls['Quantidade'].enable()
+    this.formItemOrdem.controls['envelope-seguranca'].enable()
+    this.formItemOrdem.controls['serie-ins'].enable()
+    this.formItemOrdem.controls['serie-ret'].enable()
+    */
+    this.telaIncluirItemOrdem?.open()
+  }
+
+  okIncluirItemOrdem(){
+    let params:any={nrProcess: this.nrProcesso, cRowId: this.cRowId, itemOS: this.formItemOrdem.getRawValue()}
+    this.srvTotvs46.GravarItemOS(params).subscribe({
+      next: (response:any)=>{
+        this.telaIncluirItemOrdem?.close()
+      },
+      error: (e)=> {}
+    })
+  }
   
   
   onAlterarItemOrdem(obj:any){
+    //cRowId do Item da Ordem
+    this.cRowId = obj['c-rowId']
+
     this.formItemOrdem.controls['it-codigo'].disable()
     this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
     this.formItemOrdem.controls['Nat-Operacao'].disable()

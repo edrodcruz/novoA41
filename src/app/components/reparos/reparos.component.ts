@@ -82,6 +82,7 @@ readonly acoesGrid: PoTableAction[] = [
     let params: any = { codEmitente: this.codUsuario, nrProcess: this.nrProcess }
     this.srvTotvs.ObterItensParaReparo(params).subscribe({
       next:(response:any)=>{
+        console.log("ObterItensParaReparo", response)
         this.loadTela=false
         if (response === undefined){
           return
