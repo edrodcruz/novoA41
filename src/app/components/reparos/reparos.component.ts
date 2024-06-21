@@ -92,6 +92,44 @@ readonly acoesGrid: PoTableAction[] = [
       }})
  }
 
+ onAbrirReparos(){
+
+  this.srvDialog.confirm({
+    title: "IMPRESSÃO DE REPAROS",
+    message: "Deseja imprimir o reparo",
+    confirm: () => {
+      this.loadTela = true
+      let param:any={reparos:[{
+        "codfilial":"08", 
+        "qt-reparos": 1,
+        "it-codigo": "85.101.00275-2b",
+        "numos": 0,
+        "nf-saida": "",
+        "chamado": 0,
+        "NTecnico": 1615,
+        "nr-process": 1534492,
+        "lote": 1534492,
+        "numserie-ant": "0",
+        "numserie-atu": "0",
+        "atividade": "101",
+        "defind": 201,
+        "observacao": "TESTE VALTER",
+        "nr-enc": 998877,
+        "clisirog": "131"
+
+      }]}
+      this.srvTotvs.AbrirReparo(param).subscribe({
+        next: (response:any)=> {
+           this.loadTela = false
+           this.srvNotification.success('Gerado pedido de execução para criação e impressão de reparos: ' + response.NumPedExec)
+          }
+      })
+    },
+    cancel: () => {}
+  })
+  
+ }
+
  
  LogarUsuario() {
     this.router.navigate(['seletor'], {queryParams:{redirectTo:'reparos'}}) 

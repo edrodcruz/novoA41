@@ -51,11 +51,19 @@ obterColunasItems(): Array<PoTableColumn> {
 
 obterColunasOrdens(): Array<PoTableColumn> {
   return [
-    { property: 'flag', label: " ", color:'color-07', type: 'columnTemplate'},
+    {property:'opcoes', label: "Flag", type:'cellTemplate'},
+    /* { property: 'flag', label: " ", color:'color-07', type: 'columnTemplate'}, */
     { property: 'NumOS', label: "NumOs" },
     { property: 'situacao', label: "Sit" },
     { property: 'Chamado', label: "Chamado"},
     { property: 'Serie', label: "Série" },
+  ];
+}
+
+obterColunasArquivos(): Array<PoTableColumn> {
+  return [
+    { property: 'nomeArquivo', label: "Nome Arquivo"},
+    { property: 'Descricao', label: "Descrição" },
   ];
 }
 
@@ -156,6 +164,11 @@ obterColunasOrdens(): Array<PoTableColumn> {
 
   public GravarItemOS(params?: any){
     return this.http.post(`${this._url}/GravarItemOS`, params, {headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+  public ObterCadastro(params?: any){
+    return this.http.get(`${this._url}/ObterCadastro`, {params:params, headers:headersTotvs})
                    .pipe(take(1));
   }
 

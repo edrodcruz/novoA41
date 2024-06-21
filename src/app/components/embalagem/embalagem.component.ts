@@ -71,6 +71,7 @@ readonly options: Array<PoRadioGroupOption> = [
      
       this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - INFORMAÇÕES DE EMBALAGEM'});
       this.colunas=this.srvTotvs.obterColunasEmbalagem()
+      this.loadTela=true
 
       //Login Unico
       this.srvTotvs.ObterUsuario().subscribe({
@@ -91,8 +92,9 @@ readonly options: Array<PoRadioGroupOption> = [
           if (response.nfs)
           this.infoPrimeiraNota = response.nfs[0];
           this.titleEmbal = `Embalagem Nota: ${this.infoPrimeiraNota["cod-estabel"]}-${this.infoPrimeiraNota["serie"]}-${this.infoPrimeiraNota["nr-nota-fis"]}`
+          this.loadTela=false
         },
-        error: (e) => {},
+        error: (e) => {this.loadTela=false},
       });
      }
 

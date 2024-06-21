@@ -1,7 +1,9 @@
 import { Component,
   inject,
   OnInit,
-  ViewChild, ChangeDetectorRef} from '@angular/core';
+  ViewChild, ChangeDetectorRef,
+  QueryList,
+  ElementRef} from '@angular/core';
 
   import {
     PoAccordionComponent,
@@ -105,14 +107,11 @@ export class InformeComponent {
     "NumSerie-ant":[""],
     "FilAnt":[""],
     "RRAnt":[""],
-    "DataRRAnt ":[""],
+    "DataRRAnt":[""],
     "clisirog":[""],
     "cod-emitente":[""],
     "nom-emitente":[{ value: '', disabled: true }],
     "observacao":[""],
-
-
-
 
   })
 
@@ -161,10 +160,13 @@ export class InformeComponent {
   listaOrdens!: any[]
   listaItens!: any[]
   listaStatus!:any[]
+  listaArquivos!:any[]
 
   //---Grid
   colunasOrdens!: PoTableColumn[]
   colunasItens!: PoTableColumn[]
+  colunasArquivos!: PoTableColumn[]
+  
   
   
   sub!: Subscription;
@@ -225,6 +227,28 @@ export class InformeComponent {
     action: () => { this.telaIncluirItemOrdem?.close() }
   }
 
+  readonly acaoIncluirEnc: PoModalAction = {
+    label: 'Salvar',
+    action: () => { this.okIncluirEnc() }
+  }
+
+  readonly acaoCancelarEnc: PoModalAction = {
+    label: 'Cancelar',
+    action: () => { 
+      this.telaIncluirEnc?.close() 
+      this.telaIncluirItemOrdem?.open()
+    }
+  }
+
+  readonly acoesGridArquivo: PoTableAction[] = [
+    {
+      label: '',
+      icon: 'bi bi-folder2-open',
+      action: this.onAbrirArquivo.bind(this),
+      
+    },
+  ];
+
   
   //---Inicializar
   ngOnInit(): void {
@@ -240,14 +264,16 @@ export class InformeComponent {
           this.srvTotvs.EmitirParametros({estabInfo:''})
         }
         else{
-          this.formOrdem.controls.codEmitente.setValue(Number(response.codEstabelecimento))
-          this.formOrdem.controls.codEstabel.setValue(response.codUsuario)
+          this.formOrdem.controls.codEmitente.setValue(Number(response.codUsuario))
+          this.formOrdem.controls.codEstabel.setValue(response.codEstabelecimento)
       }}})
 
 
     //Colunas do grid
     this.colunasOrdens = this.srvTotvs46.obterColunasOrdens()
     this.colunasItens = this.srvTotvs46.obterColunasItems()
+    this.colunasArquivos = this.srvTotvs46.obterColunasArquivos()
+
 
     //this.principal.expandAllItems()
     this.item1.expand()
@@ -263,13 +289,62 @@ export class InformeComponent {
     });
   }
 
-  onZoomEnc(){
+  okIncluirEnc(){
+    
+  }
+
+  onMarcarDesmarcar(obj:any){
+    if (obj.flag === 'X')
+      this.onDesmarcar(obj)
+    else
+      this.onMarcar(obj)
+  }
+
+  /* esconderSelecaoGrid() {
+    let elementos = document.querySelectorAll<HTMLElement>('td.po-table-column-selectable') 
+    elementos.forEach(item => item.style.display = 'none')
+  } */
+
+
+  //Cadastro de Enc
+  onCadEnc(){
+    //Fechar Tela Item
     this.telaIncluirItemOrdem?.close()
+
+    //-----Obter Informacoes de cadastro
+    this.formEnc.reset()
+
+    //Estabelecimento
+    this.srvTotvs46.ObterCadastro({tabela:"estabel", codigo:this.form.controls.codEstabel.value}).subscribe({
+      next: (response:any)=> { 
+         this.formEnc.controls['cod-estabel'].setValue(this.form.controls.codEstabel.value)
+         this.formEnc.controls['nom-estabel'].setValue(response.desc)
+        }
+    })
+
+    //Filial
+    this.srvTotvs46.ObterCadastro({tabela:"filial", codigo:this.formItemOrdem.controls.CodFilial.value}).subscribe({
+      next: (response:any)=> { 
+         this.formEnc.controls.CodFilial.setValue(this.formItemOrdem.controls.CodFilial.value)
+         this.formEnc.controls['nom-filial'].setValue(response.desc)
+        }
+    })
+
+    //Item
+    this.srvTotvs46.ObterCadastro({tabela:"item", codigo:this.formItemOrdem.controls['it-codigo'].value}).subscribe({
+      next: (response:any)=> { 
+        this.formEnc.controls['it-codigo'].setValue(this.formItemOrdem.controls['it-codigo'].value)
+        this.formEnc.controls['desc-item'].setValue(response.desc)
+      }
+    })
+
+    
+    //Abrir Tela Enc
     this.telaIncluirEnc?.open()
   }
 
   leaveNFS(){
-
+    alert("entrou")
     let params:any={cItCodigo: this.formItemOrdem.controls['it-codigo'].value, cRowId: this.ordemSelecionada['c-rowId']}
     this.loadModal = true
     this.srvTotvs46.LeaveNFS(params).subscribe({
@@ -319,20 +394,20 @@ export class InformeComponent {
         if (this.listaStatus[1].valor === '1'){
           this.formItemOrdem.controls['Quantidade'].disable()
           this.formItemOrdem.controls['nf-saida'].disable()
-          this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
+          //this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
           this.formItemOrdem.controls['Nat-Operacao'].disable()
           
         }
         else if (this.listaStatus[1].valor === '2'){
           this.formItemOrdem.controls['Quantidade'].enable()
           this.formItemOrdem.controls['nf-saida'].disable()
-          this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
+          //this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
           this.formItemOrdem.controls['Nat-Operacao'].disable()
         }
         else{
           this.formItemOrdem.controls['Quantidade'].enable()
           this.formItemOrdem.controls['nf-saida'].enable()
-          this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
+          //this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
           this.formItemOrdem.controls['Nat-Operacao'].disable()
         }
 
@@ -368,35 +443,39 @@ export class InformeComponent {
       })
   }
 
+  //Checkbox na Tela de Inclusao de Enc
   tagEnc(){
 
     if (this.formItemOrdem.controls['tag-enc'].value){
-       if (this.formItemOrdem.controls['nr-enc'].value !== '0') {
+       if (this.formItemOrdem.controls['nr-enc'].value !== '0' && this.formItemOrdem.controls['nr-enc'].value !== '999999999') {
 
-        this.srvDialog.confirm({
-            title: "CONFIRMA ELIMINAÇÃO",
-            message: `Enc já cadastrada, confirma a eliminação da ENC: ${this.formItemOrdem.controls['nr-enc'].value} ?`,
-            confirm: () => {
-              this.loadTela = true
-    
-              let paramsTela: any = { nrEnc: this.formItemOrdem.controls['nr-enc'].value }
-              this.srvTotvs46.EliminarEnc(paramsTela).subscribe({
-                next: (response: any) => {
-                  this.formItemOrdem.controls['nr-enc'].setValue("999999999")
-                  this.formItemOrdem.controls['Serie-enc'].setValue('')
-                  this.formItemOrdem.controls['nr-enc'].disable()
-                  this.formItemOrdem.controls['Serie-enc'].disable()
-                  this.loadTela=false
-                },
-              })
-            },
-            cancel: () => this.formItemOrdem.controls['tag-enc'].setValue(false)
-          })
-      }
+          this.srvDialog.confirm({
+              title: "CONFIRMA ELIMINAÇÃO",
+              message: `Enc já cadastrada, confirma a eliminação da ENC: ${this.formItemOrdem.controls['nr-enc'].value} ?`,
+              confirm: () => {
+                this.loadTela = true
+      
+                let paramsTela: any = { nrEnc: this.formItemOrdem.controls['nr-enc'].value }
+                this.srvTotvs46.EliminarEnc(paramsTela).subscribe({
+                  next: (response: any) => {
+                    this.formItemOrdem.controls['nr-enc'].setValue("999999999")
+                    this.formItemOrdem.controls['Serie-enc'].setValue('')
+                    this.formItemOrdem.controls['nr-enc'].disable()
+                    this.formItemOrdem.controls['Serie-enc'].disable()
+                    this.loadTela=false
+                  },
+                })
+              },
+              cancel: () => this.formItemOrdem.controls['tag-enc'].setValue(false)
+            })
+        }
+        else{
+          this.formItemOrdem.controls['nr-enc'].setValue("999999999")
+        }
     }
 
     else{
-      if (this.formItemOrdem.controls['nr-enc'].value !== "0") 
+      if (this.formItemOrdem.controls['nr-enc'].value !== "999999999") 
         return
       this.formItemOrdem.controls['nr-enc'].setValue("0")
       this.formItemOrdem.controls['Serie-enc'].setValue('')
@@ -409,18 +488,29 @@ export class InformeComponent {
 
   onImpressao() {
     let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
-    
-    this.loadTela = true
-    this.srvTotvs46.ImprimirOS(params).subscribe({
-      next: (response:any)=>{
-        this.loadTela = false
-        
-        this.onAbrirArquivo(response.arquivo)
-        //Atualizar Situacao do Processo
-        this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
+
+    this.srvDialog.confirm({
+      title: "GERAÇÃO INFORME OS",
+      literals: { cancel: 'Arquivo', confirm: 'Impressão' },
+      message: "Selecione a opção de Saída para o Relatório",
+      confirm: () => {
+        this.loadTela = true
+        this.srvTotvs46.ImprimirOS(params).subscribe({
+          next: (response:any)=>{
+            this.loadTela = false
+            
+            this.onAbrirArquivo(response.arquivo)
+            //Atualizar Situacao do Processo
+            this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
+          },
+          error: (e)=> {this.loadTela = false}
+          })
+       
       },
-      error: (e)=> {this.loadTela = false}
-      })
+      cancel: () => {}
+    })
+    
+    
     
   }
 
@@ -428,16 +518,7 @@ export class InformeComponent {
     this.formItemOrdem.reset()
     //cRowId da Ordem
     this.cRowId = this.ordemSelecionada['c-rowId']
-
     this.formItemOrdem.enable()
-    /*controls['it-codigo'].enable()
-    this.formItemOrdem.controls['Serie-Nf-Saida'].enable()
-    this.formItemOrdem.controls['Nat-Operacao'].enable()
-    this.formItemOrdem.controls['Quantidade'].enable()
-    this.formItemOrdem.controls['envelope-seguranca'].enable()
-    this.formItemOrdem.controls['serie-ins'].enable()
-    this.formItemOrdem.controls['serie-ret'].enable()
-    */
     this.telaIncluirItemOrdem?.open()
   }
 
@@ -455,7 +536,6 @@ export class InformeComponent {
   onAlterarItemOrdem(obj:any){
     //cRowId do Item da Ordem
     this.cRowId = obj['c-rowId']
-
     this.formItemOrdem.controls['it-codigo'].disable()
     this.formItemOrdem.controls['Serie-Nf-Saida'].disable()
     this.formItemOrdem.controls['Nat-Operacao'].disable()
@@ -595,24 +675,36 @@ export class InformeComponent {
     let params:any={codEstabel: this.form.controls.codEstabel.value, codUsuario: this.form.controls.codUsuario.value, senha: this.form.controls.senha.value, origem:'informe'}
     this.srvTotvs46.ObterDados(params).subscribe({
       next: (response: any) => {
+
+        //Info Estabelecimento e Tecnico Painel Menu
         let estab = this.listaEstabelecimentos.find(o => o.value === this.form.controls.codEstabel.value)
         let tec = this.listaTecnicos.find(o => o.value === this.form.controls.codUsuario.value)
         this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label})
 
+        //Cabecalho Accordion
         this.cTag=response.tela[0].os
         this.mostrarDados = true
+
         if(response.ordens !==undefined){
+
+          //Listas e Observacao
           this.listaOrdens = response.ordens
           this.listaItens  = response.itens
           this.edObservacao = response.itens !== undefined ? response.itens[0].edobservacao : ''
+
+          //Detalhe Painel de Informacoes
           this.cOS = response.ordens[0].NumOS
           this.cChamado = response.ordens[0].Chamado
           this.ordemSelecionada = this.listaOrdens[0]
         }
+
+        //Painel Contadores
         this.cUsadas = response.tela[0].usada
         this.cBrancas = response.tela[0].branco
         this.cTotal = response.tela[0].TOTAL
-        this.principal.poAccordionItems.forEach(x=> x.label === 'Informações do Técnico' ? x.collapse() : x.expand())
+
+        //Fechar Painel item 1 e abrir item 2
+        this.principal.poAccordionItems.forEach(x=> x.label === 'Informações do Técnico' || x.label === 'Log de Arquivos' ? x.collapse() : x.expand())
 
         //Parametros da Nota
         let paramsTec:any = {codEstabel: this.form.controls.codEstabel.value, codTecnico: this.form.controls.codUsuario.value}
@@ -623,6 +715,9 @@ export class InformeComponent {
 
               //Setar usuario
               this.srvTotvs.SetarUsuario(this.form.controls.codEstabel.value!, this.form.controls.codUsuario.value!, response.nrProcesso)
+
+              //Arquivo Gerado
+              this.listaArquivos=[{nomeArquivo:`InfOS-${this.form.controls.codEstabel.value}-${this.form.controls.codUsuario.value}-${response.nrProcesso.toString().padStart(8,'0')}.tmp`}]
 
               //Processo ativo
               this.nrProcesso = response.nrProcesso
@@ -655,16 +750,15 @@ export class InformeComponent {
   resetarVariaveis(){
      // this.item1.label = 'Informações do Técnico'
      this.srvTotvs.EmitirParametros({estabInfo: '', tecInfo:'', processoInfo:''})
-
-      this.listaOrdens = []
-      this.listaItens=[]
-      this.edObservacao=''
-      this.cUsadas = 0
-      this.cBrancas = 0
-      this.cTotal = 0
-      this.cTag=''
-      this.mostrarDados = false
-      }
+     this.listaOrdens = []
+     this.listaItens=[]
+     this.edObservacao=''
+     this.cUsadas = 0
+     this.cBrancas = 0
+     this.cTotal = 0
+     this.cTag=''
+     this.mostrarDados = false
+  }
 
   //Marcar
   onMarcar(obj:any | null){
@@ -676,7 +770,7 @@ export class InformeComponent {
         this.loadGridOrdem = false
         let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.flag = 'X'}
         this.gridOrdens?.updateItem(this.ordemSelecionada, registro)
-        this.srvNotification.success("Registro alterado com sucesso !" )
+        //this.srvNotification.success("Registro alterado com sucesso !" )
     },
     error: (e)=> {this.loadGridOrdem = false}
     })
@@ -692,7 +786,7 @@ export class InformeComponent {
         this.loadGridOrdem = false
         let registro = {...this.ordemSelecionada, value: this.ordemSelecionada.flag = ''}
         this.gridOrdens?.updateItem(this.ordemSelecionada, registro)
-        this.srvNotification.success("Registro alterado com sucesso !" )
+        //this.srvNotification.success("Registro alterado com sucesso !" )
       },
       error:(e)=>{this.loadGridOrdem = false}        
     })
@@ -780,8 +874,8 @@ export class InformeComponent {
 
   onAbrirArquivo(obj: any) {
     
-    this.nomeArquivo = obj;
-    let params: any = { nomeArquivo: obj };
+    this.nomeArquivo = obj.nomeArquivo ?? obj;
+    let params: any = { nomeArquivo: obj.nomeArquivo ?? obj };
     this.loadTela = true;
     this.srvTotvs.AbrirArquivo(params).subscribe({
       next: (response: any) => {

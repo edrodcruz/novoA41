@@ -1,3 +1,7 @@
+.po-radio {
+  font-size: 8px;
+}
+
 .box {
     display: flex;
     align-items: center;
@@ -52,12 +56,10 @@
   .boxOS{
     display: flex;
     justify-content: center;
-    justify-content: center;
     height: 44px;
     border: 1px solid #045B8F;
     background: #D7F0FE;
     border-radius: 4px;
-    
     color:#045B8F;
     column-gap:10px;
     padding: 0 20px 10px 20px;
@@ -96,10 +98,12 @@
   width:150px;
   text-align: right;
   margin-top: 20px;
+  font-size: 14px;
   }
   
   .desc{
-  min-width:400px;
+    flex-grow: 1;
+    max-width:600px; 
   }
 
   

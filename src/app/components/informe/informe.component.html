@@ -55,7 +55,9 @@
             <po-button p-tooltip="Nova OS" p-icon="bi bi-plus" p-kind="primary" p-kind="primary" (p-click)="onIncluirOrdem()"></po-button>
           </div>
                 <po-table [p-items]="listaOrdens" class="po-font-smaller" #gridOrdens 
+                     
                           (p-selected)="selecionarOrdem($event)"
+                          
                           [p-actions]="acoesGridOrdem"
                           [p-striped]="true" 
                           [p-loading]="loadGridOrdem"
@@ -66,9 +68,16 @@
                           p-container="true"
                           [p-height]="300"
                           [p-hide-columns-manager]="true">
-                    <ng-template  p-table-column-template p-property="flag" let-value>
+                    <!-- <ng-template  p-table-column-template p-property="flag" let-value>
                       <i class="bi bi-check-square-fill" *ngIf="value === 'X'" [style.color]="'#c64840'" [style.font-size]="'16px'"></i>
+                    </ng-template> 
+ -->
+                    <ng-template p-table-cell-template let-column="column" let-row="row">
+                      <div class="menuGrid2">
+                           <div><button class="btn" [style.color]="'#c64840'" [style.font-size]="'24px'" (click)="onMarcarDesmarcar(row)"><i [ngClass]="row.flag === 'X' ? 'bi bi-check-square-fill' : 'bi bi-square'"></i></button></div>
+                      </div>
                     </ng-template>
+
                 </po-table>
                           
                
@@ -110,6 +119,17 @@
           </div>
        
     </po-accordion-item>
+
+    <po-accordion-item p-label="Log de Arquivos">
+      <po-widget>
+        <!-- <po-button p-label="Verificar Arquivo" (p-click)="onVerificarArquivos()"></po-button> -->
+        <po-table [p-items]="listaArquivos" [p-striped]="true" [p-sort]="true" 
+          [p-actions]="acoesGridArquivo" [p-columns]="colunasArquivos" [p-hide-table-search]="true"
+          [p-hide-columns-manager]="true" />
+      </po-widget>
+
+    </po-accordion-item>
+
   </po-accordion>
 
   <po-modal #telaIncluirOrdem p-title="Incluir Ordem Serviço"
@@ -135,11 +155,11 @@
       </form>
   </po-modal>
 
-  <po-modal #telaIncluirEnc p-title="Incluir ENC" style="z-index: 99;"
-      p-size="lg" 
+  <po-modal #telaIncluirEnc p-title="Incluir ENC" 
+      p-size="auto" 
       p-click-out="false" 
-      [p-primary-action]="acaoIncluirItemOrdem" 
-      [p-secondary-action]="acaoCancelarItemOrdem">
+      [p-primary-action]="acaoIncluirEnc" 
+      [p-secondary-action]="acaoCancelarEnc">
     
       <form [formGroup]="formEnc">
       <div class="po-md-12">
@@ -164,7 +184,7 @@
             <div class="label"><label>Série Enc:</label></div>
             <div><po-input formControlName="Serie-enc"/></div>
             
-            <div class="label"><label>Filial Enc:</label></div>
+            <div class="label" style="width:120px"><label>Filial Enc:</label></div>
             <div><po-input formControlName="CodFilial-enc"/></div>
           </div>
           
@@ -178,7 +198,7 @@
       
       
       <div class="po-md-12">
-        
+        <po-widget>
           <div class="flex-row">
             <div class="label"><label>Defeito:</label></div>
             <div><po-input formControlName="DefInd"/></div>
@@ -205,24 +225,27 @@
             <div class="label"><label>Rep.Ant:</label></div>
             <div><po-input formControlName="RRAnt"/></div>
             
-            <div class="label"><label>Dt Rep Ant:</label></div>
-            <div><po-input formControlName="DataRRAnt"/></div>
+            <div class="label" style="width:120px"><label>Dt Rep Ant:</label></div>
+            <div style="width:200px"><po-datepicker formControlName="DataRRAnt"> </po-datepicker></div>
           </div>
 
           <div class="flex-row">
             <div class="label"><label>Cli Orig:</label></div>
             <div><po-input formControlName="clisirog"/></div>
+          </div>
+
+          <div class="flex-row">
             <div class="label"><label>Site:</label></div>
             <div><po-input formControlName="cod-emitente"/></div>
             <div class="desc" ><po-input formControlName="nom-emitente"/></div>
           </div>
-          
-          <div class="flex-row">
+        </po-widget>
+        
+        <div class="flex-row">
             <div class="label"><label>Observação:</label></div>
             <div style="width:600px"><po-textarea formControlName="observacao" [p-rows]="4"/></div>
-          </div>
-          
-       
+        </div>
+        
       </div>
     </form>
   </po-modal>
@@ -237,7 +260,7 @@
           <div class="po-md-6">
              <po-widget p-title="Dados do Item">
               <div class="po-md-6" ><po-input name="it-codigo" formControlName="it-codigo" p-label="Item" (p-blur)="leaveItem()"></po-input></div>
-              <div class="po-md-6"><po-input name="nf-saida" formControlName="nf-saida" p-label="Nota Fiscal"></po-input></div>
+              <div class="po-md-6"><po-input name="nf-saida" formControlName="nf-saida" p-label="Nota Fiscal" (p-blur)="leaveNFS()"></po-input></div>
               <div class="po-md-6"><po-input name="Quantidade" formControlName="Quantidade" p-label="Quantidade"></po-input></div>
               <div class="po-md-6"><po-input name="Serie-Nf-Saida" formControlName="Serie-Nf-Saida" p-label="Série"></po-input></div>
               <div class="po-md-6"><po-input name="Nat-Operacao" formControlName="Nat-Operacao" p-label="Nat.Operação"></po-input></div>
@@ -270,7 +293,7 @@
           </div>
           <div class="po-md-4"><po-input name="nr-enc" formControlName="nr-enc" p-label="Número ENC"></po-input></div>
           <div class="po-md-4"><po-input name="Serie-enc" formControlName="Serie-enc" p-label="Série ENC"></po-input></div>
-          <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-file-plus" [p-disabled]="lDisabled" (p-click)="onZoomEnc()"></po-button></div>
+          <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-plus" [p-disabled]="lDisabled" (p-click)="onCadEnc()" p-help="Cadastro de Enc"></po-button></div>
         </po-widget></div>
         
       </form>
@@ -281,6 +304,6 @@
 
   <div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>
 
-</po-modal>
+  </po-modal>
 
 

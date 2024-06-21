@@ -88,6 +88,9 @@ ngOnInit(): void {
     });
   }
 }
+somefunction(obj:any){
+  alert("Duplo clique")
+}
 
 public onListar(){
   this.loadTela=true;
@@ -100,6 +103,10 @@ public onListar(){
     },
     error: (e)=> {this.loadTela = false}
     })
+
+}
+
+Etiqueta(obj:any){
 
 }
 

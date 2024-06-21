@@ -468,6 +468,12 @@ public ObterMonitor(monitor?:Monitor){
                    .pipe(take(1));
   }
 
+   //---------------------- Salvar registro
+   public AbrirReparo(params?: any){
+    return this.http.post(`${this._url}/AbrirReparos`, params, {headers:headersTotvs})
+                .pipe(take(1));
+  }
+
   
    //Ordenacao campos num array
    public ordenarCampos =

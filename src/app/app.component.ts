@@ -23,6 +23,7 @@ export class AppComponent {
   { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data'    , link:'/informe'   , shortLabel:'Informe'},
   { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'        , link:'/calculo'   , shortLabel:'Cálculo'},
   { label: 'Monitor Processos'         , icon: 'bi bi-display'           , link:'/monitor'      , shortLabel:'Monitor Processos'},
+  /* { label: 'Gerenciador Arquivos'      , icon: 'bi bi-folder2-open'      , link:'/monitor'      , shortLabel:'Monitor Processos'}, */
   { label: 'Danfe (FT0518)'            , icon: 'bi bi-printer'           , shortLabel:'FT0518', action:() => this.AbrirProgramaTotvs('ftp/ft0518.w')},
   { label: 'Consulta Nota (FT0904)'    , icon: 'bi bi-file-earmark-text' , shortLabel:'FT0904', action:() => this.AbrirProgramaTotvs('ftp/ft0904.w')}
  ]
