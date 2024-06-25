@@ -262,10 +262,11 @@ obterColunasMonitor():Array<PoTableColumn>{
     {property: 'situacao', label: "Situação", type:'label',
       labels: [
         { value: 'I',  color: 'color-08', label: 'Impresso', textColor:'white' },
-        { value: 'B',  color: 'color-07', label: 'Embalagem', textColor:'white' },
+        { value: 'B',  color: 'color-03', label: 'Embalagem', textColor:'white' },
         { value: 'E',  color: 'color-10', label: 'Entradas', textColor:'white' },
         { value: 'S',  color: 'color-10', label: 'Saídas', textColor:'white' },
-        { value: 'R',  color: 'color-07', label: 'Reparo', textColor:'white' },
+        { value: 'R',  color: 'color-03', label: 'Reparo', textColor:'white' },
+        { value: 'L',  color: 'color-07', label: 'Resumo Final', textColor:'white' }
       ]},
   ]
 }

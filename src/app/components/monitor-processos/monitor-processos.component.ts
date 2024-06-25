@@ -59,7 +59,6 @@ ngOnInit(): void {
   this.mostrarLabel=false
 
   this.colunas = this.srvTotvs.obterColunasMonitor()
-  //this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - MONITOR ACOMPANHAMENTO DE PROCESSOS'});
   this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - MONITOR ACOMPANHAMENTO DE PROCESSOS', estabInfo:''});
 
   let monitor = this.srvTotvs.ObterMonitor()
@@ -88,6 +87,9 @@ ngOnInit(): void {
     });
   }
 }
+
+
+
 somefunction(obj:any){
   alert("Duplo clique")
 }
@@ -113,6 +115,14 @@ Etiqueta(obj:any){
 NotasFiscais(obj:any){
   this.AbrirTela(obj, 'dashboard')
 }
+
+ResumoFinal(obj:any){
+  if(obj.situacao.toUpperCase() === "L")
+    this.AbrirTela(obj, 'resumofinal')
+   else
+   this.srvNotification.error("Situação do processo não permite chamar esta tela !")
+}
+
 
 Embalagem(obj:any){
   if(obj.situacao.toUpperCase() === "B")

@@ -72,7 +72,6 @@ readonly acoesGrid: PoTableAction[] = [
           this.codEstabel = response.codEstabelecimento
           this.codUsuario = response.codUsuario
           this.nrProcess  = response.nrProcesso
-          this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - CRIAÇÃO DE REPAROS'});
        }
       }
     })
@@ -95,33 +94,30 @@ readonly acoesGrid: PoTableAction[] = [
  onAbrirReparos(){
 
   this.srvDialog.confirm({
-    title: "IMPRESSÃO DE REPAROS",
-    message: "Deseja imprimir o reparo",
+    title: "GERAÇÃO E IMPRESSÃO DE REPAROS",
+    message: "Deseja gerar e imprimir os reparos ?",
     confirm: () => {
       this.loadTela = true
-      let param:any={reparos:[{
-        "codfilial":"08", 
-        "qt-reparos": 1,
-        "it-codigo": "85.101.00275-2b",
-        "numos": 0,
-        "nf-saida": "",
-        "chamado": 0,
-        "NTecnico": 1615,
-        "nr-process": 1534492,
-        "lote": 1534492,
-        "numserie-ant": "0",
-        "numserie-atu": "0",
-        "atividade": "101",
-        "defind": 201,
-        "observacao": "TESTE VALTER",
-        "nr-enc": 998877,
-        "clisirog": "131"
+      let param:any
 
-      }]}
+      //Caso a lista de reparos tenha sido excluida pelo usuario enviar um registro 
+      //com item em branco, codigo do estabelecimento e numero do processo
+      
+
+      if (this.listaReparos.length === 0){
+        param = {reparos:[{"it-codigo":"", "cod-estabel": this.codEstabel, "nr-process": this.nrProcess}]}
+      }
+      else{
+        param = {reparos:this.listaReparos}
+      }
+
       this.srvTotvs.AbrirReparo(param).subscribe({
         next: (response:any)=> {
            this.loadTela = false
-           this.srvNotification.success('Gerado pedido de execução para criação e impressão de reparos: ' + response.NumPedExec)
+           if (response.NumPedExec > 0)
+              this.srvNotification.success('Gerado pedido de execução para criação e impressão de reparos: ' + response.NumPedExec)
+            else
+              this.srvNotification.success('Processo atualizado com sucesso !')
           }
       })
     },
