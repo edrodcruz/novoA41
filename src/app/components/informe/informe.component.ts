@@ -487,7 +487,7 @@ export class InformeComponent {
   
 
   onImpressao() {
-    let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
+    
 
     this.srvDialog.confirm({
       title: "GERAÇÃO INFORME OS",
@@ -495,7 +495,8 @@ export class InformeComponent {
       message: "Selecione a opção de Saída para o Relatório",
       confirm: () => {
         this.loadTela = true
-        this.srvTotvs46.ImprimirOS(params).subscribe({
+        let paramsArquivo:any={iExecucao: 1, cRowId: this.listaOrdens[0]['c-rowId']}
+        this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
           next: (response:any)=>{
             this.loadTela = false
             
@@ -507,7 +508,17 @@ export class InformeComponent {
           })
        
       },
-      cancel: () => {}
+      cancel: () => {
+        let paramsArquivo:any={iExecucao: 2, cRowId: this.listaOrdens[0]['c-rowId']}
+        this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
+          next: (response:any)=>{
+              //Atualizar Situacao do Processo
+              this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
+
+          },
+          error: (e)=> {this.loadTela = false}
+          })
+      }
     })
     
     
