@@ -152,7 +152,11 @@
           (p-primary-action)="stepper.previous()">
 
           <div class="tipoCalculo">
-            <po-button p-tooltip="Impressão Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer"></po-button>
+            <div>
+              <po-button p-tooltip="Gerar Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer" p-kind="primary" style="margin-right: 5px;"></po-button>
+              <po-button p-tooltip="Visualizar Informe OS" (p-click)="onAbrirArquivo(null)" p-icon="bi bi-folder2-open"></po-button>
+            </div>
+            
             <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)" 
                             [p-options]="options" style="min-width: 80%;"/>
           </div>

@@ -727,25 +727,50 @@ readonly acaoLogar: PoModalAction = {
         this.srvNotification.error('Não existem ordens para o técnico')
         return 
       }
-      let params:any={cRowId: this.listaOrdens[0]['c-rowId']}
-      this.labelLoadTela = "Gerando Informe"
-      this.loadTela = true
-      this.srvTotvs46.ImprimirOS(params).subscribe({
-        next: (response:any)=>{
-          this.loadTela = false
-          
-          this.onAbrirArquivo(response.arquivo)
-        },
-        error: (e)=> {this.loadTela = false}
-        })
       
+        this.srvDialog.confirm({
+          title: "GERAÇÃO INFORME OS",
+          literals: { cancel: 'Arquivo', confirm: 'Impressão' },
+          message: "Selecione a opção de Saída para o Relatório",
+          confirm: () => {
+            this.loadTela = true
+            this.labelLoadTela='Gerando Pedido Execução'
+            let paramsArquivo:any={iExecucao: 2, cRowId: this.listaOrdens[0]['c-rowId']}
+            this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
+              next: (response:any)=>{
+                this.loadTela = false
+                this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
+                //Atualizar Situacao do Processo
+                this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
+              },
+              error: (e)=> {this.loadTela = false}
+              })
+           
+          },
+          cancel: () => {
+            this.loadTela=true
+            this.labelLoadTela='Gerando Pedido Execução'
+            let paramsArquivo:any={iExecucao: 1, cRowId: this.listaOrdens[0]['c-rowId']}
+            this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
+              next: (response:any)=>{
+                this.loadTela=false
+                  this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
+                  //Atualizar Situacao do Processo
+                  this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
+              },
+              error: (e)=> {this.loadTela = false}
+              })
+          }
+        })
     }
 
     onAbrirArquivo(obj: any) {
-    
-      this.nomeArquivo = obj;
-      let params: any = { nomeArquivo: obj };
+
+      this.nomeArquivo = `InfOS-${this.codEstabelecimento}-${this.codTecnico}-${this.processoInfo.toString().padStart(8,'0')}.tmp`
+      //this.nomeArquivo = obj;
+      let params: any = { nomeArquivo: this.nomeArquivo };
       this.loadTela = true;
+      this.labelLoadTela = ""
       this.srvTotvs.AbrirArquivo(params).subscribe({
         next: (response: any) => {
           this.conteudoArquivo = response.arquivo

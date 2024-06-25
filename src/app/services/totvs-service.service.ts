@@ -255,7 +255,7 @@ obterColunasReparos(): Array<PoTableColumn>{
 
 obterColunasMonitor():Array<PoTableColumn>{
   return [
-    {property:'opcoes', label: " ", type:'cellTemplate'},
+    {property:'opcoes', label: "Selecione uma ação", type:'cellTemplate'},
     {property: 'cod-emitente', label: "Técnico"},
     {property: 'nome-abrev', label: 'Nome'},
     {property: 'nr-process', label: "Processo"},

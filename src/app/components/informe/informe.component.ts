@@ -495,12 +495,11 @@ export class InformeComponent {
       message: "Selecione a opção de Saída para o Relatório",
       confirm: () => {
         this.loadTela = true
-        let paramsArquivo:any={iExecucao: 1, cRowId: this.listaOrdens[0]['c-rowId']}
+        let paramsArquivo:any={iExecucao: 2, cRowId: this.listaOrdens[0]['c-rowId']}
         this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
           next: (response:any)=>{
             this.loadTela = false
-            
-            this.onAbrirArquivo(response.arquivo)
+            this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
             //Atualizar Situacao do Processo
             this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
           },
@@ -509,20 +508,19 @@ export class InformeComponent {
        
       },
       cancel: () => {
-        let paramsArquivo:any={iExecucao: 2, cRowId: this.listaOrdens[0]['c-rowId']}
+        this.loadTela=true
+        let paramsArquivo:any={iExecucao: 1, cRowId: this.listaOrdens[0]['c-rowId']}
         this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
           next: (response:any)=>{
+            this.loadTela=false
+              this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
               //Atualizar Situacao do Processo
               this.srvTotvs.EmitirParametros({processoSituacao: 'IMPRESSO'})
-
           },
           error: (e)=> {this.loadTela = false}
           })
       }
     })
-    
-    
-    
   }
 
   onIncluirItemOrdem(){

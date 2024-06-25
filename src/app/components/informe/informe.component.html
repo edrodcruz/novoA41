@@ -1,7 +1,7 @@
 <div class="sample-container">
   <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
 </div>
-<po-accordion style="margin-top: 10px;" #principal p-allow-expand-all-items="false" p-show-manager-accordion="false">
+<po-accordion style="margin-top: 10px;" #principal p-allow-expand-all-items="false" p-show-manager-accordion="false" >
     <po-accordion-item p-label="Informações do Técnico" #item1>
        <po-widget>
         <form [formGroup]="form" >
@@ -73,9 +73,7 @@
                     </ng-template> 
  -->
                     <ng-template p-table-cell-template let-column="column" let-row="row">
-                      <div class="menuGrid2">
-                           <div><button class="btn" [style.color]="'#c64840'" [style.font-size]="'24px'" (click)="onMarcarDesmarcar(row)"><i [ngClass]="row.flag === 'X' ? 'bi bi-check-square-fill' : 'bi bi-square'"></i></button></div>
-                      </div>
+                       <div><button class="btn" [style.color]="'#c64840'" [style.font-size]="'24px'" (click)="onMarcarDesmarcar(row)"><i [ngClass]="row.flag === 'X' ? 'bi bi-check-square-fill' : 'bi bi-square'"></i></button></div>
                     </ng-template>
 
                 </po-table>
