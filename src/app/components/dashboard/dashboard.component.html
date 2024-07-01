@@ -25,9 +25,27 @@
   <po-accordion #principal p-allow-expand-all-items="false" p-show-manager-accordion="false">
     <po-accordion-item p-label="Logs do Processo">
       <po-widget>
+
         <po-table [p-items]="listaErros" [p-striped]="true" [p-sort]="true" 
-          [p-actions]="acoesGridErro" [p-columns]="colunasErro" [p-hide-table-search]="true"
-          [p-hide-columns-manager]="true" />
+          [p-columns]="colunasErro" [p-hide-table-search]="true"
+          [p-hide-columns-manager]="true">
+
+          <ng-template  p-table-column-template p-property="nomeArquivo" let-value>
+            <a class="face-button" [href]="urlSpool + value" target="_blank"  [download]="value" >
+              <div class="face-primary">
+                <i class="bi bi-file-earmark-text"></i>
+                {{value}}
+              </div>
+              <div class="face-secondary">
+                <i class="bi bi-download"></i>
+                Baixar Arquivo
+              </div>
+            </a>
+          </ng-template>
+
+        </po-table>
+
+
       </po-widget>
       <po-widget p-title="Mensagem RPW">
         <div class="po-md-12"><span>{{cMensagemErroRPW}}</span></div>

@@ -13,6 +13,7 @@ import {
 import { Subscription, delay, interval } from 'rxjs';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { TotvsService } from 'src/app/services/totvs-service.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -80,6 +81,7 @@ export class DashboardComponent {
   listaNFE!: any[];
   listaErros!: any[];
   sub!: Subscription;
+  urlSpool:string=''
 
   acaoLogin: PoModalAction = {
     action: () => {
@@ -117,6 +119,7 @@ export class DashboardComponent {
     this.esconderPainel();
     //--- Informacoes iniciais tela
     this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA41 - DASHBOARD DE NOTAS FISCAIS'});
+    this.urlSpool = environment.totvs_spool
 
     //Colunas grids
     this.colunasNFE = this.srvTotvs.obterColunasEntradas();

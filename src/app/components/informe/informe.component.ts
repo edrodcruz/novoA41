@@ -180,6 +180,7 @@ export class InformeComponent {
   cRowId:string=''
   urlInfoOs:string=''
   arquivoInfoOS:string=''
+  urlSpool:string=''
 
   readonly acoesGridOrdem: PoTableAction[] =[
     {label: 'Marcar OS', icon: 'bi bi-file-earmark-check', action: this.onMarcar.bind(this)},
@@ -258,6 +259,8 @@ export class InformeComponent {
   
   //---Inicializar
   ngOnInit(): void {
+
+    this.urlSpool= environment.totvs_spool
 
     //--- Titulo Tela
     this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA46 - INFORME DE OS'})
@@ -350,7 +353,6 @@ export class InformeComponent {
   }
 
   leaveNFS(){
-    alert("entrou")
     let params:any={cItCodigo: this.formItemOrdem.controls['it-codigo'].value, cRowId: this.ordemSelecionada['c-rowId']}
     this.loadModal = true
     this.srvTotvs46.LeaveNFS(params).subscribe({
@@ -504,6 +506,14 @@ export class InformeComponent {
         let paramsArquivo:any={iExecucao: 2, cRowId: this.listaOrdens[0]['c-rowId']}
         this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
           next: (response:any)=>{
+            //Arquivo Gerado
+            let params:any={nrProcess: this.nrProcesso}
+            this.srvTotvs46.ObterArquivo(params).subscribe({
+              next:(item:any)=>{
+                this.listaArquivos = item.items
+              }
+            })
+
             this.loadTela = false
             this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
             //Atualizar Situacao do Processo
@@ -518,6 +528,13 @@ export class InformeComponent {
         let paramsArquivo:any={iExecucao: 1, cRowId: this.listaOrdens[0]['c-rowId']}
         this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
           next: (response:any)=>{
+            //Arquivo Gerado
+            let params:any={nrProcess: this.nrProcesso}
+            this.srvTotvs46.ObterArquivo(params).subscribe({
+              next:(item:any)=>{
+                this.listaArquivos = item.items
+              }
+            })
             this.loadTela=false
               this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
               //Atualizar Situacao do Processo
@@ -732,9 +749,12 @@ export class InformeComponent {
               this.srvTotvs.SetarUsuario(this.form.controls.codEstabel.value!, this.form.controls.codUsuario.value!, response.nrProcesso)
 
               //Arquivo Gerado
-              //this.listaArquivos=[{nomeArquivo:`InfOS-${this.form.controls.codEstabel.value}-${this.form.controls.codUsuario.value}-${response.nrProcesso.toString().padStart(8,'0')}.tmp`}]
-              this.arquivoInfoOS = `InfOS-${this.form.controls.codEstabel.value}-${this.form.controls.codUsuario.value}-${response.nrProcesso.toString().padStart(8,'0')}.tmp`
-              this.urlInfoOs = environment.totvs_spool + this.arquivoInfoOS
+              let params:any={nrProcess: response.nrProcesso}
+              this.srvTotvs46.ObterArquivo(params).subscribe({
+                next:(item:any)=>{
+                  this.listaArquivos = item.items
+                }
+              })
 
               //Processo ativo
               this.nrProcesso = response.nrProcesso

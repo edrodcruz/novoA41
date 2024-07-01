@@ -55,7 +55,7 @@
     <po-accordion-item p-label="Ordens de Serviço e Itens da Ordem" [p-label-tag]="cTag" #item2>
         <div class="po-md-5">
           <div class="po-md-12 botoesOS" *ngIf=" this.mostrarDados === true">
-            <po-button p-tooltip="Impressão Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer"></po-button>
+            <po-button p-tooltip="Gerar Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer"></po-button>
             <po-button p-tooltip="Nova OS" p-icon="bi bi-plus" p-kind="primary" p-kind="primary" (p-click)="onIncluirOrdem()"></po-button>
           </div>
                 <po-table [p-items]="listaOrdens" class="po-font-smaller" #gridOrdens 
@@ -123,29 +123,27 @@
     </po-accordion-item>
 
     <po-accordion-item p-label="Log de Arquivos">
-      <po-widget p-title="Selecione arquivo para download">
+      <po-widget>
+        <po-table [p-items]="listaArquivos" 
+                  [p-columns]="colunasArquivos" 
+                  [p-hide-table-search]="true"
+                  [p-hide-columns-manager]="true">
+
+            <ng-template  p-table-column-template p-property="nomeArquivo" let-value>
+              <a class="face-button" [href]="urlSpool + value" target="_blank"  [download]="value" >
+                <div class="face-primary">
+                  <i class="bi bi-file-earmark-text"></i>
+                  {{value}}
+                </div>
+                <div class="face-secondary">
+                  <i class="bi bi-download"></i>
+                  Baixar Arquivo
+                </div>
+              </a>
+            </ng-template>
+        </po-table>
         
-       <!--  <a [href]="urlInfoOs" target="_blank" class="btn" [download]="arquivoInfoOS" p-tooltip="Baixar Arquivo"><i class="bi bi-download" style="font-size: 24px;"></i>{{arquivoInfoOS}}</a>
-                          <po-table [p-items]="listaArquivos" [p-striped]="true" [p-sort]="true" 
-                            [p-actions]="acoesGridArquivo" [p-columns]="colunasArquivos" [p-hide-table-search]="true"
-                            [p-hide-columns-manager]="true" />
-                  -->    
-        <div style="display: flex; justify-content: center;">
-            <a class="face-button" [href]="urlInfoOs" target="_blank"  [download]="arquivoInfoOS">
-  
-              <div class="face-primary">
-                <i class="bi bi-file-earmark-text"></i>
-                {{arquivoInfoOS}}
-              </div>
-              
-              <div class="face-secondary">
-                <i class="bi bi-download"></i>
-                Baixar Arquivo
-              </div>
-            </a>
-      </div>                       
-                  
-    </po-widget>
+      </po-widget>
 
     </po-accordion-item>
 

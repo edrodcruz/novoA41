@@ -232,9 +232,9 @@ obterColunasEntradasEstoque(): Array<PoTableColumn> {
 
 obterColunasErrosProcessamento(): Array<PoTableColumn>{
   return [
-    {property: 'nomeArquivo', label: "Arquivo"},
-    {property: 'mensagemErro', label: "Mensagem"},
-   
+    {property: 'nomeArquivo', label: "Arquivo", type: 'columnTemplate'},
+    {property: 'mensagem', label: "Mensagem"},
+    {property: 'dataHora', label: "Data", type:'date', format: "dd/MM/yyyy hh:mm:ss"},
   ]
 }
 

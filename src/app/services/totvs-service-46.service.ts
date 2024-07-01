@@ -62,8 +62,10 @@ obterColunasOrdens(): Array<PoTableColumn> {
 
 obterColunasArquivos(): Array<PoTableColumn> {
   return [
-    { property: 'nomeArquivo', label: "Nome Arquivo"},
-    { property: 'Descricao', label: "Descrição" },
+    {property: 'nomeArquivo', label: "Arquivo", type: 'columnTemplate'},
+    {property: 'mensagem', label: "Descrição"},
+    {property: 'dataHora', label: "Data", type:'date', format: "dd/MM/yyyy hh:mm:ss"},
+    {property: 'numPedExec', label: "PedExec"},
   ];
 }
 
@@ -169,6 +171,11 @@ obterColunasArquivos(): Array<PoTableColumn> {
 
   public ObterCadastro(params?: any){
     return this.http.get(`${this._url}/ObterCadastro`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+  public ObterArquivo(params?: any){
+    return this.http.get(`${this._url}/ObterArquivo`, {params:params, headers:headersTotvs})
                    .pipe(take(1));
   }
 

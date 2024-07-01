@@ -13,15 +13,15 @@
 }
 
 .rpwInfo.ok {
-  background: green;
+  background: var(--color-10);
 }
 
 .rpwInfo.erro {
-  background: #9e3933;
+  background: var(--color-07);
 }
 
 .rpwInfo.info {
-  background: orange;
+  background: var(--color-08);
 }
 
 .icone {
