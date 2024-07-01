@@ -1,5 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Workbook, Worksheet } from 'exceljs';
+import * as saveAs from 'file-saver';
 import * as fs from 'file-saver';
 import { of, take } from 'rxjs';
 
@@ -8,7 +10,27 @@ import { of, take } from 'rxjs';
 })
 export class ExcelService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  public downloadFile(url: string): void {
+    const headers = new HttpHeaders().set('Accept', 'application/octet-stream');
+
+    this.http.get(url, { headers, responseType: 'blob' }).subscribe(
+      (response: any) => {
+        const contentDispositionHeader: string = response.headers.get('Content-Disposition');
+        const regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const matches = regex.exec(contentDispositionHeader);
+
+        const sanitizedFileName = 'valter.txt';
+        const file = new Blob([response.body], { type: response.type });
+
+        saveAs(file, sanitizedFileName);
+      },
+      (error: any) => {
+        console.error('Failed to download file', error);
+      }
+    );
+  }
 
   public exportarParaExcel(
     reportHeading: string,

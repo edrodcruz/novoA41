@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ExcelService } from '../../services/excel-service.service';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { TotvsService46 } from 'src/app/services/totvs-service-46.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -102,6 +103,10 @@ itemsResumo!: any[]
 conteudoArquivo: string = '';
 mostrarInfo: boolean = false;
 nomeArquivo: string = '';
+
+urlInfoOs:string=''
+arquivoInfoOS:string=''
+
 
 
 //------ Controle Tela
@@ -248,6 +253,10 @@ readonly acaoLogar: PoModalAction = {
                     this.srvTotvs.SetarUsuario(this.codEstabelecimento, this.codTecnico, response.nrProcesso)
                     //Atualizar Informacoes Tela
                     this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
+
+                    this.arquivoInfoOS = `InfOS-${this.codEstabelecimento}-${this.codTecnico}-${this.processoInfo.toString().padStart(8,'0')}.tmp`
+                    this.urlInfoOs = environment.totvs_spool + this.arquivoInfoOS
+      
                     this.loadTela=false
                   },
                  error: (e) => { }

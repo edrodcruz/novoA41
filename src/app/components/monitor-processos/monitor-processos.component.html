@@ -27,17 +27,18 @@
           [p-columns]="colunas" 
           [p-hide-table-search]="false" 
           [p-hide-columns-manager]="true">
-
           <ng-template p-table-cell-template let-column="column" let-row="row">
             <div class="menuGrid">
                  <div><button class="btn"  (click)="NotasFiscais(row)"><i class="bi bi-archive" ></i><p>Notas Fiscais</p></button></div>
-                 <div><button class="btn"  (click)="Reparos(row)"><i class="bi bi-tools"></i><p>Reparos</p></button></div>
-                 <div><button class="btn"  (click)="Embalagem(row)"><i class="bi bi-box2"></i><p>Embalagem</p></button></div>
-                 <div><button class="btn"  (click)="ResumoFinal(row)"><i class="bi bi-printer"></i><p>Resumo Final</p></button></div>
+                 <div [ngClass]="row.situacao === 'R' ? 'show' : 'hide'"><button class="btn"  (click)="Reparos(row)"><i class="bi bi-tools"></i><p>Reparos</p></button></div>
+                 <div [ngClass]="row.situacao === 'B' ? 'show' : 'hide'"><button class="btn"  (click)="Embalagem(row)"><i class="bi bi-box2"></i><p>Embalagem</p></button></div>
+                 <div [ngClass]="row.situacao === 'L' ? 'show' : 'hide'"><button class="btn"  (click)="ResumoFinal(row)"><i class="bi bi-printer"></i><p>Resumo Final</p></button></div>
             </div>
           </ng-template>
-
 </po-table>
+
+
+
 
         
 

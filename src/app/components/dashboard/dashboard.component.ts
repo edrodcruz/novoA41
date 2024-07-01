@@ -157,6 +157,7 @@ verificarNotas() {
       let paramsNota: any = {CodEstab: this.codEstabel,CodTecnico: this.codUsuario, NrProcess: this.nrProcess};
       this.srvTotvs.ObterNotas(paramsNota).subscribe({
         next: (response: any) => {
+          
           this.listaNFE = response.nfe;
           this.listaNFS = response.nfs;
 

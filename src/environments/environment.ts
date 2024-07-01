@@ -10,6 +10,7 @@ export const environment = {
     'Content-Type': 'application/json',
     'Authorization': 'Basic ' + btoa("super:prodiebold11"),
     'CompanyId': 1
-  }
+  },
+  totvs_spool:'http://10.151.120.56/downloadapk/AAT/'
 };
 

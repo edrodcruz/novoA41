@@ -28,6 +28,9 @@ import { TotvsService46 } from '../../services/totvs-service-46.service';
   } from '@angular/forms';
 import { TotvsService } from 'src/app/services/totvs-service.service';
 import { Usuario } from 'src/app/interfaces/usuario';
+import { Router } from '@angular/router';
+import { ExcelService } from '../../services/excel-service.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -41,6 +44,9 @@ export class InformeComponent {
   private srvDialog = inject(PoDialogService)
   private srvNotification = inject(PoNotificationService);
   private formBuilder = inject(FormBuilder);
+  private router = inject(Router)
+  private srvExcel = inject(ExcelService)
+
  
   
   //---------- Acessar a DOM
@@ -166,14 +172,14 @@ export class InformeComponent {
   colunasOrdens!: PoTableColumn[]
   colunasItens!: PoTableColumn[]
   colunasArquivos!: PoTableColumn[]
-  
-  
-  
+
   sub!: Subscription;
   nrProcesso:number=0;
   lDisabled:boolean=false
 
   cRowId:string=''
+  urlInfoOs:string=''
+  arquivoInfoOS:string=''
 
   readonly acoesGridOrdem: PoTableAction[] =[
     {label: 'Marcar OS', icon: 'bi bi-file-earmark-check', action: this.onMarcar.bind(this)},
@@ -726,7 +732,9 @@ export class InformeComponent {
               this.srvTotvs.SetarUsuario(this.form.controls.codEstabel.value!, this.form.controls.codUsuario.value!, response.nrProcesso)
 
               //Arquivo Gerado
-              this.listaArquivos=[{nomeArquivo:`InfOS-${this.form.controls.codEstabel.value}-${this.form.controls.codUsuario.value}-${response.nrProcesso.toString().padStart(8,'0')}.tmp`}]
+              //this.listaArquivos=[{nomeArquivo:`InfOS-${this.form.controls.codEstabel.value}-${this.form.controls.codUsuario.value}-${response.nrProcesso.toString().padStart(8,'0')}.tmp`}]
+              this.arquivoInfoOS = `InfOS-${this.form.controls.codEstabel.value}-${this.form.controls.codUsuario.value}-${response.nrProcesso.toString().padStart(8,'0')}.tmp`
+              this.urlInfoOs = environment.totvs_spool + this.arquivoInfoOS
 
               //Processo ativo
               this.nrProcesso = response.nrProcesso
@@ -881,10 +889,27 @@ export class InformeComponent {
       });
   }
 
+  public downloadTxt(filename:string, text:string) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+element.style.display = 'none';
+    document.body.appendChild(element);
+  
+element.click();
+  
+    document.body.removeChild(element);
+  }
+
   onAbrirArquivo(obj: any) {
-    
     this.nomeArquivo = obj.nomeArquivo ?? obj;
     let params: any = { nomeArquivo: obj.nomeArquivo ?? obj };
+    
+
+
+    /*--- Codigo Desativado
+
     this.loadTela = true;
     this.srvTotvs.AbrirArquivo(params).subscribe({
       next: (response: any) => {
@@ -899,6 +924,7 @@ export class InformeComponent {
         this.loadTela = false;
       },
     });
+    */
   }
 
   onImprimirConteudoArquivo() {

@@ -176,7 +176,6 @@ obterColunasEntradas(): Array<PoTableColumn> {
       
       
     ]},
-    { property: 'cod-estabel', label:"Estab"},
     { property: 'cod-emitente', label:"Emitente"},
     { property: 'serie-docto', label:"Serie"},
     { property: 'nro-docto', label:"Docto"},
@@ -255,10 +254,6 @@ obterColunasReparos(): Array<PoTableColumn>{
 
 obterColunasMonitor():Array<PoTableColumn>{
   return [
-    {property:'opcoes', label: "Selecione uma ação", type:'cellTemplate'},
-    {property: 'cod-emitente', label: "Técnico"},
-    {property: 'nome-abrev', label: 'Nome'},
-    {property: 'nr-process', label: "Processo"},
     {property: 'situacao', label: "Situação", type:'label',
       labels: [
         { value: 'I',  color: 'color-08', label: 'Impresso', textColor:'white' },
@@ -268,6 +263,11 @@ obterColunasMonitor():Array<PoTableColumn>{
         { value: 'R',  color: 'color-03', label: 'Reparo', textColor:'white' },
         { value: 'L',  color: 'color-07', label: 'Resumo Final', textColor:'white' }
       ]},
+    {property: 'nr-process', label: "Processo"},
+    {property: 'cod-emitente', label: "Técnico"},
+    {property: 'nome-abrev', label: 'Nome'},
+    {property:'opcoes', label: "Ações Disponíveis", type:'cellTemplate'},
+    
   ]
 }
 

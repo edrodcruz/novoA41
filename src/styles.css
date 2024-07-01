@@ -5,6 +5,17 @@
 }
 
 /* ICONES DE ACOES GRID - CELLTEMPLATE */
+
+.menuGrid{
+  display: flex;
+  gap: 40px;
+  justify-content:flex-start;
+}
+
+.menuGrid > div{
+  text-align: center;
+}
+
 .btn {
     display: flex;
     flex-direction: column;
@@ -16,16 +27,47 @@
     font-size: 16px;
     cursor: pointer;
   }
+
   .btn:hover{
     color:var(--color-03);
   }
-  .menuGrid{
-    display: flex;
-    justify-content: space-evenly;
-  }
-  .menuGrid > div{
-    text-align: center;
-  }
+  
   .btn > p{
     font-size: xx-small;
+  }
+
+
+  .face-button {
+    height: 44px;
+    display: inline-block;
+    border: 3px solid var(--color-07);
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500; 
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-07);
+    overflow: hidden;
+    border-radius: 4px;
+    
+    .icon {
+      margin-right: 6px;
+    }
+    
+    .face-primary,
+    .face-secondary {
+      display: block;
+      padding: 0 16px;
+      line-height: 44px;
+      transition: margin .4s;
+    }
+    
+    .face-primary {
+      background-color: var(--color-07);
+      color: #fff;
+    }
+    
+    &:hover .face-primary {
+      margin-top: -44px;
+    }
   }

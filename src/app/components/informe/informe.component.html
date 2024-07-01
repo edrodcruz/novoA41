@@ -1,6 +1,10 @@
 <div class="sample-container">
   <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
 </div>
+
+<!-- <a [href]="{{cPrefixo}}/InfOS-131-2033-01555487.tmp" download="InfOS-131-2033-01555487.tmp">Meu arquivo</a> -->
+
+
 <po-accordion style="margin-top: 10px;" #principal p-allow-expand-all-items="false" p-show-manager-accordion="false" >
     <po-accordion-item p-label="Informações do Técnico" #item1>
        <po-widget>
@@ -119,12 +123,29 @@
     </po-accordion-item>
 
     <po-accordion-item p-label="Log de Arquivos">
-      <po-widget>
-        <!-- <po-button p-label="Verificar Arquivo" (p-click)="onVerificarArquivos()"></po-button> -->
-        <po-table [p-items]="listaArquivos" [p-striped]="true" [p-sort]="true" 
-          [p-actions]="acoesGridArquivo" [p-columns]="colunasArquivos" [p-hide-table-search]="true"
-          [p-hide-columns-manager]="true" />
-      </po-widget>
+      <po-widget p-title="Selecione arquivo para download">
+        
+       <!--  <a [href]="urlInfoOs" target="_blank" class="btn" [download]="arquivoInfoOS" p-tooltip="Baixar Arquivo"><i class="bi bi-download" style="font-size: 24px;"></i>{{arquivoInfoOS}}</a>
+                          <po-table [p-items]="listaArquivos" [p-striped]="true" [p-sort]="true" 
+                            [p-actions]="acoesGridArquivo" [p-columns]="colunasArquivos" [p-hide-table-search]="true"
+                            [p-hide-columns-manager]="true" />
+                  -->    
+        <div style="display: flex; justify-content: center;">
+            <a class="face-button" [href]="urlInfoOs" target="_blank"  [download]="arquivoInfoOS">
+  
+              <div class="face-primary">
+                <i class="bi bi-file-earmark-text"></i>
+                {{arquivoInfoOS}}
+              </div>
+              
+              <div class="face-secondary">
+                <i class="bi bi-download"></i>
+                Baixar Arquivo
+              </div>
+            </a>
+      </div>                       
+                  
+    </po-widget>
 
     </po-accordion-item>
 

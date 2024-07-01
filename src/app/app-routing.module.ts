@@ -9,7 +9,7 @@ import { EmbalagemComponent } from './components/embalagem/embalagem.component';
 import { ReparosComponent } from './components/reparos/reparos.component';
 import { SeletorComponent } from './components/seletor/seletor.component';
 import { MonitorProcessosComponent } from './components/monitor-processos/monitor-processos.component';
-import { ResumofinalComponent } from './components/resumofinal/resumofinal.component';
+import { ResumoFinalComponent } from './components/resumo-final/resumo-final.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -22,7 +22,7 @@ const routes: Routes = [
   {path:'reparos', component:ReparosComponent},
   {path:'seletor', component:SeletorComponent},
   {path:'monitor', component:MonitorProcessosComponent},
-  {path:'resumofinal', component:ResumofinalComponent}
+  {path:'resumofinal', component:ResumoFinalComponent}
   
  
  
