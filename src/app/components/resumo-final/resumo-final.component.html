@@ -1,13 +1,19 @@
+<div class="sample-container">
+    <po-loading-overlay *ngIf="loadTela===true" [p-screen-lock]="true"></po-loading-overlay>
+  </div>
+  
 <po-widget p-title="Geração Arquivo Conferência de OS e Finalização Processo">
 <div style="display: flex; flex-direction: column;justify-content:center; gap:40px">
-    <div> <po-button p-label="Gerar Arquivo" p-tooltip="Gerar Arquivo" p-kind="primary" p-icon="bi bi-gear"></po-button></div>
+    <div> <po-button p-label="Gerar Arquivo Conferência OS" p-kind="primary" p-icon="bi bi-gear" (p-click)="onGerarResumo()"></po-button></div>
     
     <div>
           <po-table [p-items]="listaArquivos" 
-                  [p-columns]="colunasArquivos" 
-                  [p-hide-table-search]="true"
-                  p-container="true"
-                  [p-hide-columns-manager]="true">
+                    [p-columns]="colunasArquivos" 
+                    [p-hide-table-search]="true"
+                    p-container="true"
+                    [p-hide-columns-manager]="true"
+                    p-
+                    >
 
             <ng-template  p-table-column-template p-property="nomeArquivo" let-value>
                 <btnDownload [nomeArquivo]="value"></btnDownload>
@@ -18,8 +24,7 @@
     
     <div>
       <div style="display: flex; justify-content:center;">
-         <po-button p-label="Finalizar Processo" 
-                    p-tooltip="Finalizar Processo" 
+         <po-button p-label="Finalizar Processo" (p-click)="onFinalizar()"
                     p-icon="bi bi-check2-all" 
                     class="po-md-12"></po-button>
       </div>

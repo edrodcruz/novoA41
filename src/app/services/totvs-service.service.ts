@@ -475,6 +475,16 @@ public ObterMonitor(monitor?:Monitor){
                 .pipe(take(1));
   }
 
+  public ImprimirConfOS(params?: any){
+    return this.http.get(`${this._url}/ImprimirConfOS`, {params, headers:headersTotvs})
+                .pipe(take(1));
+  }
+
+  public EncerrarProcesso(params?: any){
+    return this.http.get(`${this._url}/EncerrarProcesso`, {params, headers:headersTotvs})
+                .pipe(take(1));
+  }
+
   
    //Ordenacao campos num array
    public ordenarCampos = (fields: any[]) =>

@@ -153,7 +153,7 @@
           <div class="tipoCalculo">
             <div style="display: flex; gap: 5px;" >
               <po-button p-tooltip="Gerar Informe OS" (p-click)="onImpressao()" p-icon="bi bi-printer" p-kind="primary"></po-button>
-              <btnDownload [nomeArquivo]="arquivoInfoOS" [mostrarNomeArquivo]=false></btnDownload>
+              <btnDownload [nomeArquivo]="arquivoInfoOS" [mostrarNomeArquivo]=false p-tooltip="Baixar Arquivo"></btnDownload>
             </div>
             
             <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)" 
