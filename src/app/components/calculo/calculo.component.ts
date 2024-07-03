@@ -254,8 +254,16 @@ readonly acaoLogar: PoModalAction = {
                     //Atualizar Informacoes Tela
                     this.srvTotvs.EmitirParametros({estabInfo: estab.label, tecInfo: tec.label, processoInfo:response.nrProcesso, processoSituacao: response.situacaoProcesso})
 
-                    this.arquivoInfoOS = `InfOS-${this.codEstabelecimento}-${this.codTecnico}-${this.processoInfo.toString().padStart(8,'0')}.tmp`
-                    this.urlInfoOs = environment.totvs_spool + this.arquivoInfoOS
+                   // this.arquivoInfoOS = `InfOS-${this.codEstabelecimento}-${this.codTecnico}-${this.processoInfo.toString().padStart(8,'0')}.tmp`
+                   // this.urlInfoOs = environment.totvs_spool + this.arquivoInfoOS
+
+                    //Arquivo Gerado
+                    let params:any={nrProcess: response.nrProcesso, situacao:'IOS'}
+                    this.srvTotvs46.ObterArquivo(params).subscribe({
+                      next:(item:any)=>{
+                        this.arquivoInfoOS = item.items[0].nomeArquivo
+                      }
+                    })
       
                     this.loadTela=false
                   },
@@ -375,7 +383,7 @@ readonly acaoLogar: PoModalAction = {
      this.loadTela = true
 
     //Parametros usuario e senha
-    let paramsLogin: any = { CodEstabel: this.codEstabelecimento, CodUsuario: this.codUsuario, Senha: this.senha}
+    let paramsLogin: any = { NrProcess: this.processoInfo, CodEstabel: this.codEstabelecimento, CodUsuario: this.codUsuario, Senha: this.senha}
     //Chamar servico de login
     this.srvTotvs.LoginAlmoxarifado(paramsLogin).subscribe({
       next: (response: any) => {
@@ -383,7 +391,6 @@ readonly acaoLogar: PoModalAction = {
 
               //Parametros para calculo
               let listaET = this.gridExtraKit?.getSelectedRows()
-              console.log("Lista ET", listaET)
               let paramsE: any = { CodEstab: this.codEstabelecimento, CodTecnico: this.codTecnico, NrProcess: this.processoInfo, Extrakit: listaET }
               this.srvTotvs.PrepararResumo(paramsE).subscribe({
                 next: (response:any) => {
@@ -747,6 +754,15 @@ readonly acaoLogar: PoModalAction = {
             let paramsArquivo:any={iExecucao: 2, cRowId: this.listaOrdens[0]['c-rowId']}
             this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
               next: (response:any)=>{
+
+                 //Arquivo Gerado
+                 let params:any={nrProcess: this.processoInfo, situacao:'IOS'}
+                 this.srvTotvs46.ObterArquivo(params).subscribe({
+                   next:(item:any)=>{
+                     this.arquivoInfoOS = item.items[0].nomeArquivo
+                   }
+                 })
+
                 this.loadTela = false
                 this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
                 //Atualizar Situacao do Processo
@@ -762,6 +778,15 @@ readonly acaoLogar: PoModalAction = {
             let paramsArquivo:any={iExecucao: 1, cRowId: this.listaOrdens[0]['c-rowId']}
             this.srvTotvs46.ImprimirOS(paramsArquivo).subscribe({
               next: (response:any)=>{
+
+                //Arquivo Gerado
+                let params:any={nrProcess: this.processoInfo, situacao:'IOS'}
+                this.srvTotvs46.ObterArquivo(params).subscribe({
+                  next:(item:any)=>{
+                    this.arquivoInfoOS = item.items[0].nomeArquivo
+                  }
+                })
+                
                 this.loadTela=false
                   this.srvNotification.success('Gerado pedido de execução : ' + response.NumPedExec)
                   //Atualizar Situacao do Processo

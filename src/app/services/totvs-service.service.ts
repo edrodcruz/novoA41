@@ -477,8 +477,7 @@ public ObterMonitor(monitor?:Monitor){
 
   
    //Ordenacao campos num array
-   public ordenarCampos =
-   (fields: any[]) =>
+   public ordenarCampos = (fields: any[]) =>
    (a: { [x: string]: number }, b: { [x: string]: number }) =>
      fields
        .map((o) => {

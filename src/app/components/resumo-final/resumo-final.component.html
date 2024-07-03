@@ -1,20 +1,28 @@
 <po-widget p-title="Geração Arquivo Conferência de OS e Finalização Processo">
-<div style="display: flex; justify-content:center; gap:40px">
+<div style="display: flex; flex-direction: column;justify-content:center; gap:40px">
     <div> <po-button p-label="Gerar Arquivo" p-tooltip="Gerar Arquivo" p-kind="primary" p-icon="bi bi-gear"></po-button></div>
-    <div style="font-size: 32px; margin-top: 8px; color: var(--color-07);"><i class="bi bi-arrow-right"></i></div>
+    
     <div>
-         <a class="face-button" [href]="urlInfoOs" target="_blank"  [download]="arquivoInfoOS">
-            <div class="face-primary">
-              <i class="bi bi-file-earmark-text"></i>
-              {{arquivoInfoOS}}
-            </div>
-            <div class="face-secondary">
-              <i class="bi bi-download"></i>
-              Baixar Arquivo
-            </div>
-          </a>
+          <po-table [p-items]="listaArquivos" 
+                  [p-columns]="colunasArquivos" 
+                  [p-hide-table-search]="true"
+                  p-container="true"
+                  [p-hide-columns-manager]="true">
+
+            <ng-template  p-table-column-template p-property="nomeArquivo" let-value>
+                <btnDownload [nomeArquivo]="value"></btnDownload>
+            </ng-template>
+        </po-table>
+
     </div>   
-    <div style="font-size: 32px; margin-top: 8px; color:var(--color-07)"><i class="bi bi-arrow-right"></i></div>
-    <div><po-button p-label="Finalizar Processo" p-kind="primary" p-tooltip="Finalizar Processo" p-icon="bi bi-check2-all"></po-button></div>   
+    
+    <div>
+      <div style="display: flex; justify-content:center;">
+         <po-button p-label="Finalizar Processo" 
+                    p-tooltip="Finalizar Processo" 
+                    p-icon="bi bi-check2-all" 
+                    class="po-md-12"></po-button>
+      </div>
+    </div>   
 </div>
 </po-widget>

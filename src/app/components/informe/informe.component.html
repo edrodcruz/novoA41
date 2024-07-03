@@ -130,16 +130,7 @@
                   [p-hide-columns-manager]="true">
 
             <ng-template  p-table-column-template p-property="nomeArquivo" let-value>
-              <a class="face-button" [href]="urlSpool + value" target="_blank"  [download]="value" >
-                <div class="face-primary">
-                  <i class="bi bi-file-earmark-text"></i>
-                  {{value}}
-                </div>
-                <div class="face-secondary">
-                  <i class="bi bi-download"></i>
-                  Baixar Arquivo
-                </div>
-              </a>
+              <btnDownload [nomeArquivo]="value"></btnDownload>
             </ng-template>
         </po-table>
         
@@ -218,13 +209,13 @@
         <po-widget>
           <div class="flex-row">
             <div class="label"><label>Defeito:</label></div>
-            <div><po-input formControlName="DefInd"/></div>
+            <div><po-input formControlName="DefInd" (p-blur)="onLeaveDefeito()"/></div>
             <div class="desc" ><po-input formControlName="desc-defeito"/></div>
           </div>
 
           <div class="flex-row">
             <div class="label"><label>Atividade:</label></div>
-            <div><po-input formControlName="atividade"/></div>
+            <div><po-input formControlName="atividade" (p-blur)="onLeaveAtividade()"/></div>
             <div class="desc" ><po-input formControlName="desc-atividade"/></div>
           </div>
 
@@ -253,7 +244,7 @@
 
           <div class="flex-row">
             <div class="label"><label>Site:</label></div>
-            <div><po-input formControlName="cod-emitente"/></div>
+            <div><po-input formControlName="cod-emitente" (p-blur)="onLeaveSite()"/></div>
             <div class="desc" ><po-input formControlName="nom-emitente"/></div>
           </div>
         </po-widget>

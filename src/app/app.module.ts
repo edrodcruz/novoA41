@@ -19,6 +19,7 @@ import { ReparosComponent } from './components/reparos/reparos.component';
 import { SeletorComponent } from './components/seletor/seletor.component';
 import { MonitorProcessosComponent } from './components/monitor-processos/monitor-processos.component';
 import { ResumoFinalComponent } from './components/resumo-final/resumo-final.component';
+import { BtnDownloadComponent } from './components/btn-download/btn-download.component';
 
 
 
@@ -35,6 +36,7 @@ import { ResumoFinalComponent } from './components/resumo-final/resumo-final.com
     SeletorComponent,
     MonitorProcessosComponent,
     ResumoFinalComponent,
+    BtnDownloadComponent,
   ],
   imports: [
     BrowserModule,

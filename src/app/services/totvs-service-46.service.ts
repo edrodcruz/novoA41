@@ -155,8 +155,8 @@ obterColunasArquivos(): Array<PoTableColumn> {
                    .pipe(take(1));
   }
 
-  public LeaveNFS(params?: any){
-    return this.http.post(`${this._url}/LeaveNFS`, params, {headers:headersTotvs})
+  public LeaveNFSOS(params?: any){
+    return this.http.post(`${this._url}/LeaveNFSOS`, params, {headers:headersTotvs})
                    .pipe(take(1));
   }
   public EliminarEnc(params?: any){
@@ -169,6 +169,11 @@ obterColunasArquivos(): Array<PoTableColumn> {
                    .pipe(take(1));
   }
 
+  public EliminarItemOS(params?: any){
+    return this.http.post(`${this._url}/EliminarItemOS`, params, {headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
   public ObterCadastro(params?: any){
     return this.http.get(`${this._url}/ObterCadastro`, {params:params, headers:headersTotvs})
                    .pipe(take(1));
@@ -178,6 +183,12 @@ obterColunasArquivos(): Array<PoTableColumn> {
     return this.http.get(`${this._url}/ObterArquivo`, {params:params, headers:headersTotvs})
                    .pipe(take(1));
   }
+
+  public GravarEnc(params?: any){
+    return this.http.post(`${this._url}/GravarEnc`, params, {headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
 
 
 
