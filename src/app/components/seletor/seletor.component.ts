@@ -43,6 +43,7 @@ acaoCancelar: PoModalAction={
 
 
 ngOnInit(): void {
+  /*
 
 this.mostrarLabel=false
 this.redirectTo = this.route.snapshot.queryParamMap.get('redirectTo') as string;
@@ -66,6 +67,7 @@ this.srvTotvs.ObterEstabelecimentos().subscribe({
     return;
   },
 });
+*/
 }
 
 onLogarUsuario() {
