@@ -62,7 +62,7 @@ obterColunas(): Array<PoTableColumn> {
 //------------ Colunas Grid Saldo Terceiro
 obterColunasExtraKit(): Array<PoTableColumn> {
   return [
-    { property: 'tipo', label: 'Kit' },
+    { property: 'numOS', label:'NumOS'},
     { property: 'nroDocto', label: "Docto" },
     { property: 'serieDocto', label: "Série" },
     { property: 'itCodigo', label: "Item"},
@@ -76,12 +76,15 @@ obterColunasExtraKit(): Array<PoTableColumn> {
 //------------ Coluna Grid Detalhe
 obterColunasTodos(): Array<PoTableColumn> {
   return [
+    { property: 'numOS', label:'NumOS'},
+    { property: 'tipo', label:'Tipo'},
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
     { property: 'qtMascara', label: 'Máscara.', type: 'number'},
-    { property: 'qtPagar', label: 'Entregar', type: 'number', width: '10%', color:"color-07", visible:true},
-    { property: 'qtRenovar', label: 'Renovar', type: 'number', width: '10%', color:"color-10", visible:true},
-    { property: 'qtExtrakit', label: 'ET', type: 'number', width: '10%', color:"color-10", visible:true},
+    { property: 'qtPagar', label: 'Entregar', type: 'number', color:"color-07", visible:true},
+    { property: 'qtRenovar', label: 'Renovar', type: 'number', color:"color-10", visible:true},
+    { property: 'qtExtrakit', label: 'ET', type: 'number', color:"color-10", visible:true},
+    { property: 'qtRuim', label: 'Ruim', type: 'number', color:"color-10", visible:true},
     { property: 'qtSaldo', label: 'Saldo', type: 'number'},
     { property: 'codLocaliza', label: "Local"},
     { property: 'kit', label: "Kit"},
@@ -93,10 +96,13 @@ obterColunasTodos(): Array<PoTableColumn> {
 
 obterColunasPagar(): Array<PoTableColumn> {
   return [
+    { property: 'numOS', label:'NumOS'},
+    { property: 'tipo', label:'Tipo'},
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
     { property: 'qtMascara', label: 'Máscara', type: 'number'},
     { property: 'qtPagar', label: 'Entregar', type: 'number', color:"color-07", visible:true},
+    { property: 'qtRuim', label: 'Ruim', type: 'number', color:"color-07", visible:true},
     { property: 'qtSaldo', label: 'Saldo', type: 'number'},
     { property: 'codLocaliza', label: "Local"},
     { property: 'kit', label: "Kit"},
@@ -108,6 +114,8 @@ obterColunasPagar(): Array<PoTableColumn> {
 
 obterColunasRenovar(): Array<PoTableColumn> {
   return [
+    { property: 'numOS', label:'NumOS'},
+    { property: 'tipo', label:'Tipo'},
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
     { property: 'qtMascara', label: 'Máscara', type: 'number'},
@@ -123,6 +131,8 @@ obterColunasRenovar(): Array<PoTableColumn> {
 
 obterColunasExtrakit(): Array<PoTableColumn> {
   return [
+    { property: 'numOS', label:'NumOS'},
+    { property: 'tipo', label:'Tipo'},
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
     { property: 'qtMascara', label: 'Máscara', type: 'number'},

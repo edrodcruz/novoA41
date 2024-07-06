@@ -128,16 +128,14 @@ readonly options: Array<PoRadioGroupOption> = [
             next: (response: any) => {
               
               this.loadTela = false
-              this.form_.disable()
-              this.listaGrid=[]
-              this.srvTotvs.EmitirParametros({processoSituacao: 'FINALIZADO'});
-              this.srvDialog.alert({title:"PROCESSO FINALIZADO", message:"Informações de Embalagem gravadas com sucesso ! "})
+              //this.form_.disable()
+              // this.listaGrid=[]
+              //this.srvTotvs.EmitirParametros({processoSituacao: 'FINALIZADO'});
+              // this.srvDialog.alert({title:"PROCESSO FINALIZADO", message:"Informações de Embalagem gravadas com sucesso ! "})
               
-             // this.srvNotification.success("Dados gravados com sucesso. Processo Finalizado !!!")
-
-             
+              this.srvNotification.success("Dados gravados com sucesso. Processo Finalizado !!!")
+              this.router.navigate(['monitor'])
             },
-           // error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
           })
         },
         cancel: () => this.srvNotification.error("Cancelada pelo usuário")
@@ -145,13 +143,12 @@ readonly options: Array<PoRadioGroupOption> = [
      }
 
      onSalvar(){
-      if (!this.form_.valid)
-        this.srvNotification.error("Informações de embalagens não foram preenchidas corretamente")
-      else{
-        this.listaGrid[0] = this.form_.value 
-        this.grid.items = this.listaGrid
-        this.tela?.close()
-      }
-
+        if (!this.form_.valid)
+          this.srvNotification.error("Informações de embalagens não foram preenchidas corretamente")
+        else{
+          this.listaGrid[0] = this.form_.value 
+          this.grid.items = this.listaGrid
+          this.tela?.close()
+        }
      }
 }

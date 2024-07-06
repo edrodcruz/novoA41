@@ -118,6 +118,8 @@ readonly acoesGrid: PoTableAction[] = [
               this.srvNotification.success('Gerado pedido de execução para criação e impressão de reparos: ' + response.NumPedExec)
             else
               this.srvNotification.success('Processo atualizado com sucesso !')
+
+            this.router.navigate(['monitor'])
           }
       })
     },

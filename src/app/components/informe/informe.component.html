@@ -301,7 +301,8 @@
           </div>
           <div class="po-md-4"><po-input name="nr-enc" formControlName="nr-enc" p-label="Número ENC"></po-input></div>
           <div class="po-md-4"><po-input name="Serie-enc" formControlName="Serie-enc" p-label="Série ENC"></po-input></div>
-          <div class="po-md-4" style="margin-top: 33px;"><po-button p-icon="bi bi-plus" [p-disabled]="lDisabled" (p-click)="onCadEnc()" p-help="Cadastro de Enc"></po-button></div>
+          <div class="po-md-4" style="margin-top: 33px;">
+            <po-button p-icon="bi bi-plus" [p-disabled]="lDisabled" (p-click)="onCadEnc()" p-help="Cadastro de Enc" p-tooltip="Incluir Nova ENC"></po-button></div>
         </po-widget></div>
         
       </form>

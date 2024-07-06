@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { PoMenuItem, PoModalAction, PoModalComponent, PoPageAction, PoRadioGroupOption, PoStepperComponent, PoTableAction, PoTableColumn, PoTableComponent, PoNotificationService, PoDialogService, PoNotification } from '@po-ui/ng-components';
 import { TotvsService } from '../../services/totvs-service.service';
 import { catchError, delay, elementAt } from 'rxjs';
@@ -55,6 +55,7 @@ listaExtraKit!: any[]
 listaResumo!: any[]
 listaSemSaldo!: any[]
 listaOrdens!:any[]
+listaAux!:any[]
 
 //-------- Colunas Grid
 colunasKit!: Array<PoTableColumn>
@@ -85,7 +86,7 @@ loadLogin:boolean=false
 loadExcel:boolean=false
 labelLoadTela:string = ''
 loadTecnico: string = ''
-labelContadores:string[]=['0','0','0','0','0', '0']
+labelContadores:string[]=['0','0','0','0','0', '0', '0']
 
 //------ Label de menu principal
 tecnicoInfo: string = ""
@@ -161,6 +162,7 @@ readonly acaoLogar: PoModalAction = {
   private srvExcel = inject(ExcelService)
   private srvNotification = inject (PoNotificationService)
   private srvDialog = inject(PoDialogService)
+  //private cdRef = inject(ChangeDetectorRef)
 
   onSair(){
     
@@ -211,6 +213,8 @@ readonly acaoLogar: PoModalAction = {
         },
         //error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
     })
+
+    //this.cdRef.detectChanges()
   }
 
   //-------------------------------------------------------- Metodos
@@ -261,6 +265,7 @@ readonly acaoLogar: PoModalAction = {
                     let params:any={nrProcess: response.nrProcesso, situacao:'IOS'}
                     this.srvTotvs46.ObterArquivo(params).subscribe({
                       next:(item:any)=>{
+                        if (item === null) return 
                         this.arquivoInfoOS = item.items[0].nomeArquivo
                       }
                     })
@@ -341,14 +346,19 @@ readonly acaoLogar: PoModalAction = {
   //------------------------------------------------ Label Contadores Resumo
   private AtualizarLabelsContadores(){
     
-      //Geral
+
+      //Geral -> Extrakit
       this.qtde=0
-      this.itemsResumo.forEach(x=> {this.qtde += x.qtPagar + x.qtRenovar + x.qtExtrakit})
+      this.gridExtraKit?.getUnselectedRows().forEach(x=> this.qtde += x.qtSaldo)
+      this.labelContadores[6] = this.qtde.toString()
+
+      //Geral
+      this.itemsResumo.filter(o => !o.soEntrada).forEach(x=> {this.qtde += x.qtPagar + x.qtRenovar + x.qtExtrakit})
       this.labelContadores[0] = this.qtde.toString()
 
       //Pagamento
       this.qtde=0
-      this.itemsResumo.filter(o => o.qtPagar > 0).forEach(x=> {this.qtde += x.qtPagar})
+      this.itemsResumo.filter(o => o.qtPagar > 0 && !o.soEntrada).forEach(x=> {this.qtde += x.qtPagar + x.qtExtrakit})
       this.labelContadores[1] = this.qtde.toString()
 
       //Renovacoes
@@ -358,7 +368,7 @@ readonly acaoLogar: PoModalAction = {
 
       //Somente Entrada
       this.qtde=0
-      this.itemsResumo.filter(o => o.soEntrada).forEach(x=> {this.qtde += x.qtPagar})
+      this.itemsResumo.filter(o => o.soEntrada).forEach(x=> {this.qtde += x.qtPagar + x.qtRuim})
       this.labelContadores[3] = this.qtde.toString()
 
       //Extrakit
@@ -446,10 +456,10 @@ readonly acaoLogar: PoModalAction = {
         //Chamar servico
         this.srvTotvs.ObterExtraKit(paramsE).subscribe({
         next:(response:any) => {
-            this.listaExtraKit = response.items
+          console.log("Extra kit", response)
+            this.listaExtraKit = response.items ?? []
         },
         error: (e) => {
-             // this.srvNotification.error("Ocorreu um erro na requisição " )
               return false
         },
         complete: () => { this.loadTela = false 
@@ -519,8 +529,22 @@ readonly acaoLogar: PoModalAction = {
  
     switch (type) {
       case 'VisaoGeral':
-          this.itemsDetalhe = this.itemsResumo.sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += (x.qtPagar + x.qtRenovar + x.qtExtrakit)})
+          
+          let visaoResumo = this.itemsResumo.filter(o => !o.soEntrada)
+          let extraKit = this.gridExtraKit?.getUnselectedRows().map(item=> (
+            {itCodigo:item.itCodigo, 
+            itPrincipal:item.itCodigo,
+            tipo: item.tipo, 
+            descItem:item.descItem, 
+            qtPagar:0, 
+            qtRenovar:0, 
+            qtSaldo:0,
+            qtExtrakit:item.qtSaldo, 
+            notaAnt:item.nroDocto}))
+      
+          this.itemsDetalhe = [...visaoResumo, ...extraKit!].filter(o => !o.soEntrada).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
+          console.log('itemDetalhe', this.itemsDetalhe)
+          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar + x.qtRenovar + x.qtExtrakit})
           this.tituloDetalhe = `Visão Geral: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasTodos()
           //this.mostrarDetalhe = true
@@ -529,7 +553,7 @@ readonly acaoLogar: PoModalAction = {
         break;
 
         case 'Pagamentos':
-          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtPagar > 0).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
+          this.itemsDetalhe = this.itemsResumo.filter(o => o.qtPagar > 0 && !o.soEntrada).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar})
           this.tituloDetalhe = `Pagamentos: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasPagar()
@@ -550,7 +574,7 @@ readonly acaoLogar: PoModalAction = {
 
         case 'SomenteEntrada':
           this.itemsDetalhe = this.itemsResumo.filter(o => o.soEntrada).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar})
+          this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar + x.qtRuim})
           this.tituloDetalhe = `Somente Entrada: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasPagar();
           //this.mostrarDetalhe=true
@@ -809,7 +833,7 @@ readonly acaoLogar: PoModalAction = {
         next: (response: any) => {
           this.conteudoArquivo = response.arquivo
             .replace(/\n/gi, '<br>')
-            .replace(/\40/gi, '&nbsp;')
+           
             .replace(//gi, '<br>');
           this.loadTela = false;
           this.abrirArquivo?.open();
@@ -839,7 +863,7 @@ readonly acaoLogar: PoModalAction = {
       win?.document.write(
         this.conteudoArquivo
           .replace(/\n/gi, '<br>')
-          .replace(/\40/gi, '&nbsp;')
+          
           .replace(//gi, '<br>')
       );
       win?.document.write('</p></body></html>');

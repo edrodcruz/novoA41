@@ -9,6 +9,7 @@
     flex-direction: column;
     text-align: center;
     align-self: stretch;
+    justify-content: space-between;
     color: white;
     border-radius: 8px;
     transition: transform 200ms;
@@ -18,16 +19,34 @@
         box-shadow: 10px 10px 5px gray;
     }
 
+     & div:first-child{
+        display: flex;
+        flex-direction: column;
+        justify-items: end;
+    } 
+
     & div {
         padding: 10px;
 
-        & h2 {
+        & h2, h4 {
             color: white;
             text-align: center;
         }
 
         & hr {
+            margin-bottom: 30px;
             color: white
+        }
+
+        & h4 {
+            font-size:16px;
+            font-weight: 500;
+        }
+
+        & span {
+            color:lightgray; 
+            margin-top: 10px; 
+            margin-bottom: -30px;
         }
     }
 

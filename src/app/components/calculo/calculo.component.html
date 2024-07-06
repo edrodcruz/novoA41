@@ -156,35 +156,35 @@
               <btnDownload [nomeArquivo]="arquivoInfoOS" [mostrarNomeArquivo]=false p-tooltip="Baixar Arquivo"></btnDownload>
             </div>
             
-            <po-radio-group [p-columns]="3" [ngModel]="tipoCalculo" (ngModelChange)="tipoCalculo = $event" (p-change)="onTipoCalculo($event)" 
+            <po-radio-group [p-columns]="3" [(ngModel)]="tipoCalculo" (p-change)="onTipoCalculo($event)" 
                             [p-options]="options" style="min-width: 80%;"/>
           </div>
          
           <div class="po-row" style="margin-bottom: 50px;"></div>
             <div class="container-card">
               <div class="card gray">
-                <div><h2>{{labelContadores[0]}}</h2><span>Visão Geral</span></div><hr>
-                <div><button (click)="onOpenModal('VisaoGeral')" class="btngray">Exibir</button></div>
-              </div>
-              <div class="card blue">
-                <div><h2>{{labelContadores[1]}}</h2><span>Pagamentos</span></div><hr>
-                <div><button (click)="onOpenModal('Pagamentos')" class="btnblue">Exibir</button></div>
+                <div><h2>{{labelContadores[0]}}</h2><h4>Visão Geral</h4><span>*ExtraKit: {{labelContadores[6]}}</span></div>
+                <div><hr><button (click)="onOpenModal('VisaoGeral')" class="btngray">Exibir</button></div>
               </div>
               <div class="card green">
-                <div><h2>{{labelContadores[2]}}</h2><span>Renovações</span></div><hr>
-                <div><button (click)="onOpenModal('Renovacao')" class="btngreen">Exibir</button></div>
+                <div><h2>{{labelContadores[2]}}</h2><h4>Renovações</h4></div>
+                <div><hr><button (click)="onOpenModal('Renovacao')" class="btngreen">Exibir</button></div>
               </div>
-              <div class="card lemon">
-                <div><h2>{{labelContadores[3]}}</h2><span>Somente Entrada</span></div><hr>
-                <div><button (click)="onOpenModal('SomenteEntrada')" class="btnlemon">Exibir</button></div>
+              <div class="card blue">
+                <div><h2>{{labelContadores[1]}}</h2><h4>Pagamentos</h4></div>
+                <div><hr><button (click)="onOpenModal('Pagamentos')" class="btnblue">Exibir</button></div>
               </div>
               <div class="card orange">
-                <div><h2>{{labelContadores[4]}}</h2><span>ExtraKit</span></div><hr>
-                <div><button (click)="onOpenModal('ExtraKit')" class="btnorange">Exibir</button></div>
+                <div><h2>{{labelContadores[4]}}</h2><h4>ExtraKit</h4></div>
+                <div><hr><button (click)="onOpenModal('ExtraKit')" class="btnorange">Exibir</button></div>
+              </div>
+              <div class="card lemon">
+                <div><h2>{{labelContadores[3]}}</h2><h4>Somente Entrada</h4></div>
+                <div><hr><button (click)="onOpenModal('SomenteEntrada')" class="btnlemon">Exibir</button></div>
               </div>
               <div class="card red">
-                <div><h2>{{labelContadores[5]}}</h2><span>Sem Saldo</span></div><hr>
-                <div><button (click)="onOpenModal('SemSaldo')" class="btnred">Exibir</button></div>
+                <div><h2>{{labelContadores[5]}}</h2><h4>Sem Saldo</h4></div>
+                <div><hr><button (click)="onOpenModal('SemSaldo')" class="btnred">Exibir</button></div>
               </div>
             </div>
             
@@ -198,15 +198,14 @@
 
     <po-modal #detailsModal p-size="xl" p-title="{{this.tituloDetalhe}}">
       <po-table #gridDetalhe
-      [p-columns]="colunasDetalhe"
-      [p-striped]="true"
-      [p-height]= "300"
-      [p-items]="itemsDetalhe"
-      [p-hide-table-search]="false"
-      [p-hide-columns-manager]="true"
-
-      p-sort="true"
-      [p-actions]="opcoesGridPagto"
+                [p-columns]="colunasDetalhe"
+                [p-striped]="true"
+                [p-height]= "300"
+                [p-items]="itemsDetalhe"
+                [p-hide-table-search]="false"
+                [p-hide-columns-manager]="true"
+                p-sort="true"
+                [p-actions]="opcoesGridPagto"
       />
       <po-modal-footer [p-disabled-align]="false">
         <po-button p-label="Exportar para excel" (p-click)="this.onExportarExcel()" p-icon="bi bi-file-earmark-excel" [p-loading]="loadExcel"> </po-button>
