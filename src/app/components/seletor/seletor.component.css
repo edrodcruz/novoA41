@@ -19,9 +19,19 @@ figure.snip0057 {
     -webkit-transition: all 0.35s ease-in-out;
     transition: all 0.35s ease-in-out;
   }
+
+  figure.snip0057 span{
+    position:relative; 
+    top:10px; 
+    left:10px;
+    font-weight: 800;
+    font-size: 32px;
+  }
+
   figure.snip0057 .image {
-    height: 230px;
+    height: 200px;
     width: 200px;
+   
   }
   
   figure.snip0057:before {
@@ -52,7 +62,7 @@ figure.snip0057 {
   }
   figure.snip0057 figcaption h2 {
     font-size: 1em;
-    font-weight: 300;
+    font-weight: 800;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   }
@@ -156,7 +166,7 @@ figure.snip0057 {
   
   /* Demo purposes only */
   
-  .card-container {
+  .card-container2 {
     display: flex;
     justify-content: center;
     align-items: center;

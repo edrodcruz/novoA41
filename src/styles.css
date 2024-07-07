@@ -59,8 +59,20 @@
     -webkit-transition: all 0.35s ease-in-out;
     transition: all 0.35s ease-in-out;
   }
+
+  figure.snip0057 span{
+    position:relative; 
+    top:15px; 
+    left:15px;
+    font-weight: 800;
+    font-size: 32px;
+    min-width: 58px;
+    
+     box-shadow: 8px 8px 4px lightgray; 
+  }
+
   figure.snip0057 .image {
-    height: 220px;
+    height: 180px;
     width: 200px;
   }
 
@@ -101,7 +113,7 @@
   }
   figure.snip0057 figcaption h2 {
     font-size: 1em;
-    font-weight: 500;
+    font-weight: 800;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   }
@@ -156,6 +168,12 @@
   figure.snip0057.black .position {
     background: black;
   }
+
+  .green {color: green}
+  .blue {color: #045B8F}
+  .red {color: #9e3933}
+  .lemon {color: var(--color-09)}
+  .yellow {color: var(--color-08)}
   
   figure.snip0057.green .position {
     background: green;
@@ -176,7 +194,7 @@
   
   figure.snip0057:hover figcaption,
   figure.snip0057.hover figcaption {
-    bottom: 60px;
+    bottom: 50px;
   }
   figure.snip0057:hover .icons i,
   figure.snip0057.hover .icons i {
