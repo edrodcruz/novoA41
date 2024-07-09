@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { TotvsService } from './services/totvs-service.service';
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -38,6 +39,7 @@ tituloTela!:string
 dashboard:boolean=false
 abrirMenu:boolean=false
 abrirSeletor:boolean=false
+teste:number=8
 
 private sub!: Subscription
 

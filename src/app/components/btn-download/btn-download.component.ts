@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { booleanAttribute, Component, Input } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 
@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BtnDownloadComponent {
   @Input() nomeArquivo: string='';
-  @Input() mostrarNomeArquivo: boolean=true;
+  @Input({transform: booleanAttribute}) mostrarNomeArquivo: boolean=true;
   
 
   urlSpool:string=environment.totvs_spool

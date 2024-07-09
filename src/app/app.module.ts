@@ -20,6 +20,7 @@ import { SeletorComponent } from './components/seletor/seletor.component';
 import { MonitorProcessosComponent } from './components/monitor-processos/monitor-processos.component';
 import { ResumoFinalComponent } from './components/resumo-final/resumo-final.component';
 import { BtnDownloadComponent } from './components/btn-download/btn-download.component';
+import { CardComponent } from './components/card/card.component';
 
 
 
@@ -37,6 +38,7 @@ import { BtnDownloadComponent } from './components/btn-download/btn-download.com
     MonitorProcessosComponent,
     ResumoFinalComponent,
     BtnDownloadComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,12 @@
 
+.tipoCalculo {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .icone {
     width: 50px;
     height: 40px;
@@ -12,17 +20,9 @@
     }
 }
 
-
 .formatoTexto {
     font-family: 'Courier New', Courier, monospace;
     font-size: 12px;
     font-variant-numeric: tabular-nums;
 }
 
-.tipoCalculo {
-    display: flex;
-    justify-content: space-evenly;
-    align-content: center;
-    align-items: center;
-    gap: 10px;
-}

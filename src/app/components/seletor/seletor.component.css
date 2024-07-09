@@ -5,7 +5,7 @@ figure.snip0057 {
     width:1fr;
     background: #F2F2F2;
     color: #000000;
-    box-shadow: 8px 8px 4px lightgray;
+    box-shadow: 5px 5px 6px 0px lightgray;
     transition: all 0.35s ease-in-out;
   }
 
@@ -23,9 +23,11 @@ figure.snip0057 {
   figure.snip0057 span{
     position:relative; 
     top:10px; 
-    left:10px;
+    left:0px;
+    padding: 0px 10px;
     font-weight: 800;
     font-size: 32px;
+    width: 100%;
   }
 
   figure.snip0057 .image {
@@ -34,15 +36,7 @@ figure.snip0057 {
    
   }
   
-  figure.snip0057:before {
-    position: absolute;
-    content: '';
-    background: rgba(0, 0, 0, 0.2);
-    -webkit-transform: skewX(-17deg);
-    transform: skewX(-17deg);
-    -webkit-box-shadow: 15px 0px 25px rgba(0, 0, 0, 0.7);
-    box-shadow: 15px 0px 25px rgba(0, 0, 0, 0.7);
-  }
+ 
   figure.snip0057 figcaption {
     padding: 20px 10px 20px 10px;
     position: absolute;
@@ -104,6 +98,8 @@ figure.snip0057 {
     background: #000000;
     cursor: pointer;
   }
+
+  
   figure.snip0057.black .position {
     background: black;
   }
