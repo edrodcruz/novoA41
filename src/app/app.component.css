@@ -1,3 +1,4 @@
+
 .painelProcess{
     margin-left: 10px; 
     padding-bottom: 10px;
@@ -13,10 +14,12 @@
     border: 1px solid white; 
     background-color: transparent;
      border-radius: 4px; 
-     margin-top: 20px; 
+     margin-top: 10px; 
      margin-right: 10px;
      padding:5px;
      text-align: center;
      
 }
+
+
 

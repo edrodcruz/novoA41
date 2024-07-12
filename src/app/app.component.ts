@@ -20,7 +20,7 @@ export class AppComponent {
 
   //--------- Opcoes de Menu
  readonly menus: Array<PoMenuItem> = [
- { label:  'Tela Principal'            , icon: 'bi bi-house'             , link:'/'          , shortLabel:'Home'},
+ { label:  'Menu Principal'            , icon: 'bi bi-house'             , link:'/'          , shortLabel:'Home'},
   { label: 'Informe Ordem de Serviço'  , icon: 'bi bi-clipboard-data'    , link:'/informe'   , shortLabel:'Informe'},
   { label: 'Cálculo Auto Atendimento'  , icon: 'bi bi-calculator'        , link:'/calculo'   , shortLabel:'Cálculo'},
   { label: 'Monitor Processos'         , icon: 'bi bi-display'           , link:'/monitor'      , shortLabel:'Monitor Processos'},

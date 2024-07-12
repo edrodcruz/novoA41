@@ -331,13 +331,19 @@ readonly acaoLogar: PoModalAction = {
   //--------------- onChange do RadioGroud Tipo de Calculo
   onTipoCalculo(event: any) {
     this.tipoCalculo = event
+
+    //TOTAL
     if (this.listaResumo.length > 0){
        if (event === "1" )
           this.itemsResumo = this.listaResumo
+
+        //PARCIAL
         else if (event === "2")
-           this.itemsResumo = this.listaResumo.filter(o => o.temPagto || o.qtExtrakit > 0)
+           this.itemsResumo = this.listaResumo.filter(o => (o.qtPagar > 0 && !o.soEntrada) || o.qtRuim > 0)
+
+             //DEVOLUCAO EXTRAKIT
              else
-               this.itemsResumo = this.listaResumo.filter(o => o.qtExtrakit > 0)
+               this.itemsResumo = this.listaResumo.filter(o => o.soEntrada)
 
     }
     this.AtualizarLabelsContadores()
@@ -538,7 +544,8 @@ readonly acaoLogar: PoModalAction = {
             descItem:item.descItem, 
             qtPagar:0, 
             qtRenovar:0, 
-            qtSaldo:0,
+            qtRuim:item.qtRuim,
+            qtSaldo:item.qtSaldo,
             qtExtrakit:item.qtSaldo, 
             notaAnt:item.nroDocto}))
       

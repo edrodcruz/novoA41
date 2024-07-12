@@ -13,30 +13,10 @@ export class HomeComponent {
 
   ngOnInit(): void {
     //--- Informacoes iniciais tela
-    this.srvTotvs.EmitirParametros({tituloTela: 'HTMLA41 - MONITOR AUTO ATENDIMENTO', abrirMenu: false})
+    this.srvTotvs.EmitirParametros({tituloTela: 'MENU PRINCIPAL - SELECIONE UMA DAS OPÇÕES', abrirMenu: false})
   }
 
-  /*
-
-  //FAS - pedido na tt-digita
-  DEF NEW GLOBAL SHARED TEMP-TABLE tt-digita-2 
-    FIELD nr-pedido  LIKE ped-venda.nr-pedido
-    FIELD nome-abrev LIKE ped-venda.nome-abrev
-    INDEX id IS PRIMARY UNIQUE nr-pedido.
-
-
-   CREATE tt-digita-2.
-   ASSIGN tt-digita-2.nr-pedido  = ped-venda.nr-pedido
-          tt-digita-2.nome-abrev = ped-venda.nome-abrev.
-
-          run esp/espd010.w -> rp.p 
-
-
-  */
-  onChamarESPD010() {
-    
-  }
-
+ 
   //Variavel ROWID Global
   //def new global shared var gr-ped-venda  as rowid
   //gr-ped-venda = 0x000000003f0f2186

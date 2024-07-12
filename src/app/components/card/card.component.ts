@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, numberAttribute, Output } from '@angula
 })
 
 export class CardComponent {
-  @Input() tipo: string="black"
+  @Input() tipo: "black" | "blue" | "green" | "yellow" | "lemon" | "red" = "black"
   @Input({transform:numberAttribute}) cont:number=0
   @Input() cabec:string=''
   @Input() desc:string=''

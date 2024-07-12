@@ -1,5 +1,5 @@
 <!--#045B8F -->
-<div class="po-wrapper">
+<div class="po-wrapper" >
   <po-menu [p-menus]="menus" [p-automatic-toggle]="false" [p-collapsed]="false" #menuLateral>
     <div *p-menu-header-template style="background: steelblue; border-radius: 5px;">
        <div style="min-height: 50px;">
@@ -14,13 +14,12 @@
      </div>
     </div>
   </po-menu>
-  <po-toolbar p-title={{tituloTela}}></po-toolbar>
-
   
-
+ <po-toolbar p-title={{tituloTela}}></po-toolbar> 
+  
   <po-page-default>
-    
- <router-outlet></router-outlet> 
+   <router-outlet></router-outlet> 
+     
   </po-page-default>
-
 </div>
+
