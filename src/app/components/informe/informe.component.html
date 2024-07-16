@@ -113,7 +113,13 @@
                     p-container="true"
                     [p-height]="300"
                     [p-hide-table-search]="false" 
-                    [p-hide-columns-manager]="true" />
+                    [p-hide-columns-manager]="true">
+                    <ng-template p-table-cell-template let-column="column" let-row="row">
+                      <div class="menuGrid">
+                           <div><input type="text" id="fname" name="fname" value="{{row['num-serie-it']}}"></div>
+                      </div>
+                    </ng-template>
+            </po-table>
          
             
             <div class="po-md-12 observacao"> <p>{{edObservacao}}</p></div>
@@ -267,7 +273,7 @@
         <div class="po-md-12">
           <div class="po-md-6">
              <po-widget p-title="Dados do Item">
-              <div class="po-md-6" ><po-input name="it-codigo" formControlName="it-codigo" p-label="Item" (p-blur)="leaveItem()"></po-input></div>
+              <div class="po-md-6" ><po-input name="it-codigo" formControlName="it-codigo" p-label="Item" p-mask="__.___._____-__" (p-blur)="leaveItem()"></po-input></div>
               <div class="po-md-6"><po-input name="nf-saida" formControlName="nf-saida" p-label="Nota Fiscal" (p-blur)="leaveNFS()"></po-input></div>
               <div class="po-md-6"><po-input name="Quantidade" formControlName="Quantidade" p-label="Quantidade"></po-input></div>
               <div class="po-md-6"><po-input name="Serie-Nf-Saida" formControlName="Serie-Nf-Saida" p-label="Série"></po-input></div>

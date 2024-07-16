@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import { PoMenuItem, PoModalAction, PoModalComponent, PoPageAction, PoRadioGroupOption, PoStepperComponent, PoTableAction, PoTableColumn, PoTableComponent, PoNotificationService, PoDialogService, PoNotification } from '@po-ui/ng-components';
+import { PoMenuItem, PoModalAction, PoModalComponent, PoPageAction, PoRadioGroupOption, PoStepperComponent, PoTableAction, PoTableColumn, PoTableComponent, PoNotificationService, PoDialogService, PoNotification, PoButtonComponent } from '@po-ui/ng-components';
 import { TotvsService } from '../../services/totvs-service.service';
 import { catchError, delay, elementAt } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -70,6 +70,11 @@ serieSaida: any='131'
 serieEntra: any='12'
 placeHolderEstabelecimento!: string
 paramsEstab: any=[]
+
+//Buttons
+lBtnAprovar:boolean=false
+lBtnAprovarSemE:boolean=false
+lHideSearch:boolean=false
 
 //-------- Variaveis RadioGroud
 tipoCalculo: any;
@@ -332,6 +337,9 @@ readonly acaoLogar: PoModalAction = {
   onTipoCalculo(event: any) {
     this.tipoCalculo = event
 
+    this.lBtnAprovar = false
+    this.lBtnAprovarSemE = false
+
     //TOTAL
     if (this.listaResumo.length > 0){
        if (event === "1" )
@@ -339,11 +347,22 @@ readonly acaoLogar: PoModalAction = {
 
         //PARCIAL
         else if (event === "2")
-           this.itemsResumo = this.listaResumo.filter(o => (o.qtPagar > 0 && !o.soEntrada) || o.qtRuim > 0)
+           this.itemsResumo = this.listaResumo.filter(o => (o.qtPagar > 0 && !o.soEntrada) || (o.soEntrada))
 
              //DEVOLUCAO EXTRAKIT
-             else
+             else {
                this.itemsResumo = this.listaResumo.filter(o => o.soEntrada)
+
+               this.itemsResumo.forEach(item=> {
+                   if (item.tipo === "Kit"){ 
+                      if (this.lBtnAprovar === false){
+                        this.srvNotification.error("Existe OS Informada para Nota Fiscal de Kit. Usar as opções Renovação Total ou Renovação Parcial") 
+                        this.lBtnAprovar = true
+                        this.lBtnAprovarSemE = true
+                        }
+                    }
+                 })
+             }
 
     }
     this.AtualizarLabelsContadores()
@@ -532,6 +551,7 @@ readonly acaoLogar: PoModalAction = {
 
   //--------------------------------------------------------------- Chamar Modal Detalhe Resumo
   onOpenModal(type: any) {
+    
  
     switch (type) {
       case 'VisaoGeral':
@@ -550,7 +570,6 @@ readonly acaoLogar: PoModalAction = {
             notaAnt:item.nroDocto}))
       
           this.itemsDetalhe = [...visaoResumo, ...extraKit!].filter(o => !o.soEntrada).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
-          console.log('itemDetalhe', this.itemsDetalhe)
           this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar + x.qtRenovar + x.qtExtrakit})
           this.tituloDetalhe = `Visão Geral: ${this.qtde} registros`
           this.colunasDetalhe = this.srvTotvs.obterColunasTodos()
@@ -610,6 +629,15 @@ readonly acaoLogar: PoModalAction = {
         break;
 
     }
+
+    
+
+  }
+
+  teste(){
+    let elemento = document.querySelector('.po-search-input') as HTMLElement
+    console.log(elemento)
+    
   }
 
   //---------------------------------------------------------------- Eliminar registro grid extrakit

@@ -133,6 +133,8 @@ export class InformeComponent {
     observacao: [''],
   });
 
+  
+
   acaoImprimir: PoModalAction = {
     action: () => {
       this.onImprimirConteudoArquivo();
@@ -318,12 +320,19 @@ export class InformeComponent {
     },
   ];
 
+
+  formatarItem(){
+    this.formEnc
+     
+  }
+
   //---Inicializar
   ngOnInit(): void {
     this.urlSpool = environment.totvs_spool;
 
     //--- Titulo Tela
     this.srvTotvs.EmitirParametros({ tituloTela: 'HTMLA46 - INFORME DE OS' });
+    
 
     //--- Login Unico
     this.srvTotvs.ObterUsuario().subscribe({
@@ -476,7 +485,6 @@ export class InformeComponent {
 
   leaveNFS() {
     if(this.formItemOrdem.controls['nf-saida'].disabled) return
-    alert('entrou')
 
     let params: any = {
       items: this.formItemOrdem.getRawValue()
@@ -506,6 +514,17 @@ export class InformeComponent {
   //Chamar o evento pi-gravar-item-os_leave-item para preparacao de tela
   //Habilitar e desabilitar componentes e iniciar valores
   leaveItem() {
+    let itemNaoFormatado = this.formItemOrdem.controls['it-codigo'].value
+    let itemFormatado=''
+    if (itemNaoFormatado!.indexOf('.') === -1){
+      itemFormatado = itemNaoFormatado!.substring(0,2) + '.' +
+                      itemNaoFormatado!.substring(2,5) + '.' +
+                      itemNaoFormatado!.substring(5,10) + '-' +
+                      itemNaoFormatado!.substring(10)
+
+        this.formItemOrdem.controls['it-codigo'].setValue(itemFormatado)
+    }
+
     if (
       this.formItemOrdem.controls['it-codigo'].value === '' ||
       this.formItemOrdem.controls['it-codigo'].value === null
@@ -966,6 +985,8 @@ export class InformeComponent {
             };
             this.srvTotvs46.ObterArquivo(params).subscribe({
               next: (item: any) => {
+                if (item ===null) return
+               
                 this.listaArquivos = item.items;
               },
             });
@@ -1207,7 +1228,7 @@ export class InformeComponent {
     win?.document.write(
       this.conteudoArquivo
         .replace(/\n/gi, '<br>')
-        .replace(/\40/gi, '&nbsp;')
+       /// .replace(/\40/gi, '&nbsp;')
         .replace(//gi, '<br>')
     );
     win?.document.write('</p></body></html>');

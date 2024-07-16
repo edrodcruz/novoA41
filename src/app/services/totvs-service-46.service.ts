@@ -38,13 +38,14 @@ obterColunasItems(): Array<PoTableColumn> {
     { property: 'Quantidade', label: "Qtde" },
     { property: 'nr-enc', label: "Nr Enc" },
     { property: 'Evento', label: "Evento" },
+    {property:'num-serie-it', label: "Num Serie Garantia", type:'cellTemplate'},
+   /*  { property: 'num-serie-it', label: "Num Serie Garantia" }, */
     { property: 'serie-ret', label: "Série Ret." },
     { property: 'serie-ins', label: "Série Inst." },
     { property: 'envelope-seguranca', label: "Env.Seg" },
     { property: 'nr-alertas', label: "Versão" },
     { property: 'id-solicita', label: "Monitor" },
     { property: 'nr-pedido', label: "Pedido" },
-    { property: 'num-serie-it', label: "Num Serie Garantia" },
 
   ];
 }

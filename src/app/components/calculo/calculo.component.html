@@ -224,20 +224,20 @@
             </div>
             
             <div class="po-md-12" style="margin-top: 20px;">
-              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar" (p-click)="onAprovarCalculo(1)" ></po-button>
-              <po-button class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar Sem Gerar Saída" (p-click)="onAprovarCalculo(2)" ></po-button>
+              <po-button [p-disabled]="lBtnAprovar" class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar" (p-click)="onAprovarCalculo(1)" ></po-button>
+              <po-button [p-disabled]="lBtnAprovarSemE" class="po-md-6" p-icon="bi bi-clipboard2-check" p-label="Aprovar Sem Gerar Saída" (p-click)="onAprovarCalculo(2)" ></po-button>
             </div>
           </po-widget>
       </po-step>
     </po-stepper>
 
     <po-modal #detailsModal p-size="xl" p-title="{{this.tituloDetalhe}}">
-      <po-table #gridDetalhe
+      <po-table #gridDetalhe 
                 [p-columns]="colunasDetalhe"
                 [p-striped]="true"
                 [p-height]= "300"
                 [p-items]="itemsDetalhe"
-                [p-hide-table-search]="false"
+                [p-hide-table-search]="lHideSearch"
                 [p-hide-columns-manager]="true"
                 p-sort="true"
                 [p-actions]="opcoesGridPagto"
