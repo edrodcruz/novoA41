@@ -60,7 +60,7 @@ obterColunas(): Array<PoTableColumn> {
 }
 
 //------------ Colunas Grid Saldo Terceiro
-obterColunasExtraKit(): Array<PoTableColumn> {
+obterColunasSaldoTerc(): Array<PoTableColumn> {
   return [
     { property: 'numOS', label:'NumOS'},
     { property: 'nroDocto', label: "Docto" },
@@ -96,7 +96,6 @@ obterColunasTodos(): Array<PoTableColumn> {
 
 obterColunasPagar(): Array<PoTableColumn> {
   return [
-    { property: 'numOS', label:'NumOS'},
     { property: 'tipo', label:'Tipo'},
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
@@ -104,6 +103,23 @@ obterColunasPagar(): Array<PoTableColumn> {
     { property: 'qtPagar', label: 'Entregar', type: 'number', color:"color-07", visible:true},
     { property: 'qtRuim', label: 'Ruim', type: 'number', color:"color-07", visible:true},
     { property: 'qtSaldo', label: 'Saldo Disp', type: 'number'},
+    { property: 'codLocaliza', label: "Local"},
+    { property: 'kit', label: "Kit"},
+    { property: 'itPrincipal', label: "Principal"},
+    { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"},
+  ];
+}
+
+obterColunasSomenteEntrada(): Array<PoTableColumn> {
+  return [
+    { property: 'numOS', label:'NumOS'},
+    { property: 'tipo', label:'Tipo'},
+    { property: 'itCodigo', label: "Item"},
+    { property: 'descItem', label: "Descrição", width: '300px'},
+    { property: 'qtMascara', label: 'Máscara', type: 'number'},
+    { property: 'qtPagar', label: 'Bom', type: 'number', color:"color-07", visible:true},
+    { property: 'qtRuim', label: 'Ruim', type: 'number', color:"color-07", visible:true},
     { property: 'codLocaliza', label: "Local"},
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},

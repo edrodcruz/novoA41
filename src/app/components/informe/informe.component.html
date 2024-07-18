@@ -115,8 +115,8 @@
                     [p-hide-table-search]="false" 
                     [p-hide-columns-manager]="true">
                     <ng-template p-table-cell-template let-column="column" let-row="row">
-                      <div class="menuGrid">
-                           <div><input type="text" id="fname" name="fname" value="{{row['num-serie-it']}}"></div>
+                      <div class="serie">
+                        <i class="bi bi-upc"></i><input [(ngModel)]="row['num-serie-it']" name="num-serie-it" (blur)="onLeaveNumSerieItem(row)">
                       </div>
                     </ng-template>
             </po-table>

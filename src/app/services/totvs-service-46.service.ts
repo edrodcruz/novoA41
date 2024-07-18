@@ -190,6 +190,12 @@ obterColunasArquivos(): Array<PoTableColumn> {
                    .pipe(take(1));
   }
 
+  public GravarNumSerieItem(params?: any){
+    return this.http.get(`${this._url}/GravarNumSerieItem`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
+
+
 
 
 

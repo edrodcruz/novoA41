@@ -195,6 +195,7 @@ export class InformeComponent {
   urlInfoOs: string = '';
   arquivoInfoOS: string = '';
   urlSpool: string = '';
+  numSerieItem:string=''
 
   readonly acoesGridOrdem: PoTableAction[] = [
     {
@@ -320,10 +321,22 @@ export class InformeComponent {
     },
   ];
 
-
-  formatarItem(){
-    this.formEnc
-     
+  //Montar o objeto para salvar informacoes do item da os
+  onLeaveNumSerieItem(obj:any){
+    console.log(obj)
+    let params: any = {
+      cRowId: obj['c-rowId'],
+      numSerieItem: obj['num-serie-it'],
+    };
+    this.loadGrid = true;
+    this.srvTotvs46.GravarNumSerieItem(params).subscribe({
+      next: (response: any) => {
+        this.loadGrid = false;
+        this.selecionarOrdem(this.ordemSelecionada);
+      },
+      error: (e) => {this.loadGrid = false; this.selecionarOrdem(this.ordemSelecionada)},
+      
+    });
   }
 
   //---Inicializar
@@ -905,7 +918,7 @@ export class InformeComponent {
   }
 
   selecionarItemOrdem(obj: any) {
-    console.log(this.itemSelecionado);
+    
     this.itemSelecionado = obj;
     this.formItemOrdem.patchValue(obj);
     this.edObservacao = obj !== undefined ? obj.edobservacao : '';

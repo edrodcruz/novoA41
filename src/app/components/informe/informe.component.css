@@ -1,3 +1,24 @@
+.serie{
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  column-gap: 3px;
+  position: relative;
+}
+
+.serie i{
+  font-size:32px;
+  position: absolute;
+  top: 0px;
+  left: 5px;
+}
+
+.serie input{
+  font-size:16px; 
+  height: 32px;
+  padding-left: 40px;
+}
+
 .po-radio {
   font-size: 8px;
 }

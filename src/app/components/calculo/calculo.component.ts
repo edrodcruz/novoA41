@@ -198,7 +198,7 @@ readonly acaoLogar: PoModalAction = {
     //--- Parametros iniciais da tela
     this.loadTela = false
     this.tipoCalculo = '1'
-    this.colunasKit = this.srvTotvs.obterColunasExtraKit()
+    this.colunasKit = this.srvTotvs.obterColunasSaldoTerc()
 
     //--- Carregar combo de estabelecimentos
     this.placeHolderEstabelecimento = 'Aguarde, carregando lista...'
@@ -481,8 +481,8 @@ readonly acaoLogar: PoModalAction = {
         //Chamar servico
         this.srvTotvs.ObterExtraKit(paramsE).subscribe({
         next:(response:any) => {
-          console.log("Extra kit", response)
             this.listaExtraKit = response.items ?? []
+            
         },
         error: (e) => {
               return false
@@ -602,7 +602,7 @@ readonly acaoLogar: PoModalAction = {
           this.itemsDetalhe = this.itemsResumo.filter(o => o.soEntrada).sort(this.ordenarCampos(['-qtSaldo','itCodigo']))
           this.qtde = 0; this.itemsDetalhe.forEach(x=> {this.qtde += x.qtPagar + x.qtRuim})
           this.tituloDetalhe = `Somente Entrada: ${this.qtde} registros`
-          this.colunasDetalhe = this.srvTotvs.obterColunasPagar();
+          this.colunasDetalhe = this.srvTotvs.obterColunasSomenteEntrada();
           //this.mostrarDetalhe=true
           this.detailsModal?.open();
           this.opcoesGridPagto = []
