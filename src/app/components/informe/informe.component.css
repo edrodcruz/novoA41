@@ -1,8 +1,8 @@
 .serie{
-  display: flex; 
+  /* display: flex; 
   justify-content: center; 
   align-items: center; 
-  column-gap: 3px;
+  column-gap: 3px; */
   position: relative;
 }
 
@@ -17,6 +17,12 @@
   font-size:16px; 
   height: 32px;
   padding-left: 40px;
+}
+
+.enc input{
+  font-size:16px; 
+  height: 32px;
+  
 }
 
 .po-radio {

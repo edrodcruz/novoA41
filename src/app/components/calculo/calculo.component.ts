@@ -346,8 +346,9 @@ readonly acaoLogar: PoModalAction = {
           this.itemsResumo = this.listaResumo
 
         //PARCIAL
-        else if (event === "2")
-           this.itemsResumo = this.listaResumo.filter(o => (o.qtPagar > 0 && !o.soEntrada) || (o.soEntrada))
+        else if (event === "2"){
+           this.itemsResumo = this.listaResumo.filter(o => (o.qtPagar > 0 && !o.soEntrada) || (o.soEntrada) || (o.qtRenovar > 0 && o.temPagto))
+        }
 
              //DEVOLUCAO EXTRAKIT
              else {

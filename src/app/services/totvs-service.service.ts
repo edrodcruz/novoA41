@@ -62,7 +62,7 @@ obterColunas(): Array<PoTableColumn> {
 //------------ Colunas Grid Saldo Terceiro
 obterColunasSaldoTerc(): Array<PoTableColumn> {
   return [
-    { property: 'numOS', label:'NumOS'},
+   /*  { property: 'numOS', label:'NumOS'}, */
     { property: 'nroDocto', label: "Docto" },
     { property: 'serieDocto', label: "Série" },
     { property: 'itCodigo', label: "Item"},
@@ -96,18 +96,18 @@ obterColunasTodos(): Array<PoTableColumn> {
 
 obterColunasPagar(): Array<PoTableColumn> {
   return [
-    { property: 'tipo', label:'Tipo'},
+   /*  { property: 'tipo', label:'Tipo'}, */
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
     { property: 'qtMascara', label: 'Máscara', type: 'number'},
     { property: 'qtPagar', label: 'Entregar', type: 'number', color:"color-07", visible:true},
-    { property: 'qtRuim', label: 'Ruim', type: 'number', color:"color-07", visible:true},
+    /* { property: 'qtRuim', label: 'Ruim', type: 'number', color:"color-07", visible:true}, */
     { property: 'qtSaldo', label: 'Saldo Disp', type: 'number'},
     { property: 'codLocaliza', label: "Local"},
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
-    { property: 'seqOrdem', label: "Ordem"},
-    { property: 'notaAnt', label: "Nota"},
+    /* { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"}, */
   ];
 }
 
@@ -123,15 +123,15 @@ obterColunasSomenteEntrada(): Array<PoTableColumn> {
     { property: 'codLocaliza', label: "Local"},
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
-    { property: 'seqOrdem', label: "Ordem"},
+    /* { property: 'seqOrdem', label: "Ordem"}, */
     { property: 'notaAnt', label: "Nota"},
   ];
 }
 
 obterColunasRenovar(): Array<PoTableColumn> {
   return [
-    { property: 'numOS', label:'NumOS'},
-    { property: 'tipo', label:'Tipo'},
+    /* { property: 'numOS', label:'NumOS'},
+    { property: 'tipo', label:'Tipo'}, */
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
     { property: 'qtMascara', label: 'Máscara', type: 'number'},
@@ -140,15 +140,15 @@ obterColunasRenovar(): Array<PoTableColumn> {
     { property: 'codLocaliza', label: "Local"},
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
-    { property: 'seqOrdem', label: "Ordem"},
-    { property: 'notaAnt', label: "Nota"},
+   /*  { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"}, */
   ];
 }
 
 obterColunasExtrakit(): Array<PoTableColumn> {
   return [
-    { property: 'numOS', label:'NumOS'},
-    { property: 'tipo', label:'Tipo'},
+   /*  { property: 'numOS', label:'NumOS'},
+    { property: 'tipo', label:'Tipo'}, */
     { property: 'itCodigo', label: "Item"},
     { property: 'descItem', label: "Descrição", width: '300px'},
     { property: 'qtMascara', label: 'Máscara', type: 'number'},
@@ -157,8 +157,8 @@ obterColunasExtrakit(): Array<PoTableColumn> {
     { property: 'codLocaliza', label: "Local"},
     { property: 'kit', label: "Kit"},
     { property: 'itPrincipal', label: "Principal"},
-    { property: 'seqOrdem', label: "Ordem"},
-    { property: 'notaAnt', label: "Nota"},
+    /* { property: 'seqOrdem', label: "Ordem"},
+    { property: 'notaAnt', label: "Nota"}, */
   ];
 }
 

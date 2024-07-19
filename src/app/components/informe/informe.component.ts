@@ -73,6 +73,13 @@ export class InformeComponent {
     | PoModalComponent
     | undefined;
 
+  @ViewChild('telaSeriesPendentes', { static: true }) telaSeriesPendentes:
+    | PoModalComponent
+    | undefined;  
+
+
+    
+
   //Formulario
   public form = this.formBuilder.group({
     codEstabel: ['', Validators.required],
@@ -149,6 +156,9 @@ export class InformeComponent {
     label: 'Sair',
   };
 
+  
+  
+
   //---Variaveis
   loadTela: boolean = false;
   loadGrid: boolean = false;
@@ -181,11 +191,13 @@ export class InformeComponent {
   listaItens!: any[];
   listaStatus!: any[];
   listaArquivos!: any[];
+  listaEnc!: any[];
 
   //---Grid
   colunasOrdens!: PoTableColumn[];
   colunasItens!: PoTableColumn[];
   colunasArquivos!: PoTableColumn[];
+  colunasEnc!: PoTableColumn[];
 
   sub!: Subscription;
   nrProcesso: number = 0;
@@ -321,6 +333,23 @@ export class InformeComponent {
     },
   ];
 
+  onSeriesPendentes(){
+     this.telaSeriesPendentes?.open()
+
+    let params: any = {codEmitente: this.form.controls.codUsuario.value, codEstabel: this.form.controls.codEstabel.value};
+   
+    this.loadGrid = true;
+    this.srvTotvs46.SeriesPendentes(params).subscribe({
+      next: (response: any) => {
+        console.log(response)
+        this.loadGrid = false;
+        this.listaEnc=response.items.sort(this.srvTotvs.ordenarCampos(['numos']))
+      },
+      error: (e) => {},
+      
+    });
+  }
+
   //Montar o objeto para salvar informacoes do item da os
   onLeaveNumSerieItem(obj:any){
     console.log(obj)
@@ -367,6 +396,7 @@ export class InformeComponent {
     this.colunasOrdens = this.srvTotvs46.obterColunasOrdens();
     this.colunasItens = this.srvTotvs46.obterColunasItems();
     this.colunasArquivos = this.srvTotvs46.obterColunasArquivos();
+    this.colunasEnc= this.srvTotvs46.obterColunasSeriesPendentes();
 
     //this.principal.expandAllItems()
     this.item1.expand();
@@ -629,6 +659,8 @@ export class InformeComponent {
   tagEnc() {
     if (this.formItemOrdem.controls['tag-enc'].value) {
       if (
+        this.formItemOrdem.controls['nr-enc'].value !== null &&
+        this.formItemOrdem.controls['nr-enc'].value !== '' &&
         this.formItemOrdem.controls['nr-enc'].value !== '0' &&
         this.formItemOrdem.controls['nr-enc'].value !== '999999999'
       ) {

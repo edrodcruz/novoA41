@@ -26,6 +26,15 @@ export class TotvsService46 {
       return '';
   }
 
+  //---------- Colunas Enc Series Pendentes
+  obterColunasSeriesPendentes() :Array<PoTableColumn> {
+    return [
+      { property: 'numos', label: "NumOS" },
+      { property: 'chamado', label: "Chamado" },
+      { property: 'it-codigo', label: "Item" },
+      { property: 'nr-enc', label: "Nr Enc", type:'cellTemplate'},
+      { property: 'num-serie-it', label: "Num Serie Garantia", type:'cellTemplate'},
+    ]}
 
 //------------ Colunas Grid Saldo Terceiro
 obterColunasItems(): Array<PoTableColumn> {
@@ -195,6 +204,10 @@ obterColunasArquivos(): Array<PoTableColumn> {
                    .pipe(take(1));
   }
 
+  public SeriesPendentes(params?: any){
+    return this.http.get(`${this._url}/SeriesPendentes`, {params:params, headers:headersTotvs})
+                   .pipe(take(1));
+  }
 
 
 

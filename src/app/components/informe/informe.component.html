@@ -98,7 +98,8 @@
               <div><i><small>NumOS</small></i><p>{{cOS}}</p></div>
               <div><i><small>Chamado</small></i><p>{{cChamado}}</p></div>
             </div>
-            <po-button p-icon="bi bi-plus" p-tooltip="Incluir Item" p-kind="primary" (p-click)="onIncluirItemOrdem()"></po-button> 
+            <po-button p-icon="bi bi-plus" p-tooltip="Incluir Item" p-kind="primary" (p-click)="onIncluirItemOrdem()"></po-button>
+            <po-button p-icon="bi bi-upc-scan" p-tooltip="Números de Séries Pendentes" (p-click)="onSeriesPendentes()"></po-button> 
             
           </div>
          
@@ -319,6 +320,35 @@
 
   <div innerHtml={{this.conteudoArquivo}} class="formatoTexto"></div>
 
+  </po-modal>
+
+  <po-modal #telaSeriesPendentes p-title="Números de Séries Pendentes"
+                              p-size="xl" 
+                              p-click-out="false" 
+                              [p-hide-close]="true"
+                              [p-primary-action]="" 
+                              >
+        <po-table [p-items]="listaEnc" 
+                  [p-loading]="loadGrid" 
+                  [p-striped]="true" 
+                  [p-single-select]="true"
+                  [p-selectable]="true"
+                  [p-columns]="colunasEnc"
+                  p-container="true"
+                  [p-height]="300"
+                  [p-sort]="true"
+                  [p-hide-table-search]="false" 
+                  [p-hide-columns-manager]="true">
+            <ng-template p-table-cell-template let-column="column" let-row="row">
+              <div class="enc" *ngIf="column.property === 'nr-enc'">
+                <input [(ngModel)]="row['nr-enc']" name="nr-enc">
+              </div>
+              <div class="serie" *ngIf="column.property === 'num-serie-it'">
+                <i class="bi bi-upc"></i><input [(ngModel)]="row['num-serie-it']" name="num-serie-it" (blur)="onLeaveNumSerieItem(row)">
+              </div>
+            </ng-template>
+            
+        </po-table>
   </po-modal>
 
 
