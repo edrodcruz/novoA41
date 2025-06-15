@@ -23,9 +23,9 @@ const routes: Routes = [
   {path:'seletor', component:SeletorComponent},
   {path:'monitor', component:MonitorProcessosComponent},
   {path:'resumofinal', component:ResumoFinalComponent}
-  
- 
- 
+
+
+
 ];
 
 @NgModule({

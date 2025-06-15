@@ -30,16 +30,16 @@ export class AppComponent {
  ]
  ;
 
-//------ Label de menu principal
-tecnicoInfo!: string
-estabInfo!: string
-processoInfo!: string
-processoSituacao!:string
-tituloTela!:string
-dashboard:boolean=false
-abrirMenu:boolean=false
-abrirSeletor:boolean=false
-teste:number=8
+  //------ Label de menu principal
+  tecnicoInfo!: string
+  estabInfo!: string
+  processoInfo!: string
+  processoSituacao!:string
+  tituloTela!:string
+  dashboard:boolean=false
+  abrirMenu:boolean=false
+  abrirSeletor:boolean=false
+  teste:number=8
 
 private sub!: Subscription
 
@@ -53,10 +53,10 @@ AbrirProgramaTotvs(programa:string){
     error: (e)=>{}
   })
 }
-   
+
 
 ngOnInit(): void {
-  
+
   this.estabInfo=''
   this.sub = this.srvTotvs.LerParametros().subscribe({
     next: (response: any) => {
@@ -67,11 +67,11 @@ ngOnInit(): void {
       this.tituloTela = response.tituloTela ?? this.tituloTela
       this.dashboard = response.dashboard ?? this.dashboard
       this.abrirMenu = response.abrirMenu ?? true
-     
+
       if(this.abrirMenu)
         this.menuLateral?.expand()
       else
-        this.menuLateral?.collapse() 
+        this.menuLateral?.collapse()
 
       this.cdRef.detectChanges()
     }})

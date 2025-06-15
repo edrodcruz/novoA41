@@ -21,7 +21,7 @@ export class TotvsService46 {
 
   //--------------------- INTERPRETADOR RESULTADO DE ERROS/WARNING
   public tratarErros(mensagem:any):string{
-     if (mensagem.messages ==! undefined)
+     if (mensagem.messages !== undefined)
         return mensagem.message
       return '';
   }
